@@ -1,0 +1,8 @@
+#label-gender:before{
+	display: none;
+}
+
+input[type=radio].row-gender-edit{
+	margin-left: 15px;
+	margin-right: 10px;
+}
