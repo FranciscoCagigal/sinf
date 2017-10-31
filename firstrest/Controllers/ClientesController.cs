@@ -59,7 +59,7 @@ namespace FirstREST.Controllers
         }
 
 
-        public HttpResponseMessage Put(string id, Lib_Primavera.Model.Cliente cliente)
+        public HttpResponseMessage Post(string id, Lib_Primavera.Model.Cliente cliente)
         {
 
             Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();

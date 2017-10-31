@@ -1,11 +1,11 @@
 <?php
 include_once('../../config/init.php');
 include_once($BASE_DIR .'database/users.php');  
-if (!$_POST['nome'] || !$_POST['genero'] || !$_POST['diaNasc'] || !$_POST['mesNasc'] || !$_POST['anoNasc'] || !$_POST['morada'] || !$_POST['localidade'] || !$_POST['cod1'] || !$_POST['cod2'] || !$_POST['pais'] || !$_POST['email'] || !$_POST['username'] || !$_POST['password']) {
+if (!isset($_POST['nome']) || !isset($_POST['genero']) || !isset($_POST['diaNasc']) || !isset($_POST['mesNasc']) || !isset($_POST['anoNasc']) || !isset($_POST['morada']) || !isset($_POST['localidade']) || !isset($_POST['cod1']) || !isset($_POST['cod2']) || !isset($_POST['pais']) || !isset($_POST['email']) || !isset($_POST['username']) || !isset($_POST['password'])) {
   
   $_SESSION['error_messages'][] = 'Todos os campos são de preenchimento obrigatório';
   $_SESSION['form_values'] = $_POST;
-  header("Location: $BASE_URL" . 'pages/users/register.php');
+  header("Location: $BASE_URL" . 'pages/users/register.php/');
   exit;
 }
 $nome = strip_tags($_POST['nome']);
@@ -37,7 +37,7 @@ try {
   else if(strpos($e->getMessage(), 'cliente_username_key') !== false){
     $_SESSION['error_messages'][] = 'Já existe um utilizador com o username introduzido';
   }
-  else $_SESSION['error_messages'][] = 'Erro ao criar utilizador';
+  else $_SESSION['error_messages'][] = "Erro ao registar o utilizador. Por favor verifique se os valores inseridos são os corretos.";
   $_SESSION['form_values'] = $_POST;
   header("Location: $BASE_URL" . 'pages/users/register.php');
   exit;

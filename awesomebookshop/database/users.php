@@ -1,12 +1,9 @@
 <?php
 
 //CREATE USER
-function createUser($nome){
-	
+function createUser($nome, $genero, $diaNasc, $mesNasc, $anoNasc, $morada, $localidade, $cod1, $cod2, $pais, $telefone, $email, $nif, $username, $password) {
   global $conn;
-
   $conn->beginTransaction();
-
   try{
     
     //CHECK LOCALIDADE ALREADY EXISTS
@@ -25,7 +22,6 @@ function createUser($nome){
       $stmt->execute(array($pais, $localidade));
       $localidadeID = $conn->lastInsertId('localidade_localidadeid_seq');
     }
-
     //CHECK CODIGO_POSTAL ALREADY EXISTS
     $stmt = $conn->prepare("SELECT *
                             FROM codigopostal 
@@ -42,43 +38,31 @@ function createUser($nome){
       $stmt->execute(array($localidadeID, $cod1, $cod2));
       $codPostalID = $conn->lastInsertId('codigopostal_codigopostalid_seq');
     }
-
       //INSERT INTO CLIENTE
     $stmt = $conn->prepare("INSERT INTO cliente (paisid, nome, genero, datanascimento, username, password, telefone, email, nif) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
     $datanasc = sprintf("%02d/%02d/%04d",$diaNasc,$mesNasc,$anoNasc);
-
     $stmt->execute(array($pais, $nome, $genero, $datanasc, $username, sha1($password), $telefone, $email, $nif));
-
     $clienteID = $conn->lastInsertId('cliente_clienteid_seq');
-
     //INSERT INTO MORADA
     $stmt = $conn->prepare("INSERT INTO morada (codigopostalid, rua) VALUES (?, ?)");
     $stmt->execute(array($codPostalID, $morada));
     $moradaID = $conn->lastInsertId('morada_moradaid_seq');
-
     //INSERT INTO MORADA_FATURACAO
     $stmt = $conn->prepare("INSERT INTO moradafaturacao (moradaid, clienteid) VALUES (?, ?)");
     $stmt->execute(array($moradaID, $clienteID));
-
       //INSERT INTO MORADA_ENVIO
     $stmt = $conn->prepare("INSERT INTO moradaenvio (moradaid, clienteid) VALUES (?, ?)");
     $stmt->execute(array($moradaID, $clienteID));
-
     $defaultwishlist = 'wishlist';
     //INSERT INTO WISHLIST
     $stmt = $conn->prepare("INSERT INTO wishlist (clienteid, nome) VALUES (?, ?)");
     $stmt->execute(array($clienteID, $defaultwishlist));
-
     $conn->commit();
   }catch(Exception $e){
-
     error_log($e->getMessage());
-
     $conn->rollBack();
-
     throw $e;
-  }  
+  }
 }
 
 //CREATE AUTOR
@@ -513,6 +497,34 @@ function verifyPaisIfExists($nomePais){
 }
 
 //UPDATE CLIENT INFORMATION
+
+function primavera_update_user($user_data, $clienteID){
+  global $PRIMAVERA_API;
+  
+  $data['CodCliente'] = 24;//$clienteID;	
+  $data['NomeCliente'] = "test";//$user_data['nome'];
+  $data['Morada'] = "hoje";//$user_data['morada']; 
+  $data['NumContribuinte'] = "12345";//$user_data['nif'];
+  $data['Email'] = "test@test.com";//$user_data['email'];
+  $content = json_encode($data);
+  $url = $PRIMAVERA_API . 'clientes/' . $clienteID;  
+  
+  $ch = curl_init($url);
+  curl_setopt($ch, CURLOPT_HEADER, false);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+  $json_response = curl_exec($ch);
+  $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  error_log($url);
+  error_log($status);
+  error_log(json_decode($json_response, true));
+  
+  curl_close($ch);    
+}
+
+
 function updateUserInformation($username, $userdata, $newuserinformation) {
 
   global $conn;
@@ -693,6 +705,13 @@ function updateUserInformation($username, $userdata, $newuserinformation) {
 
       $stmt->execute(array($nome, $genero, $datanasc, $telefone, $email, $nif, $username));
     }
+	
+	$id = getUserData($username)[0]['clienteid']
+	
+	if ((!($userdata[0]['nome'] === $nome) || !($userdata[0]['email'] === $email) || !($userdata[0]['nif'] === $nif) || !($userdata[0]['rua'] === $morada))&& primavera_user_exists(id)!=''){
+		
+		primavera_update_user($newuserinformation,$id);
+	}	
 
     $conn->commit();
 
@@ -878,9 +897,7 @@ function primavera_user_exists($id){
 
 function primavera_insert_user($id,$morada){
   global $PRIMAVERA_API;
-   error_log("entrei");
   $user_data=getUserDataById($id);
-   error_log("sai");
   
   $data['CodCliente'] = $id;	
   $data['NomeCliente'] = $user_data['nome'];
@@ -890,12 +907,6 @@ function primavera_insert_user($id,$morada){
   $content = json_encode($data);
   $url = $PRIMAVERA_API . 'clientes/';
   
-  error_log($user_data['nome']);
-  error_log($morada);
-  error_log($user_data['nif']);
-  error_log($user_data['email']);
- 
-  
   
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_HEADER, false);
@@ -903,8 +914,12 @@ function primavera_insert_user($id,$morada){
   curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
   curl_setopt($ch, CURLOPT_POST, true);
   curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+  
   $json_response = curl_exec($ch);
-   error_log(json_decode($json_response, true));
+  $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+  error_log($json_response);
+  error_log($status);
   
   curl_close($ch);
 }

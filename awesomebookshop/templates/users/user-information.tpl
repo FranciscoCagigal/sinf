@@ -39,6 +39,12 @@
 								</div>
 							</div><!-- end form-group -->
 							<div class="form-group">
+								<label for="Username" class="col-sm-2 control-label">Username<span class="text-danger">*</span></label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control input-md" name="Username" value="{$USER_DATA.username}" placeholder="Nome">
+								</div>
+							</div><!-- end form-group -->
+							<div class="form-group">
 								<label for="genero" class="col-sm-2 control-label">Género<span class="text-danger">*</span></label>
 								<div class="checkbox-input mb-10">
 									{html_radios name='genero' options=$GENDER_ARRAY selected=$USER_DATA.genero class="row-gender-edit"}
