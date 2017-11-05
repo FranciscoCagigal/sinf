@@ -103,8 +103,8 @@
               </li>
               <li>
                 <div class="cart-footer">
-                  <a href="?page=cart" class="pull-right"><i class="fa fa-cart-plus mr-5"></i>Ver Carrinho Completo</a>
-                  <a href="?page=checkout" class="pull-right"><i class="fa fa-shopping-basket mr-5"></i>Checkout</a>
+                  <a href="{$BASE_URL}pages/users/cart.php" class="pull-right"><i class="fa fa-cart-plus mr-5"></i>Ver Carrinho Completo</a>
+                  <a href="{$BASE_URL}pages/users/checkout.php" class="pull-right"><i class="fa fa-shopping-basket mr-5"></i>Checkout</a>
                 </div>
               </li>
             </ul>

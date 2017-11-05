@@ -706,7 +706,7 @@ function updateUserInformation($username, $userdata, $newuserinformation) {
       $stmt->execute(array($nome, $genero, $datanasc, $telefone, $email, $nif, $username));
     }
 	
-	$id = getUserData($username)[0]['clienteid']
+	$id = getUserData($username)[0]['clienteid'];
 	
 	if ((!($userdata[0]['nome'] === $nome) || !($userdata[0]['email'] === $email) || !($userdata[0]['nif'] === $nif) || !($userdata[0]['rua'] === $morada))&& primavera_user_exists(id)!=''){
 		
