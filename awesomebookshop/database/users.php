@@ -924,6 +924,38 @@ function primavera_insert_user($id,$morada){
   curl_close($ch);
 }
 
+function primavera_insert_order($clienteid, $publicationscart){
+  global $PRIMAVERA_API;
+  
+  $data['Entidade'] = $clienteid;
+  $data['Serie'] = '2015';
+  
+  $i = 0;
+  
+  foreach($publicationscart as $publication){
+	$data['LinhasDoc'][$i] = array('CodArtigo' => $publication['publicacaoid'], 'Quantidade' => $publication['quantidade'], 'PrecoUnitario' => $publication['preco']);
+	$i++;
+  }
+		
+  $content = json_encode($data);
+  $url = $PRIMAVERA_API . 'encomendas';
+  
+  $ch = curl_init($url);
+  curl_setopt($ch, CURLOPT_HEADER, false);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+  
+  $json_response = curl_exec($ch);
+  $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+  error_log($json_response);
+  error_log($status);
+  
+  curl_close($ch);
+}
+
 function insertOrder($clienteid, $orderinformationf, $orderinformatione, $publicationscart){
   
   global $conn;
@@ -1132,6 +1164,8 @@ function insertOrder($clienteid, $orderinformationf, $orderinformatione, $public
 	 
 	  primavera_insert_user($clienteid,$moradae);
   }
+  
+  primavera_insert_order($clienteid, $publicationscart);
   
 }
 
