@@ -13,6 +13,12 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
+        public string Nome
+        {
+            get;
+            set;
+        }
+
         public string DescArtigo
         {
             get;
@@ -25,5 +31,34 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
+        public double Preco
+        {
+            get;
+            set;
+        }
+
+        public string Categoria
+        {
+            get;
+            set;
+        }
+
+        public string SubCategoria
+        {
+            get;
+            set;
+        }
+
+        public string Autor
+        {
+            get;
+            set;
+        }
+
+        public string Editora
+        {
+            get;
+            set;
+        }
     }
 }
