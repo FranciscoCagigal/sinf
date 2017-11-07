@@ -293,13 +293,12 @@ function checkIfOrderExists($order_id){
 	return ($stmt->fetch() !== false);
 }
 
-function primaveraGetClientOrders($info){
+function primaveraGetClientOrders(){
 	global $PRIMAVERA_API;
 		
 	$user_id = $_SESSION['userid'];
-	$filter = $_GET['filter'];
 		
-	$url = $PRIMAVERA_API . 'encomendas/' . $user_id . '?filter=' . $filter;
+	$url = $PRIMAVERA_API . 'encomendas/' . $user_id;
 		
 	$ch = curl_init();
 		
