@@ -682,4 +682,38 @@ function getNPromotionalPublications($number){
 	
 	return $stmt->fetchAll();
 }
+
+function primaveraGetProductInfo($id){
+	global $PRIMAVERA_API;
+				
+	$url = $PRIMAVERA_API . 'artigos/' . $id;
+		
+	$ch = curl_init();
+		
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		
+	$output = curl_exec($ch);
+		
+	curl_close($ch);
+		
+	return json_decode($output,true);
+}
+
+function primaveraGetAllProducts(){
+	global $PRIMAVERA_API;
+		
+	$url = $PRIMAVERA_API . 'artigos';
+		
+	$ch = curl_init();
+		
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		
+	$output = curl_exec($ch);
+		
+	curl_close($ch);
+		
+	return json_decode($output,true);
+}
 ?>
