@@ -928,7 +928,7 @@ function primavera_insert_order($clienteid, $publicationscart){
   global $PRIMAVERA_API;
   
   $data['Entidade'] = $clienteid;
-  $data['Serie'] = '2015';
+  $data['Serie'] = '2017';
   
   $i = 0;
   
