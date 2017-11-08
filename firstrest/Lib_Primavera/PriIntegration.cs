@@ -258,14 +258,14 @@ namespace FirstREST.Lib_Primavera
                 {
                     objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(codArtigo);
                     myArt.CodArtigo = objArtigo.get_Artigo();
-                    myArt.Nome = objArtigo.get_Descricao();
+                    myArt.Nome = objArtigo.get_DescricaoComercial();
                     myArt.DescArtigo = objArtigo.get_Observacoes();
                     myArt.STKAtual = objArtigo.get_StkActual();
                     myArt.Categoria = objArtigo.get_Familia();
                     myArt.SubCategoria = objArtigo.get_SubFamilia();
                     myArt.Autor = objArtigo.get_Caracteristicas();
                     myArt.Editora = objArtigo.get_Marca();
-
+                    
                     return myArt;
                 }
                 
@@ -450,7 +450,9 @@ namespace FirstREST.Lib_Primavera
              
             PreencheRelacaoVendas rl = new PreencheRelacaoVendas();
             List<Model.LinhaDocVenda> lstlindv = new List<Model.LinhaDocVenda>();
-            
+
+            GcpBEArtigoMoeda objArtigoMoeda = new GcpBEArtigoMoeda();
+
             try
             {
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
@@ -461,13 +463,17 @@ namespace FirstREST.Lib_Primavera
                     myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
+                    myEnc.set_CondPag("1");
                     // Linhas do documento para a lista de linhas
                     lstlindv = dv.LinhasDoc;
                     //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, rl);
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
+                    
                     foreach (Model.LinhaDocVenda lin in lstlindv)
                     {
-                        PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);
+
+                        objArtigoMoeda = PriEngine.Engine.Comercial.ArtigosPrecos.Edita(lin.CodArtigo, "EUR", "UN");
+                        PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", objArtigoMoeda.get_PVP1(), 0);
                     }
 
 
@@ -475,7 +481,7 @@ namespace FirstREST.Lib_Primavera
 
                     PriEngine.Engine.IniciaTransaccao();
                     //PriEngine.Engine.Comercial.Vendas.Edita Actualiza(myEnc, "Teste");
-                    PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "Teste");
+                    PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc);
                     PriEngine.Engine.TerminaTransaccao();
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
@@ -492,6 +498,7 @@ namespace FirstREST.Lib_Primavera
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
                 PriEngine.Engine.DesfazTransaccao();
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;

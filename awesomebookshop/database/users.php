@@ -238,7 +238,7 @@ function getUserPublicationsCart($clienteid) {
 
   global $conn;
   
-  $stmt = $conn->prepare("SELECT publicacao.publicacaoid, publicacao.titulo, publicacaocarrinho.quantidade, publicacao.preco, imagem.url, subcategoria.nome AS nome_subcategoria, categoria.nome AS nome_categoria
+  $stmt = $conn->prepare("SELECT publicacao.publicacaoid, publicacao.primaveraid, publicacao.titulo, publicacaocarrinho.quantidade, publicacao.preco, imagem.url, subcategoria.nome AS nome_subcategoria, categoria.nome AS nome_categoria
                           FROM cliente
                           JOIN carrinho
                           ON cliente.carrinhoid = carrinho.carrinhoid 
@@ -933,12 +933,12 @@ function primavera_insert_order($clienteid, $publicationscart){
   $i = 0;
   
   foreach($publicationscart as $publication){
-	$data['LinhasDoc'][$i] = array('CodArtigo' => $publication['publicacaoid'], 'Quantidade' => $publication['quantidade'], 'PrecoUnitario' => $publication['preco']);
+	$data['LinhasDoc'][$i] = array('CodArtigo' => $publication['primaveraid'], 'Quantidade' => $publication['quantidade'], 'PrecoUnitario' => $publication['preco']);
 	$i++;
   }
 		
   $content = json_encode($data);
-  $url = $PRIMAVERA_API . 'encomendas';
+  $url = $PRIMAVERA_API . 'DocVenda';
   
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_HEADER, false);
