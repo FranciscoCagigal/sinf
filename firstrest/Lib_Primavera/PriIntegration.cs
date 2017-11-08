@@ -263,8 +263,8 @@ namespace FirstREST.Lib_Primavera
                     myArt.STKAtual = objArtigo.get_StkActual();
                     myArt.Categoria = objArtigo.get_Familia();
                     myArt.SubCategoria = objArtigo.get_SubFamilia();
-
-                    camposUtilizador = objArtigo.get_CamposUtil();
+                    myArt.Autor = objArtigo.get_Caracteristicas();
+                    myArt.Editora = objArtigo.get_Marca();
 
                     return myArt;
                 }
