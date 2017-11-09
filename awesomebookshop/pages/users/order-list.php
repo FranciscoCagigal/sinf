@@ -26,7 +26,6 @@ $primaveraclientorders = primaveraGetClientOrders();
 
 foreach($primaveraclientorders as $primaveraorder){
 	foreach($orders as $key => $order){
-	error_log($primaveraorder['NumDoc'].' = '.$order['primaveraencomendaid']);
 		if($primaveraorder['NumDoc'] == $order['primaveraencomendaid']){
 			
 			switch($primaveraorder['Estado']){
@@ -41,8 +40,6 @@ foreach($primaveraclientorders as $primaveraorder){
 	}
 		
 }
-
-error_log(print_r($primaveraclientorders, true));
 
 $clientid = $_SESSION['userid'];
 
