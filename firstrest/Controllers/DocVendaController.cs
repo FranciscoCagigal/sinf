@@ -16,14 +16,14 @@ namespace FirstREST.Controllers
         //
         // GET: /Clientes/
 
-        public IEnumerable<Lib_Primavera.Model.DocVenda> Get()
+        public IEnumerable<Lib_Primavera.Model.DocVenda> Get(string id)
         {
-            return Lib_Primavera.PriIntegration.Encomendas_List();
+            return Lib_Primavera.PriIntegration.Encomendas_List(id);
         }
 
 
         // GET api/cliente/5    
-        public Lib_Primavera.Model.DocVenda Get(string id)
+        /*public Lib_Primavera.Model.DocVenda Get(string id)
         {
             Lib_Primavera.Model.DocVenda docvenda = Lib_Primavera.PriIntegration.Encomenda_Get(id);
             if (docvenda == null)
@@ -36,7 +36,7 @@ namespace FirstREST.Controllers
             {
                 return docvenda;
             }
-        }
+        }*/
 
 
         public HttpResponseMessage Post(Lib_Primavera.Model.DocVenda dv)

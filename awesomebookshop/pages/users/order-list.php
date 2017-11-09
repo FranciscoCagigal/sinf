@@ -22,6 +22,28 @@ $userdata = getUserData($username);
 
 $orders = getUserOrderList($userdata[0]['clienteid']);
 
+$primaveraclientorders = primaveraGetClientOrders();
+
+foreach($primaveraclientorders as $primaveraorder){
+	foreach($orders as $key => $order){
+	error_log($primaveraorder['NumDoc'].' = '.$order['primaveraencomendaid']);
+		if($primaveraorder['NumDoc'] == $order['primaveraencomendaid']){
+			
+			switch($primaveraorder['Estado']){
+				case 'P' : $orders[$key]['estado'] = 'Em processamento';
+				break;
+				case 'T' : $orders[$key]['estado'] = 'Processada';
+				break;
+				case 'E' : $orders[$key]['estado'] = 'Enviada';
+				break;
+			}
+		}
+	}
+		
+}
+
+error_log(print_r($primaveraclientorders, true));
+
 $clientid = $_SESSION['userid'];
 
 $publicationsusercart = getUserPublicationsCart($clientid);
@@ -42,7 +64,7 @@ foreach ($orders as $order) {
   $days[] = $dateparsed[2];
   $months[] = $dateparsed[1];
   $years[] = $dateparsed[0];
-
+  
   $orderid = $order['encomendaid'];
   $orderpublications = getOrderPublications($orderid);
   $orderspublications[] = count($orderpublications);

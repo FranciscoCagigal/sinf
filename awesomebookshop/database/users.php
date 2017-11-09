@@ -200,7 +200,7 @@ function getUserOrderList($clienteid) {
 
   global $conn;
 
-  $stmt = $conn->prepare("SELECT encomenda.*, informacaofaturacao.portes, informacaofaturacao.total, metodopagamento.tipo, morada.*, codigopostal.*, localidade.nome 
+  $stmt = $conn->prepare("SELECT encomenda.encomendaid, encomenda.primaveraencomendaid, encomenda.clienteid, encomenda.moradafaturacaoid, encomenda.moradaenvioid, encomenda.informacaofaturacaoid, encomenda.data, informacaofaturacao.portes, informacaofaturacao.total, metodopagamento.tipo, morada.*, codigopostal.*, localidade.nome 
                           FROM informacaofaturacao
                           RIGHT JOIN encomenda
                           ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid

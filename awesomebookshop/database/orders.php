@@ -298,7 +298,7 @@ function primaveraGetClientOrders(){
 		
 	$user_id = $_SESSION['userid'];
 		
-	$url = $PRIMAVERA_API . 'encomendas/' . $user_id;
+	$url = $PRIMAVERA_API . 'DocVenda/' . $user_id;
 		
 	$ch = curl_init();
 		
