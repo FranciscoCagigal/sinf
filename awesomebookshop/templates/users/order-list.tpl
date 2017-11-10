@@ -45,6 +45,7 @@
 										<th>Total</th>
 										<th>Método de Pagamento</th>
 										<th>Estado</th>
+										<th>Fatura</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -108,19 +109,24 @@
 											{$order.tipo}
 										</td>
 										<td>
-											{if $order.estado eq 'Enviada'} 
-											<span class="label label-success">
-												{elseif $order.estado eq 'Processada'} 
-												<span class="label label-info">
-													{elseif $order.estado eq 'Devolvida'} 
-													<span class="label label-default">
-														{elseif $order.estado eq 'Em processamento'}
-														<span class="label label-warning">
-															{elseif $order.estado eq 'Cancelada'}
-															<span class="label label-danger">
-																{/if}
-																{$order.estado}</span>
-															</td>
+											{if isset($order.estado)}
+												{if $order.estado eq 'Enviada'} 
+												<span class="label label-success">
+													{elseif $order.estado eq 'Processada'} 
+													<span class="label label-info">
+														{elseif $order.estado eq 'Devolvida'} 
+														<span class="label label-default">
+															{elseif $order.estado eq 'Em processamento'}
+															<span class="label label-warning">
+																{elseif $order.estado eq 'Cancelada'}
+																<span class="label label-danger">
+												{/if}
+												{$order.estado}</span>
+											{/if}
+										</td>
+										<td>
+											<a href="{$BASE_URL}actions/users/get_invoice.php?id={$order.primaveraencomendaid}" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>
+										</td>
 														</tr>
 														{assign var=val value=$val+1}
 														{/foreach}

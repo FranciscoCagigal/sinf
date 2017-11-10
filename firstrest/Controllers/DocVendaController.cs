@@ -7,7 +7,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FirstREST.Lib_Primavera.Model;
-
+using System.Net.Http.Headers;
+using System.IO;
 
 namespace FirstREST.Controllers
 {
@@ -20,7 +21,6 @@ namespace FirstREST.Controllers
         {
             return Lib_Primavera.PriIntegration.Encomendas_List(id);
         }
-
 
         // GET api/cliente/5    
         /*public Lib_Primavera.Model.DocVenda Get(string id)

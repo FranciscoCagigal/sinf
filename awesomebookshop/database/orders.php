@@ -192,6 +192,20 @@ function getOrdersByClientName($nome_cliente){
     return $stmt->fetchAll();
 }
 
+function getOrdersByClientId($id){
+	global $conn;
+	$stmt = $conn->prepare("SELECT encomenda.*, cliente.nome AS nomecliente, cliente.email AS email_cliente, informacaofaturacao.*
+                        	FROM encomenda
+                        	JOIN cliente
+                        	ON cliente.clienteid = encomenda.clienteid
+							JOIN informacaofaturacao
+							ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
+            				WHERE cliente.clienteid = ?
+            				ORDER BY encomenda.encomendaid");
+    $stmt->execute(array($id));
+    return $stmt->fetchAll();
+}
+
 function getOrdersByClientEmail($email_cliente){
 	global $conn;
 	$stmt = $conn->prepare("SELECT encomenda.*, cliente.nome AS nomecliente, cliente.email AS email_cliente, informacaofaturacao.*

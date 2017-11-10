@@ -876,7 +876,39 @@ function checkIfUserCommentedPublication($clienteid, $publicacaoid){
   return ($stmt->fetch() !== false);
 }
 
+function primavera_get_fatura($id, $userid){
+	
+	$dir = 'C:/xampp/htdocs/sinf/awesomebookshop/documentos/cliente_' . $userid. '/faturas/';
+	$filename = 'C:/xampp/htdocs/sinf/awesomebookshop/documentos/cliente_' . $userid. '/faturas/fa2017_' . $id . '.pdf';
+	
+	if(!is_dir($dir))
+		mkdir($dir , 0777, true);
+	
+	if (!file_exists($filename)) {
+		
+		global $PRIMAVERA_API;
+
+		$url = $PRIMAVERA_API . 'Ficheiros/'.$id;
+		$ch = curl_init($url);
+	  
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
+	  
+		$json_response = curl_exec($ch);
+		$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	  
+		curl_close($ch);
+		
+		file_put_contents('C:/xampp/htdocs/sinf/awesomebookshop/documentos/cliente_' . $userid . '/faturas/fa2017_' . $id . '.pdf', base64_decode(json_decode($json_response, true)));
+	
+	}
+	
+	return ;
+}
+
 function primavera_user_exists($id){
+  
   global $PRIMAVERA_API;
   
   $url = $PRIMAVERA_API . 'clientes/' + $id;
@@ -892,10 +924,10 @@ function primavera_user_exists($id){
   curl_close($ch);
   
   return json_decode($json_response, true);
-  
 }
 
 function primavera_insert_user($id,$morada){
+  
   global $PRIMAVERA_API;
   $user_data=getUserDataById($id);
   

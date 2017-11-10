@@ -7,6 +7,7 @@ using Interop.StdPlatBS900;
 using Interop.StdBE900;
 using Interop.GcpBE900;
 using ADODB;
+using System.Net;
 
 namespace FirstREST.Lib_Primavera
 {
@@ -618,5 +619,14 @@ namespace FirstREST.Lib_Primavera
         }
 
         #endregion DocsVenda
+
+        #region Ficheiros
+
+        public static void ImprimeDocumento(string tipoDoc, string serie, int numDoc, string destino)
+        {
+            PriEngine.Engine.Comercial.Vendas.ImprimeDocumento(tipoDoc, serie, numDoc, "000", 2, null, false, destino, 1);
+        }
+
+        #endregion Ficheiros
     }
 }

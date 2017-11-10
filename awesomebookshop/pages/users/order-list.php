@@ -24,6 +24,8 @@ $orders = getUserOrderList($userdata[0]['clienteid']);
 
 $primaveraclientorders = primaveraGetClientOrders();
 
+if(is_array($primaveraclientorders)){
+
 foreach($primaveraclientorders as $primaveraorder){
 	foreach($orders as $key => $order){
 		if($primaveraorder['NumDoc'] == $order['primaveraencomendaid']){
@@ -39,6 +41,7 @@ foreach($primaveraclientorders as $primaveraorder){
 		}
 	}
 		
+}
 }
 
 $clientid = $_SESSION['userid'];
@@ -90,5 +93,6 @@ $smarty->assign('months', $months);
 $smarty->assign('years', $years);
 $smarty->assign('orderspublications', $orderspublications);
 $smarty->assign('PUBLICATIONSUSERCART', $publicationsusercart);
+
 $smarty->display('users/order-list.tpl');
 ?>
