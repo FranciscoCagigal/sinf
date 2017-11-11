@@ -177,6 +177,9 @@ DROP TRIGGER IF EXISTS update_informacaoFaturacao_trigger ON Publicacaoencomenda
 DROP TRIGGER IF EXISTS update_subtotalcarrinho_trigger ON Publicacaocarrinho CASCADE
 ;
 
+DROP TRIGGER IF EXISTS update_publicacaostock_on_update_armazempublicacao_trigger ON ArmazemPublicacao CASCADE
+;
+
 /* Create Types */
 
 CREATE TYPE Genero AS ENUM
@@ -785,6 +788,19 @@ BEGIN
 	RETURN NULL;
 END $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION update_stock_on_publicacao()
+RETURNS TRIGGER
+AS $$
+BEGIN
+	UPDATE Publicacao
+	SET Stock=(SELECT Stock
+			   FROM ArmazemPublicacao
+			   WHERE ArmazemID = 3 AND PublicacaoID=NEW.PublicacaoID)
+	WHERE PublicacaoID = NEW.PublicacaoID;
+
+	RETURN NULL;
+END $$ LANGUAGE plpgsql;
+
 /* Create Trigger */
 
 CREATE TRIGGER insert_publicacao_trigger
@@ -847,6 +863,11 @@ AFTER DELETE ON Publicacaocarrinho
 FOR EACH ROW
 	EXECUTE PROCEDURE update_subtotalcarrinho_on_delete();
 
+CREATE TRIGGER update_publicacaostock_on_update_armazempublicacao_trigger
+AFTER UPDATE ON ArmazemPublicacao
+FOR EACH ROW
+	EXECUTE PROCEDURE update_stock_on_publicacao();
+	
 /* Create Foreign Key Constraints */
 
 ALTER TABLE Administrador ADD CONSTRAINT FK_Administrador_nacionalidade
