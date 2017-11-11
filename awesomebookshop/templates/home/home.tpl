@@ -158,6 +158,12 @@
               <small class="amount off">€{$publication.preco}</small>
               <span class="amount text-primary">€{$publication.precopromocional}</span>
             </div>
+			<!-- StockOnline -->
+			{if $publication.stock > 0} 
+			<li class="emstock"><i class="fa fa-check"></i> Em stock</li>
+			{elseif $publication.stock == 0}
+			<li class="semstock"><i class="fa fa-times"></i> 2 a 3 dias</li>
+			{/if}
             <a data-type="Adicionar ao carrinho" data-id="{$publication.publicacaoid}" data-url="{$BASE_URL}pages/publications/publication.php?id={$publication.publicacaoid}" data-img="{$BASE_URL}{$publication.url}" data-titulo="{$publication.titulo}" data-price="{$publication.precopromocional}"><i class="fa fa-cart-plus mr-5"></i>Adcionar ao carrinho</a>
           </div><!-- end caption -->
         </div><!-- end thumbnail -->
@@ -242,6 +248,12 @@
                   <span class="amount text-primary">€{$publication.preco}</span>
                   {/if}
                 </div>
+				<!-- StockOnline -->
+				{if $publication.stock > 0} 
+				<li class="emstock"><i class="fa fa-check"></i> Em stock</li>
+				{elseif $publication.stock == 0}
+				<li class="semstock"><i class="fa fa-times"></i> 2 a 3 dias</li>
+				{/if}
                 <a data-type="Adicionar ao carrinho" data-id="{$publication.publicacaoid}" data-url="{$BASE_URL}pages/publications/publication.php?id={$publication.publicacaoid}" data-img="{$BASE_URL}{$publication.url}" data-titulo="{$publication.titulo}" data-price="{$publication.precopromocional}"><i class="fa fa-cart-plus mr-5"></i>Adcionar ao carrinho</a>
               </div><!-- end caption -->
             </div><!-- end thumbnail -->
