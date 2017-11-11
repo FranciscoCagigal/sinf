@@ -47,6 +47,22 @@ $recomendations = getRandomRecomendationPublications($publicationdata[0]['nome_s
 
 $smarty->assign('recomendations', $recomendations);
 
+$stockarmazens = getArmazensPublicacaoStock($publicationid);
+
+foreach($stockarmazens as $stockarmazem){
+	
+	switch($stockarmazem['armazemid']){
+		case 1 : $smarty->assign('stockCoimbra', $stockarmazem['stock']);
+		break;
+		case 2 : $smarty->assign('stockLisboa', $stockarmazem['stock']);
+		break;
+		case 3 : $smarty->assign('stockOnline', $stockarmazem['stock']);
+		break;
+		case 4 : $smarty->assign('stockPorto', $stockarmazem['stock']);
+		break;
+	}
+}
+
 $eightnewpublications = getNewPublications(8);
 $smarty->assign('eightnewpublications', $eightnewpublications);
 

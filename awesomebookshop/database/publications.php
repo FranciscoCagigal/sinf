@@ -716,4 +716,16 @@ function primaveraGetAllProducts(){
 		
 	return json_decode($output,true);
 }
+
+function getArmazensPublicacaoStock($publicationid){
+	
+	global $conn;
+
+    $stmt = $conn->prepare("SELECT armazempublicacao.armazemid, armazempublicacao.stock
+                            FROM armazempublicacao
+                            WHERE armazempublicacao.publicacaoid = ?");
+    $stmt->execute(array($publicationid));
+	
+	return $stmt->fetchAll();
+}
 ?>
