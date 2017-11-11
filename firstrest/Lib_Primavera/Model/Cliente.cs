@@ -47,6 +47,23 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
+        public string Pais
+        {
+            get;
+            set;
+        }
+
+        public string CodigoPostal
+        {
+            get;
+            set;
+        }
+
+        public string Localidade
+        {
+            get;
+            set;
+        }
 
     }
 }

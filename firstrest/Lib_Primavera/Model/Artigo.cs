@@ -25,13 +25,42 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
-        public double STKAtual
+        public double StockCoimbra
+        {
+            get;
+            set;
+        }
+
+        public double StockLisboa
+        {
+            get;
+            set;
+        }
+
+        public double StockOnline
+        {
+            get;
+            set;
+        }
+        public double StockPorto
         {
             get;
             set;
         }
 
         public double Preco
+        {
+            get;
+            set;
+        }
+
+        public double PrecoPromocional
+        {
+            get;
+            set;
+        }
+
+        public string Iva
         {
             get;
             set;

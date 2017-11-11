@@ -15,12 +15,12 @@
 
 <!-- start section -->
 <section class="section white-backgorund">
-	<div class="container">
+	<div class="container" style="margin-left:10%;margin-right:0;width:100%;font-size:12px">
 		<div class="row">
 			
 			{include file='common/sidebar.tpl'}
-
-			<div class="col-sm-9">
+			
+			<div class="col-sm-10">
 				<div class="row">
 					<div class="col-sm-12 text-left">
 						<h2 class="title">Minhas encomendas</h2>
@@ -30,7 +30,7 @@
 				<hr class="spacer-5"><hr class="spacer-20 no-border">
 				
 				<div class="row">
-					<div class="col-sm-13">
+					<div class="col-sm-12">
 						<div class="table-responsive">
 							{if $orders}    
 							<table class="table table-striped">
@@ -46,6 +46,7 @@
 										<th>Método de Pagamento</th>
 										<th>Estado</th>
 										<th>Fatura</th>
+										<th>Recibo</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -123,6 +124,9 @@
 												{/if}
 												{$order.estado}</span>
 											{/if}
+										</td>
+										<td>
+											<a href="{$BASE_URL}actions/users/get_invoice.php?id={$order.primaveraencomendaid}" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>
 										</td>
 										<td>
 											<a href="{$BASE_URL}actions/users/get_invoice.php?id={$order.primaveraencomendaid}" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>

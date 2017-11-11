@@ -17,6 +17,7 @@ if (!$_POST['nomef'] || !$_POST['nomee'] || !$_POST['moradaf'] || !$_POST['morad
 }
 
 $clienteid = $_SESSION['userid'];
+$username = $_SESSION['username'];
 
 $publicationscart = getUserPublicationsCart($clienteid);
 
@@ -68,7 +69,7 @@ if((strip_tags($_POST['nomef']) == strip_tags($_POST['nomee'])) && (strip_tags($
 
 try {
 
-	insertOrder($clienteid, $orderinformationf, $orderinformatione, $publicationscart);
+	insertOrder($clienteid, $username, $orderinformationf, $orderinformatione, $publicationscart);
 
 } catch (PDOException $e) {
 

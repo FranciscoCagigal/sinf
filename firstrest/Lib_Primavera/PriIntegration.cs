@@ -115,7 +115,132 @@ namespace FirstREST.Lib_Primavera
                         objCli.set_Nome(cliente.NomeCliente);
                         objCli.set_NumContribuinte(cliente.NumContribuinte);
                         objCli.set_Morada(cliente.Morada);
-                        
+                        objCli.set_Localidade(cliente.Localidade);
+                        objCli.set_LocalidadeCodigoPostal(cliente.Localidade);
+                        objCli.set_CodigoPostal(cliente.CodigoPostal);
+
+                        switch (cliente.Localidade.ToLower())
+                    {
+                        case "ignorado":
+                            objCli.set_Distrito("00");
+                            break;
+                        case "aveiro":
+                            objCli.set_Distrito("01");
+                            break;
+                        case "beja":
+                            objCli.set_Distrito("02");
+                            break;
+                        case "braga":
+                            objCli.set_Distrito("03");
+                            break;
+                        case "bragança":
+                            objCli.set_Distrito("04");
+                            break;
+                        case "castelo branco":
+                            objCli.set_Distrito("05");
+                            break;
+                        case "coimbra":
+                            objCli.set_Distrito("06");
+                            break;
+                        case "évora":
+                            objCli.set_Distrito("07");
+                            break;
+                        case "faro":
+                            objCli.set_Distrito("08");
+                            break;
+                        case "gurada":
+                            objCli.set_Distrito("09");
+                            break;
+                        case "leiria":
+                            objCli.set_Distrito("10");
+                            break;
+                        case "lisboa":
+                            objCli.set_Distrito("11");
+                            break;
+                        case "portalegre":
+                            objCli.set_Distrito("12");
+                            break;
+                        case "porto":
+                            objCli.set_Distrito("13");
+                            break;
+                        case "santarém":
+                            objCli.set_Distrito("14");
+                            break;
+                        case "setubal":
+                            objCli.set_Distrito("15");
+                            break;
+                        case "viana do castelo":
+                            objCli.set_Distrito("16");
+                            break;
+                        case "vila real":
+                            objCli.set_Distrito("17");
+                            break;
+                        case "viseu":
+                            objCli.set_Distrito("18");
+                            break;
+                        case "ilha da madeira":
+                            objCli.set_Distrito("31");
+                            break;
+                    }
+
+                        switch (cliente.Pais.ToLower())
+                        {
+                            case "angola":
+                                objCli.set_Pais("AN");
+                                break;
+                            case "áustria":
+                                objCli.set_Pais("AT");
+                                break;
+                            case "bélgica":
+                                objCli.set_Pais("BE");
+                                break;
+                            case "brasil":
+                                objCli.set_Pais("BR");
+                                break;
+                            case "alemanha":
+                                objCli.set_Pais("DE");
+                                break;
+                            case "dinamarca":
+                                objCli.set_Pais("DK");
+                                break;
+                            case "espanha":
+                                objCli.set_Pais("ES");
+                                break;
+                            case "finlândia":
+                                objCli.set_Pais("FI");
+                                break;
+                            case "frança":
+                                objCli.set_Pais("FR");
+                                break;
+                            case "inglaterra":
+                                objCli.set_Pais("GB");
+                                break;
+                            case "grécia":
+                                objCli.set_Pais("GR");
+                                break;
+                            case "irlanda":
+                                objCli.set_Pais("IE");
+                                break;
+                            case "itália":
+                                objCli.set_Pais("IT");
+                                break;
+                            case "luxemburgo":
+                                objCli.set_Pais("LU");
+                                break;
+                            case "holanda":
+                                objCli.set_Pais("NL");
+                                break;
+                            case "portugal":
+                                objCli.set_Pais("PT");
+                                break;
+                            case "suécia":
+                                objCli.set_Pais("SE");
+                                break;
+                            case "estados unidos":
+                                objCli.set_Pais("US");
+                                break;
+                        }
+
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
 
                         erro.Erro = 0;
@@ -202,21 +327,150 @@ namespace FirstREST.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
-
+                    System.Diagnostics.Debug.WriteLine("Tou aqui");
                     myCli.set_Cliente(cli.CodCliente);
                     myCli.set_Nome(cli.NomeCliente);
                     myCli.set_NumContribuinte(cli.NumContribuinte);
                     myCli.set_Morada(cli.Morada);
+                    myCli.set_Localidade(cli.Localidade);
+                    myCli.set_LocalidadeCodigoPostal(cli.Localidade);
+                    myCli.set_CodigoPostal(cli.CodigoPostal);
                     myCli.set_Moeda("EUR");
+                    System.Diagnostics.Debug.WriteLine("Tou aqui2");
+
+                    switch (cli.Localidade.ToLower())
+                    {
+                        case "ignorado":
+                            myCli.set_Distrito("00");
+                            break;
+                        case "aveiro":
+                            myCli.set_Distrito("01");
+                            break;
+                        case "beja":
+                            myCli.set_Distrito("02");
+                            break;
+                        case "braga":
+                            myCli.set_Distrito("03");
+                            break;
+                        case "bragança":
+                            myCli.set_Distrito("04");
+                            break;
+                        case "castelo branco":
+                            myCli.set_Distrito("05");
+                            break;
+                        case "coimbra":
+                            myCli.set_Distrito("06");
+                            break;
+                        case "évora":
+                            myCli.set_Distrito("07");
+                            break;
+                        case "faro":
+                            myCli.set_Distrito("08");
+                            break;
+                        case "gurada":
+                            myCli.set_Distrito("09");
+                            break;
+                        case "leiria":
+                            myCli.set_Distrito("10");
+                            break;
+                        case "lisboa":
+                            myCli.set_Distrito("11");
+                            break;
+                        case "portalegre":
+                            myCli.set_Distrito("12");
+                            break;
+                        case "porto":
+                            myCli.set_Distrito("13");
+                            break;
+                        case "santarém":
+                            myCli.set_Distrito("14");
+                            break;
+                        case "setubal":
+                            myCli.set_Distrito("15");
+                            break;
+                        case "viana do castelo":
+                            myCli.set_Distrito("16");
+                            break;
+                        case "vila real":
+                            myCli.set_Distrito("17");
+                            break;
+                        case "viseu":
+                            myCli.set_Distrito("18");
+                            break;
+                        case "ilha da madeira":
+                            myCli.set_Distrito("31");
+                            break;
+                    }
+
+                    switch (cli.Pais.ToLower())
+                    {
+                        case "angola": 
+                            myCli.set_Pais("AN");
+                            break;
+                        case "áustria":
+                            myCli.set_Pais("AT");
+                            break;
+                        case "bélgica":
+                            myCli.set_Pais("BE");
+                            break;
+                        case "brasil":
+                            myCli.set_Pais("BR");
+                            break;
+                        case "alemanha":
+                            myCli.set_Pais("DE");
+                            break;
+                        case "dinamarca":
+                            myCli.set_Pais("DK");
+                            break;
+                        case "espanha":
+                            myCli.set_Pais("ES");
+                            break;
+                        case "finlândia":
+                            myCli.set_Pais("FI");
+                            break;
+                        case "frança":
+                            myCli.set_Pais("FR");
+                            break;
+                        case "inglaterra":
+                            myCli.set_Pais("GB");
+                            break;
+                        case "grécia":
+                            myCli.set_Pais("GR");
+                            break;
+                        case "irlanda":
+                            myCli.set_Pais("IE");
+                            break;
+                        case "itália":
+                            myCli.set_Pais("IT");
+                            break;
+                        case "luxemburgo":
+                            myCli.set_Pais("LU");
+                            break;
+                        case "holanda":
+                            myCli.set_Pais("NL");
+                            break;
+                        case "portugal":
+                            myCli.set_Pais("PT");
+                            break;
+                        case "suécia":
+                            myCli.set_Pais("SE");
+                            break;
+                        case "estados unidos":
+                            myCli.set_Pais("US");
+                            break;
+                    }
+                    System.Diagnostics.Debug.WriteLine("Tou aqui3");
 
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
-
+                    System.Diagnostics.Debug.WriteLine("Tou aqui4");
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("Tou a falhar no cliente");
+                    System.Diagnostics.Debug.WriteLine(erro);
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir empresa";
                     return erro;
@@ -225,6 +479,8 @@ namespace FirstREST.Lib_Primavera
 
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("excepçao");
+                System.Diagnostics.Debug.WriteLine(ex.Message);
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
 
@@ -261,7 +517,6 @@ namespace FirstREST.Lib_Primavera
                     myArt.CodArtigo = objArtigo.get_Artigo();
                     myArt.Nome = objArtigo.get_DescricaoComercial();
                     myArt.DescArtigo = objArtigo.get_Observacoes();
-                    myArt.STKAtual = objArtigo.get_StkActual();
                     myArt.Categoria = objArtigo.get_Familia();
                     myArt.SubCategoria = objArtigo.get_SubFamilia();
                     myArt.Autor = objArtigo.get_Caracteristicas();
@@ -299,6 +554,90 @@ namespace FirstREST.Lib_Primavera
   //                  art.STKAtual = objList.Valor("stkatual");
                   
                     
+                    listArts.Add(art);
+                    objList.Seguinte();
+                }
+
+                return listArts;
+
+            }
+            else
+            {
+                return null;
+
+            }
+
+        }
+
+        public static List<Model.Artigo> StocksModificados()
+        {
+
+            StdBELista objList;
+
+            Model.Artigo art = new Model.Artigo();
+
+            objList = PriEngine.Engine.Consulta("SELECT Artigo, Armazem, StkActual From ArtigoArmazem where Alterado = 1");
+
+            List<Model.Artigo> listArts = new List<Model.Artigo>();
+
+            while (!objList.NoFim())
+            {
+                art.CodArtigo = objList.Valor("Artigo");
+
+                string armazem = objList.Valor("Armazem");
+                switch (armazem)
+                {
+                    case "ACOIM":
+                        art.StockCoimbra = objList.Valor("StkActual");
+                        break;
+                    case "ALIS":
+                        art.StockLisboa = objList.Valor("StkActual");
+                        break;
+                    case "AONL":
+                        art.StockOnline = objList.Valor("StkActual");
+                        break;
+                    case "APOR":
+                        art.StockPorto = objList.Valor("StkActual");
+                        break;
+                }
+
+                listArts.Add(art);
+                objList.Seguinte();
+            }
+
+            return listArts;
+        }
+
+        public static List<Model.Artigo> ArtigosModificados()
+        {
+
+            StdBELista objList;
+
+            Model.Artigo art = new Model.Artigo();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Familias.Descricao as Familia, SubFamilias.Descricao as SubFamilia, Marcas.Descricao as Marca, Artigo.Iva, Artigo.Observacoes, ArtigoIdioma.DescricaoComercial, ArtigoIdioma.Caracteristicas, ArtigoMoeda.PVP1, ArtigoMoeda.PVP2 From Artigo JOIN ArtigoIdioma ON Artigo.Artigo = ArtigoIdioma.Artigo JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo JOIN Familias ON Artigo.Familia = Familias.Familia JOIN SubFamilias ON Artigo.SubFamilia = SubFamilias.SubFamilia AND SubFamilias.Familia = Artigo.Familia JOIN Marcas ON Marcas.Marca = Artigo.Marca where Artigo.Alterado = 1");
+
+                List<Model.Artigo> listArts = new List<Model.Artigo>();
+
+                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+
+                while (!objList.NoFim())
+                {
+                    art = new Model.Artigo();
+                    art.CodArtigo = objList.Valor("Artigo");
+                    art.Nome = objList.Valor("DescricaoComercial");
+                    art.Categoria = objList.Valor("Familia");
+                    art.SubCategoria = objList.Valor("SubFamilia");
+                    art.Editora = objList.Valor("Marca");
+                    art.Iva = objList.Valor("Iva");
+                    art.DescArtigo = objList.Valor("Observacoes");
+                    art.Autor = objList.Valor("Caracteristicas");
+                    art.Preco = objList.Valor("PVP1");
+                    art.PrecoPromocional = objList.Valor("PVP2");
+
                     listArts.Add(art);
                     objList.Seguinte();
                 }
@@ -616,6 +955,26 @@ namespace FirstREST.Lib_Primavera
                 return dv;
             }
             return null;
+        }
+
+        public static List<Model.DocVenda> DocumentsModificados()
+        {
+
+            StdBELista objList;
+
+            Model.DocVenda doc = new Model.DocVenda();
+
+            objList = PriEngine.Engine.Consulta("SELECT Artigo, Armazem, StkActual From ArtigoArmazem where Alterado = 1");
+
+            List<Model.DocVenda> listDocs = new List<Model.DocVenda>();
+
+         
+
+                listDocs.Add(doc);
+                objList.Seguinte();
+            
+
+            return listDocs;
         }
 
         #endregion DocsVenda

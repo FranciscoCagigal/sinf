@@ -147,8 +147,10 @@ function getUserDataById($id) {
 
   global $conn;
 
-  $stmt = $conn->prepare("SELECT * 
+  $stmt = $conn->prepare("SELECT cliente.*, pais.nome
                           FROM cliente
+						  JOIN pais
+						  ON cliente.paisid = pais.paisid
                           WHERE ClienteID = ?");
 
   $stmt->execute(array($id));
@@ -420,7 +422,7 @@ function getAllUsers(){
 function getUserAllData($username) {
   global $conn;
 
-  $stmt = $conn->prepare("SELECT cliente.*, morada.rua, codigopostal.*, pais.paisid, pais.nome AS nomePais, localidade.localidadeid, localidade.nome AS nomeLocalidade, cartaocreditocliente.numero as numerocartao, cartaocreditocliente.*
+  $stmt = $conn->prepare("SELECT cliente.*, cliente.clienteid as cliente_id, morada.rua, codigopostal.*, pais.paisid, pais.nome AS nomePais, localidade.localidadeid, localidade.nome AS nomeLocalidade, cartaocreditocliente.numero as numerocartao, cartaocreditocliente.*
     FROM cliente
     LEFT JOIN moradafaturacao
     ON moradafaturacao.clienteid = cliente.clienteid
@@ -500,12 +502,19 @@ function verifyPaisIfExists($nomePais){
 
 function primavera_update_user($user_data, $clienteID){
   global $PRIMAVERA_API;
+    
+  $data['CodCliente'] = $user_data[0]['cliente_id'];	
+  $data['NomeCliente'] = $user_data[0]['nome'];
+  $data['Morada'] = $user_data[0]['rua']; 
+  $data['NumContribuinte'] = $user_data[0]['nif'];
+  $data['Email'] = $user_data[0]['email'];
+  $data['Pais'] = $user_data[0]['nomepais'];
+  $data['Localidade'] = $user_data[0]['nomelocalidade'];
   
-  $data['CodCliente'] = 24;//$clienteID;	
-  $data['NomeCliente'] = "test";//$user_data['nome'];
-  $data['Morada'] = "hoje";//$user_data['morada']; 
-  $data['NumContribuinte'] = "12345";//$user_data['nif'];
-  $data['Email'] = "test@test.com";//$user_data['email'];
+  $cod1 = $user_data[0]['cod1'];
+  $cod2 = $user_data[0]['cod2'];
+  $codigoPostal = $cod1 . '-' . $cod2;
+  
   $content = json_encode($data);
   $url = $PRIMAVERA_API . 'clientes/' . $clienteID;  
   
@@ -926,16 +935,26 @@ function primavera_user_exists($id){
   return json_decode($json_response, true);
 }
 
-function primavera_insert_user($id,$morada){
+function primavera_insert_user($id,$username,$morada){
   
   global $PRIMAVERA_API;
-  $user_data=getUserDataById($id);
+  $user_data=getUserAllData($username);
   
-  $data['CodCliente'] = $id;	
-  $data['NomeCliente'] = $user_data['nome'];
-  $data['Morada'] = $morada; 
-  $data['NumContribuinte'] = $user_data['nif'];
-  $data['Email'] = $user_data['email'];
+  error_log(print_r($user_data,true));
+  
+  $data['CodCliente'] = $user_data[0]['cliente_id'];	
+  $data['NomeCliente'] = $user_data[0]['nome'];
+  $data['Morada'] = $user_data[0]['rua']; 
+  $data['NumContribuinte'] = $user_data[0]['nif'];
+  $data['Email'] = $user_data[0]['email'];
+  $data['Pais'] = $user_data[0]['nomepais'];
+  $data['Localidade'] = $user_data[0]['nomelocalidade'];
+  
+  $cod1 = $user_data[0]['cod1'];
+  $cod2 = $user_data[0]['cod2'];
+  $codigoPostal = $cod1 . '-' . $cod2;
+  
+  $data['CodigoPostal'] = $codigoPostal;
   $content = json_encode($data);
   $url = $PRIMAVERA_API . 'clientes/';
   
@@ -988,7 +1007,7 @@ function primavera_insert_order($clienteid, $publicationscart){
   curl_close($ch);
 }
 
-function insertOrder($clienteid, $orderinformationf, $orderinformatione, $publicationscart){
+function insertOrder($clienteid, $username, $orderinformationf, $orderinformatione, $publicationscart){
   
   global $conn;
 
@@ -1193,8 +1212,7 @@ function insertOrder($clienteid, $orderinformationf, $orderinformatione, $public
   }
   
   if(primavera_user_exists($clienteid)==''){
-	 
-	  primavera_insert_user($clienteid,$moradae);
+	  primavera_insert_user($clienteid,$username,$moradae);
   }
   
   primavera_insert_order($clienteid, $publicationscart);

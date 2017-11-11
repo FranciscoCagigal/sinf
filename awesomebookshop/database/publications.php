@@ -413,6 +413,15 @@ function getCategoryNameById($id){
     return $result['nome'];
 }
 
+function getCategoryIdByName($categoryname){
+	global $conn;
+    $stmt = $conn->prepare("SELECT categoriaid
+							FROM categoria
+                            WHERE nome = ?");
+    $stmt->execute(array($categoryname));
+    $result = $stmt->fetch();
+    return $result['categoriaid'];
+}
 
 function getSubcategoryNameById($categoriaID,$subcategoriaID){
 	global $conn;
@@ -424,6 +433,16 @@ function getSubcategoryNameById($categoriaID,$subcategoriaID){
     $stmt->execute(array($subcategoriaID, $categoriaID));
     $result = $stmt->fetch();
     return $result['nome'];
+}
+
+function getSubCategoryIdByName($subcategoryname, $categoriaid){
+	global $conn;
+    $stmt = $conn->prepare("SELECT subcategoriaid
+							FROM subcategoria
+                            WHERE nome = ? AND categoriaid = ? ");
+    $stmt->execute(array($subcategoryname, $categoriaid));
+    $result = $stmt->fetch();
+    return $result['subcategoriaid'];
 }
 
 function createPublication($titulo, $descricao, $autorId, $editoraId, $subCategoriaId, $datapublicacao, $stock, $peso, $paginas, $preco, $precopromocional, $codigobarras, $novidade, $isbn, $edicao, $periodicidade, $block3, $block4){
@@ -727,5 +746,90 @@ function getArmazensPublicacaoStock($publicationid){
     $stmt->execute(array($publicationid));
 	
 	return $stmt->fetchAll();
+}
+
+function primavera_checkIfPublicationExists($primaveraid){
+	global $conn;
+	$stmt = $conn->prepare("SELECT 1
+							FROM publicacao
+							WHERE primaveraid = ?");
+	$stmt->execute(array($primaveraid));
+
+	return ($stmt->fetch() !== false);
+}
+
+function primavera_update_artigo($artigo){
+	
+	global $conn;
+	
+	$stmt = $conn->prepare("SELECT publicacaoid
+							FROM publicacao
+							WHERE primaveraid = ?");
+	$stmt->execute(array($artigo['CodArtigo']));
+	
+	$publicacaoid = $stmt->fetch()['publicacaoid'];
+	
+	$stmt = $conn->prepare("SELECT categoriaid
+							FROM categoria
+							WHERE nome = ?");
+	$stmt->execute(array($artigo['Categoria']));
+	
+	$categoriaid = $stmt->fetch()['categoriaid'];
+	
+	$stmt = $conn->prepare("SELECT subcategoriaid
+							FROM subcategoria
+							WHERE nome = ? AND categoriaid = ?");
+	$stmt->execute(array($artigo['SubCategoria'], $categoriaid));
+	
+	$subcategoriaid = $stmt->fetch()['subcategoriaid'];
+	
+	$stmt = $conn->prepare("SELECT editoraid
+							FROM editora
+							WHERE nome = ?");
+	$stmt->execute(array($artigo['Editora']));
+	
+	$editoraid = $stmt->fetch()['editoraid'];
+	
+	$stmt = $conn->prepare("SELECT autorid
+							FROM autor
+							WHERE nome = ?");
+	$stmt->execute(array($artigo['Autor']));
+	
+	$autorid = $stmt->fetch()['autorid'];
+	
+	$stmt = $conn->prepare("UPDATE autorpublicacao
+	                     	SET autorid = ?
+	                    	WHERE publicacaoid = ?");
+	$stmt->execute(array($autorid, $publicacaoid));
+	
+	$stmt = $conn->prepare("UPDATE publicacao
+	                     	SET titulo = ?, descricao = ?, preco = ?, precopromocional = ?, subcategoriaid = ?, editoraid = ?
+	                    	WHERE primaveraid = ?");
+	$stmt->execute(array($artigo['Nome'], $artigo['DescArtigo'], $artigo['Preco'], $artigo['PrecoPromocional'], $subcategoriaid, $editoraid, $artigo['CodArtigo']));
+}
+
+function getAutorIDByName($autorname){
+	
+	global $conn;
+	
+	$stmt = $conn->prepare("SELECT autorid
+							FROM autor
+							WHERE nome = ?");
+	$stmt->execute(array($autorname));
+	
+	return $stmt->fetch();
+}
+
+function createAutorOnlyWithName($autorname){
+	
+	global $conn;
+	
+	$stmt = $conn->prepare("INSERT INTO autor(nome)
+							VALUES (?) ");
+	$stmt->execute(array($autorname));
+	
+    $autorID = $conn->lastInsertId('autor_autorid_seq');
+	
+	return $autorID;
 }
 ?>
