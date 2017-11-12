@@ -832,4 +832,105 @@ function createAutorOnlyWithName($autorname){
 	
 	return $autorID;
 }
+
+function checkIfCategoryExists($primaveracategoryid){
+	global $conn;
+	
+	$stmt = $conn->prepare("SELECT categoriaid
+							FROM categoria
+							WHERE primaveracategoriaid = ?");
+	$stmt->execute(array($primaveracategoryid));
+	
+	return $stmt->fetch()['categoriaid'];
+}
+
+function update_categoria($categoriaid, $categorianome){
+	global $conn;
+	$stmt = $conn->prepare("UPDATE categoria
+	                     	SET nome = ?
+	                    	WHERE categoriaid = ?");
+	$stmt->execute(array($categorianome, $categoriaid));
+}
+
+function create_categoria($primaveracategoriaid, $categorianome){
+	global $conn;
+	$stmt = $conn->prepare("INSERT INTO categoria (nome, primaveracategoriaid)
+	                    	VALUES (?,?)");
+	$stmt->execute(array($categorianome, $primaveracategoriaid));
+}
+
+function checkIfSubCategoryExists($primaveracategoryid, $primaverasubcategoryid){
+	global $conn;
+	
+	$stmt = $conn->prepare("SELECT subcategoriaid
+							FROM subcategoria
+							WHERE primaveracategoriaid = ? AND primaverasubcategoriaid = ?");
+	$stmt->execute(array($primaveracategoryid, $primaverasubcategoryid));
+	
+	return $stmt->fetch()['subcategoriaid'];
+}
+
+function update_subcategoria($subcategoriaid, $subcategorianome){
+	global $conn;
+	$stmt = $conn->prepare("UPDATE subcategoria
+	                     	SET nome = ?
+	                    	WHERE subcategoriaid = ?");
+	$stmt->execute(array($subcategorianome, $subcategoriaid));
+}
+
+function create_subcategoria($primaveracategoriaid, $categoriaid, $primaverasubcategoriaid, $subcategorianome){
+	global $conn;
+	$stmt = $conn->prepare("INSERT INTO subcategoria (primaverasubcategoriaid, categoriaid, primaveracategoriaid, nome)
+	                    	VALUES (?,?, ?, ?)");
+	$stmt->execute(array($primaverasubcategoriaid, $categoriaid, $primaveracategoriaid, $subcategorianome));
+}
+
+function checkIfBrandExists($primaveraeditoraid){
+	global $conn;
+	
+	$stmt = $conn->prepare("SELECT editoraid
+							FROM editora
+							WHERE primaveraeditoraid = ?");
+	$stmt->execute(array($primaveraeditoraid));
+	
+	return $stmt->fetch()['editoraid'];
+}
+
+function update_editora($editoraid, $editoranome){
+	global $conn;
+	$stmt = $conn->prepare("UPDATE editora
+	                     	SET nome = ?
+	                    	WHERE editoraid = ?");
+	$stmt->execute(array($editoraid));
+}
+
+function create_editora($primaveraeditoraid, $editoranome){
+	global $conn;
+	$stmt = $conn->prepare("INSERT INTO editora (primaveraeditoraid, nome)
+	                    	VALUES (?,?)");
+	$stmt->execute(array($primaveraeditoraid, $editoranome));
+}
+
+function update_stocks_artigo($primaveraartigoid, $primaveraarmazemid, $stock){
+	global $conn;
+	
+	$stmt = $conn->prepare("SELECT armazemid
+							FROM armazem
+							WHERE primaveraarmazemid = ?");
+	$stmt->execute(array($primaveraarmazemid));
+	
+	$armazemid =  $stmt->fetch()['armazemid'];
+	
+	$stmt = $conn->prepare("SELECT publicacaoid
+							FROM publicacao
+							WHERE primaveraid = ?");
+	$stmt->execute(array($primaveraartigoid));
+	
+	$publicacaoid =  $stmt->fetch()['publicacaoid'];
+	
+	$stmt = $conn->prepare("UPDATE armazempublicacao
+	                     	SET stock = ?
+	                    	WHERE armazemid = ? AND publicacaoid = ?");
+	$stmt->execute(array($stock, $armazemid, $publicacaoid));
+}
 ?>

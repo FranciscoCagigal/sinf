@@ -308,6 +308,7 @@ CREATE TABLE Cartaocreditocliente
 CREATE TABLE Categoria
 (
 	CategoriaID SERIAL,
+	PrimaveraCategoriaID varchar(10) NOT NULL,
 	Nome varchar(50) NOT NULL,
 	CONSTRAINT PK_Categoria PRIMARY KEY (CategoriaID),
 	CONSTRAINT categoria_nome_key UNIQUE (Nome)
@@ -367,6 +368,7 @@ CREATE TABLE Comentario
 CREATE TABLE Editora
 (
 	EditoraID SERIAL,
+	PrimaveraEditoraID varchar(10) NOT NULL,
 	Nome varchar(50) NOT NULL,
 	CONSTRAINT PK_Editora PRIMARY KEY (EditoraID)
 )
@@ -590,7 +592,9 @@ CREATE TABLE PublicacaoWishList
 CREATE TABLE Subcategoria
 (
 	SubcategoriaID SERIAL,
+	PrimaveraSubCategoriaID varchar(10) NOT NULL,
 	CategoriaID integer NOT NULL,
+	PrimaveraCategoriaID varchar(10) NOT NULL,
 	Nome varchar(50) NOT NULL,
 	CONSTRAINT PK_Subcategoria PRIMARY KEY (SubcategoriaID)
 )
@@ -1040,115 +1044,115 @@ ALTER TABLE Wishlist ADD CONSTRAINT FK_WishList_possui
 /* Inserts */
 
 /* ------------------------------------------------------ R10 Categoria ------------------------------------------------------ */
-INSERT INTO Categoria (nome) VALUES ('Livros');
-INSERT INTO Categoria (nome) VALUES ('Livros Escolares');
-INSERT INTO Categoria (nome) VALUES ('Apoio Escolar');
-INSERT INTO Categoria (nome) VALUES ('Revistas');
-INSERT INTO Categoria (nome) VALUES ('Dicionarios e Enciclopedias');
-INSERT INTO Categoria (nome) VALUES ('Guias Turisticos e Mapas');
+INSERT INTO Categoria (PrimaveraCategoriaID,nome) VALUES ('LIVROS','Livros');
+INSERT INTO Categoria (PrimaveraCategoriaID,nome) VALUES ('LIVROS ESC','Livros Escolares');
+INSERT INTO Categoria (PrimaveraCategoriaID,nome) VALUES ('APOIO ESC','Apoio Escolar');
+INSERT INTO Categoria (PrimaveraCategoriaID,nome) VALUES ('REVISTAS','Revistas');
+INSERT INTO Categoria (PrimaveraCategoriaID,nome) VALUES ('DICENC','Dicionarios e Enciclopedias');
+INSERT INTO Categoria (PrimaveraCategoriaID,nome) VALUES ('GTM','Guias Turisticos e Mapas');
 
 /* ------------------------------------------------------ R9 SubCategoria ------------------------------------------------------ */
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Arte');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Banda Desenhada');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Ciencias Exatas e Naturais');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Ciencias Sociais e Humanas');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Desporto e Lazer');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Direito');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Engenharia');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Ensino e Educacao');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Gastronomia e Vinhos');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Gestao');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Historia');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Informatica');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Literatura');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Medicina');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Politica');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Religião e Moral');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (1,'Saude e Bem Estar');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (2,'1.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (2,'2.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (2,'3.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (2,'4.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (2,'5.º e 6.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (2,'7.º, 8.º e 9.º ciclo');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (2,'Ensino Secundario');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (3,'1.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (3,'2.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (3,'3.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (3,'4.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (3,'5.º e 6.º ano');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (3,'7.º, 8.º e 9.º ciclo');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (3,'Ensino Secundario');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Agricultura');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Arquitetura');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Arte');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Automobilismo');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Aviação');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Científicas');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Cinema');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Decoracao');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Desporto');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Direito');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Economia');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Fotografia');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Historia');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Humor');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Infantis');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Informatica');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Moda');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Musica');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Quebra-cabecas');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Turismo');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (5,'Portugues');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (5,'Ingles');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (5,'Frances');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (5,'Alemao');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (5,'Espanhol');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (6,'Africa');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (6,'America');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (6,'Asia');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (6,'Europa');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Social');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Culinaria');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Lazer');
-INSERT INTO SubCategoria (categoriaID,nome) VALUES (4,'Regionais');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ARTE',1,'LIVROS','Arte');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('BD',1,'LIVROS','Banda Desenhada');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('CEN',1,'LIVROS','Ciencias Exatas e Naturais');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('CSH',1,'LIVROS','Ciencias Sociais e Humanas');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('DL',1,'LIVROS','Desporto e Lazer');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('DIREITO',1,'LIVROS','Direito');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ENGENHARIA',1,'LIVROS','Engenharia');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('EE',1,'LIVROS','Ensino e Educacao');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('GV',1,'LIVROS','Gastronomia e Vinhos');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('GESTAO',1,'LIVROS','Gestao');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('HISTORIA',1,'LIVROS','Historia');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('INF',1,'LIVROS','Informatica');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('LITERATURA',1,'LIVROS','Literatura');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('MEDICINA',1,'LIVROS','Medicina');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('POLITICA',1,'LIVROS','Politica');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('RM',1,'LIVROS','Religião e Moral');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('SBE',1,'LIVROS','Saude e Bem Estar');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('1.º ANO',2,'LIVROS ESC','1.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('2.º ANO',2,'LIVROS ESC','2.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('3.º ANO',2,'LIVROS ESC','3.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('4.º ANO',2,'LIVROS ESC','4.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('5/6.º ANO',2,'LIVROS ESC','5.º e 6.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('7º/8º/9º',2,'LIVROS ESC','7.º, 8.º e 9.º ciclo');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ENS SEC',2,'LIVROS ESC','Ensino Secundario');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('1.º ANO',3,'APOIO ESC','1.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('2.º ANO',3,'APOIO ESC','2.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('3.º ANO',3,'APOIO ESC','3.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('4.º ANO',3,'APOIO ESC','4.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('5/6.º ANO',3,'APOIO ESC','5.º e 6.º ano');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('7º/8º/9º',3,'APOIO ESC','7.º, 8.º e 9.º ciclo');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ENS SEC',3,'APOIO ESC','Ensino Secundario');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('AGRICUL',4,'REVISTAS','Agricultura');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ARQ',4,'REVISTAS','Arquitetura');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ARTE',4,'REVISTAS','Arte');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('AUT',4,'REVISTAS','Automobilismo');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('AVIACAO',4,'REVISTAS','Aviação');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('CIENT',4,'REVISTAS','Científicas');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('CINEMA',4,'REVISTAS','Cinema');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('DECOR',4,'REVISTAS','Decoracao');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('DESPORTO',4,'REVISTAS','Desporto');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('DIREITO',4,'REVISTAS','Direito');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ECONOMIA',4,'REVISTAS','Economia');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('FOTOGRAFIA',4,'REVISTAS','Fotografia');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('HISTORIA',4,'REVISTAS','Historia');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('HUMOR',4,'REVISTAS','Humor');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('INFANTIS',4,'REVISTAS','Infantis');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('INF',4,'REVISTAS','Informatica');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('MODA',4,'REVISTAS','Moda');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('MUSICA',4,'REVISTAS','Musica');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('QC',4,'REVISTAS','Quebra-cabecas');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('TURISMO',4,'REVISTAS','Turismo');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('PORTUGUES',5,'DICENC','Portugues');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('INGLES',5,'DICENC','Ingles');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('FRANCES',5,'DICENC','Frances');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ALEMAO',5,'DICENC','Alemao');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ESPANHOL',5,'DICENC','Espanhol');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('AFRICA',6,'GTM','Africa');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('AMERICA',6,'GTM','America');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('ASIA',6,'GTM','Asia');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('EUROPA',6,'GTM','Europa');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('SOCIAL',4,'REVISTAS','Social');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('CULINARIA',4,'REVISTAS','Culinaria');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('LAZER',4,'REVISTAS','Lazer');
+INSERT INTO SubCategoria (PrimaveraSubCategoriaID,categoriaID,PrimaveraCategoriaID,nome) VALUES ('REGIONAIS',4,'REVISTAS','Regionais');
 
 /* ------------------------------------------------------ R8 Editora ------------------------------------------------------ */
-INSERT INTO Editora (nome) VALUES ('Coral Books');
-INSERT INTO Editora (nome) VALUES ('Editorial Gustavo Gili');
-INSERT INTO Editora (nome) VALUES ('G. Floy Studio');
-INSERT INTO Editora (nome) VALUES ('Gradiva');
-INSERT INTO Editora (nome) VALUES ('Marcador');
-INSERT INTO Editora (nome) VALUES ('Pergaminho');
-INSERT INTO Editora (nome) VALUES ('A Esfera dos Livros');
-INSERT INTO Editora (nome) VALUES ('Jacarandá Editora');
-INSERT INTO Editora (nome) VALUES ('Edições Afrontamento');
-INSERT INTO Editora (nome) VALUES ('Porto Editora');
-INSERT INTO Editora (nome) VALUES ('FCA');
-INSERT INTO Editora (nome) VALUES ('Publindústria');
-INSERT INTO Editora (nome) VALUES ('Vogais');
-INSERT INTO Editora (nome) VALUES ('EuroImpala');
-INSERT INTO Editora (nome) VALUES ('Editorial Presença');
-INSERT INTO Editora (nome) VALUES ('Top Books');
-INSERT INTO Editora (nome) VALUES ('Objectiva');
-INSERT INTO Editora (nome) VALUES ('Editora Guerra & Paz');
-INSERT INTO Editora (nome) VALUES ('Sextante Editora (chancela)');
-INSERT INTO Editora (nome) VALUES ('Lidel');
-INSERT INTO Editora (nome) VALUES ('Mc Graw-Hill');
-INSERT INTO Editora (nome) VALUES ('Nascente');
-INSERT INTO Editora (nome) VALUES ('Lucerna');
-INSERT INTO Editora (nome) VALUES ('Centro de Cura');
-INSERT INTO Editora (nome) VALUES ('Prime Books');
-INSERT INTO Editora (nome) VALUES ('Edições Gailivro');
-INSERT INTO Editora (nome) VALUES ('Livros Horizonte');
-INSERT INTO Editora (nome) VALUES ('Editorial Caminho');
-INSERT INTO Editora (nome) VALUES ('Editorial Minerva');
-INSERT INTO Editora (nome) VALUES ('Ideias de Ler');
-INSERT INTO Editora (nome) VALUES ('Areal Editores');
-INSERT INTO Editora (nome) VALUES ('Cofina');
-INSERT INTO Editora (nome) VALUES ('Impresa');
-INSERT INTO Editora (nome) VALUES ('Lonely Planet Global Limited');
-INSERT INTO Editora (nome) VALUES ('Oficina do Livro');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('CORAL','Coral Books');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('EGGILI','Editorial Gustavo Gili');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('GFSTUDIO','G. Floy Studio');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('GRADIVA','Gradiva');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('MARCADOR','Marcador');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('PERGAMINHO','Pergaminho');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('ESFLIVROS','A Esfera dos Livros');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('JACARANDA','Jacarandá Editora');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('EDAFRONTA','Edições Afrontamento');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('PORTOEDI','Porto Editora');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('FCA','FCA');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('PUBLIIND','Publindústria');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('VOGAIS','Vogais');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('EUROIMPALA','EuroImpala');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('EDPRESENCA','Editorial Presença');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('TOPBOOKS','Top Books');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('OBJECTIVA','Objectiva');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('GUERRAEPAZ','Editora Guerra & Paz');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('SEXTANTE','Sextante Editora (chancela)');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('LIDEL','Lidel');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('MCGRAWHILL','Mc Graw-Hill');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('NASCENTE','Nascente');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('LUCERNA','Lucerna');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('CENTROCURA','Centro de Cura');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('PRIMEBOOKS','Prime Books');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('GAILIVRO','Edições Gailivro');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('HORIZONTE','Livros Horizonte');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('EDCAMINHO','Editorial Caminho');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('EDMINERVA','Editorial Minerva');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('IDEIASLER','Ideias de Ler');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('AREALEDIT','Areal Editores');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('COFINA','Cofina');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('IMPRESA','Impresa');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('LONELYPGL','Lonely Planet Global Limited');
+INSERT INTO Editora (PrimaveraEditoraID,nome) VALUES ('OFICINALVR','Oficina do Livro');
 
 /* ------------------------------------------------------ R1 Publicação ------------------------------------------------------ */
 INSERT INTO Publicacao (PrimaveraID, editoraID,subcategoriaID,titulo,dataPublicacao,codigoBarras,descricao,paginas,peso,preco,precoPromocional,novidade,stock,edicao,periodicidade,ISBN) VALUES ('ABS0001',1,1,'Arte Portuguesa no Século XX','01/01/2017','3230014481474','Bernardo Pinto de Almeida, aquele que muitos consideram o mais importante crítico de arte da actualidade, oferece-nos aqui uma larga visão panorâmica e solidamente fundamentada da recepção nacional aos movimentos artísticos do século XX e dos seus protagonistas. De agora em diante esta obra, ilustrada por centenas de imagens, muitas delas quase inéditas, será «a» História da Arte Portuguesa do Século XX, uma referência incontornável para artistas, coleccionadores, estudiosos e amantes de arte.',496,0.496,59.99,53.91,TRUE,3,'primeira',NULL,'9789898851086');

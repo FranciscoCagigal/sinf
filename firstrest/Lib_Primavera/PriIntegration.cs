@@ -582,30 +582,35 @@ namespace FirstREST.Lib_Primavera
 
             while (!objList.NoFim())
             {
+                art = new Model.Artigo();
                 art.CodArtigo = objList.Valor("Artigo");
-
-                string armazem = objList.Valor("Armazem");
-                switch (armazem)
-                {
-                    case "ACOIM":
-                        art.StockCoimbra = objList.Valor("StkActual");
-                        break;
-                    case "ALIS":
-                        art.StockLisboa = objList.Valor("StkActual");
-                        break;
-                    case "AONL":
-                        art.StockOnline = objList.Valor("StkActual");
-                        break;
-                    case "APOR":
-                        art.StockPorto = objList.Valor("StkActual");
-                        break;
-                }
-
+                art.Armazem = objList.Valor("Armazem");
+                art.Stock = objList.Valor("StkActual");
+                
                 listArts.Add(art);
                 objList.Seguinte();
             }
 
+            
+
             return listArts;
+        }
+
+        public static void StocksReset()
+        {
+
+            StdBELista objList;
+
+            Model.Artigo art = new Model.Artigo();
+
+            objList = PriEngine.Engine.Consulta("SELECT Artigo, Armazem From ArtigoArmazem where Alterado = 1");
+
+            while (!objList.NoFim())
+            {
+                SetStockAlterado(objList.Valor("Armazem"), objList.Valor("Artigo"));
+             
+                objList.Seguinte();
+            }
         }
 
         public static List<Model.Artigo> ArtigosModificados()
@@ -637,7 +642,6 @@ namespace FirstREST.Lib_Primavera
                     art.Autor = objList.Valor("Caracteristicas");
                     art.Preco = objList.Valor("PVP1");
                     art.PrecoPromocional = objList.Valor("PVP2");
-
                     listArts.Add(art);
                     objList.Seguinte();
                 }
@@ -651,6 +655,289 @@ namespace FirstREST.Lib_Primavera
 
             }
 
+        }
+
+        public static void ArtigosReset()
+        {
+
+            StdBELista objList;
+
+            Model.Artigo art = new Model.Artigo();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Familias.Descricao as Familia, SubFamilias.Descricao as SubFamilia, Marcas.Descricao as Marca, Artigo.Iva, Artigo.Observacoes, ArtigoIdioma.DescricaoComercial, ArtigoIdioma.Caracteristicas, ArtigoMoeda.PVP1, ArtigoMoeda.PVP2 From Artigo JOIN ArtigoIdioma ON Artigo.Artigo = ArtigoIdioma.Artigo JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo JOIN Familias ON Artigo.Familia = Familias.Familia JOIN SubFamilias ON Artigo.SubFamilia = SubFamilias.SubFamilia AND SubFamilias.Familia = Artigo.Familia JOIN Marcas ON Marcas.Marca = Artigo.Marca where Artigo.Alterado = 1");
+
+                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+
+                System.Diagnostics.Debug.WriteLine("entrei no artigo");
+                while (!objList.NoFim())
+                { 
+                    SetArtigosAlterado(objList.Valor("Artigo"));
+                    objList.Seguinte();
+                }
+
+            }
+            System.Diagnostics.Debug.WriteLine("sai do artigo");
+
+        }
+
+        public static List<Model.Familia> CategoriasModificadas()
+        {
+
+            StdBELista objList;
+
+            Model.Familia fam = new Model.Familia();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT Familia, Descricao From Familias where Alterado = 1");
+
+                List<Model.Familia> listFams = new List<Model.Familia>();
+
+                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+
+                while (!objList.NoFim())
+                {
+                    fam = new Model.Familia();
+                    fam.CodFamilia = objList.Valor("Familia");
+                    fam.Nome = objList.Valor("Descricao");
+                    listFams.Add(fam);
+                    objList.Seguinte();
+                }
+
+                return listFams;
+
+            }
+            else
+            {
+                return null;
+
+            }
+
+        }
+
+        public static void CategoriasReset()
+        {
+
+            StdBELista objList;
+
+            Model.Familia fam = new Model.Familia();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT Familia, Descricao From Familias where Alterado = 1");
+
+                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+                System.Diagnostics.Debug.WriteLine("entrei no categoria");
+                while (!objList.NoFim())
+                {
+                    SetCategoriasAlterado(objList.Valor("Familia"));
+                    objList.Seguinte();
+                }
+                System.Diagnostics.Debug.WriteLine("sai no categoria");
+            }
+
+        }
+
+        public static List<Model.SubFamilia> SubCategoriasModificadas()
+        {
+
+            StdBELista objList;
+
+            Model.SubFamilia subFam = new Model.SubFamilia();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT Familia, SubFamilia, Descricao From SubFamilias where Alterado = 1");
+
+                List<Model.SubFamilia> listSubFams = new List<Model.SubFamilia>();
+
+                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+
+                while (!objList.NoFim())
+                {
+                    subFam = new Model.SubFamilia();
+                    subFam.CodFamilia = objList.Valor("Familia");
+                    subFam.CodSubFamilia = objList.Valor("SubFamilia");
+                    subFam.Nome = objList.Valor("Descricao");
+
+                    listSubFams.Add(subFam);
+                    objList.Seguinte();
+                }
+
+                return listSubFams;
+
+            }
+            else
+            {
+                return null;
+
+            }
+
+        }
+
+        public static void SubCategoriasReset()
+        {
+
+            StdBELista objList;
+
+            Model.SubFamilia subFam = new Model.SubFamilia();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT Familia, SubFamilia, Descricao From SubFamilias where Alterado = 1");
+
+                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+
+                while (!objList.NoFim())
+                {
+                    //todo
+                    objList.Seguinte();
+                }
+
+            }
+
+        }
+
+        public static List<Model.Marca> EditorasModificadas()
+        {
+
+            StdBELista objList;
+
+            Model.Marca editora = new Model.Marca();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT Marca, Descricao From Marcas where Alterado = 1");
+
+                List<Model.Marca> listMarcas = new List<Model.Marca>();
+
+                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+
+                while (!objList.NoFim())
+                {
+                    editora = new Model.Marca();
+                    editora.CodMarca = objList.Valor("Marca");
+                    editora.Nome = objList.Valor("Descricao");
+
+                    listMarcas.Add(editora);
+                    objList.Seguinte();
+                }
+
+                return listMarcas;
+
+            }
+            else
+            {
+                return null;
+
+            }
+
+        }
+
+        public static void EditorasReset()
+        {
+
+            StdBELista objList;
+
+            Model.Marca editora = new Model.Marca();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT Marca, Descricao From Marcas where Alterado = 1");
+
+                List<Model.Marca> listMarcas = new List<Model.Marca>();
+
+                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+                System.Diagnostics.Debug.WriteLine("entrei no editora");
+                while (!objList.NoFim())
+                {
+                    SetEditorasAlterado(objList.Valor("Marca"));
+                    objList.Seguinte();
+                }
+                System.Diagnostics.Debug.WriteLine("sai no editora");
+
+            }
+
+        }
+
+        public static void SetCategoriasAlterado(string CodFamilia)
+        {
+  
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                /*char alterado = '0';
+                //StdBEExecSql strSql = new StdBEExecSql("UPDATE Familias SET Alterado = 0");
+                params object[] vntParams;
+                string strsql = PriEngine.Platform.Sql.FormatSQL("EXEC Set_Categoria_Alterado @Alterado = 0",lol);
+                StdBEExecSql strSql = new StdBEExecSql(strsql);
+                PriEngine.Platform.ExecSql.Executa(strSql);*/
+
+                PriEngine.Engine.Comercial.Familias.ActualizaValorAtributo(CodFamilia, "Alterado", 0);
+            }
+        }
+
+        public static void SetSubCategoriasAlterado()
+        {
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+               /*StdBEExecSql strSql = new StdBEExecSql("UPDATE SubFamilias SET Alterado = 0");
+
+               PriEngine.Platform.ExecSql.Executa(strSql);*/
+
+                //GcpBESubFamilia subfamilia = PriEngine.Engine.Comercial.Familias.EditaSubFamilia(CodSubFamilia, CodFamilia);
+
+                //PriEngine.Engine.Comercial.Familias.ActualizaSubFamilia("subfamilia", subfamilia);
+            }
+        }
+
+        public static void SetEditorasAlterado(string CodMarca)
+        {
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+               // StdBEExecSql strSql = new StdBEExecSql("UPDATE Marcas SET Alterado = 0");
+
+                //PriEngine.Platform.ExecSql.Executa(strSql);
+
+                PriEngine.Engine.Comercial.Marcas.ActualizaValorAtributo(CodMarca, "Alterado", 0);
+
+            }
+        }
+
+        public static void SetArtigosAlterado(string CodArtigo)
+        {
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                //StdBEExecSql strSql = new StdBEExecSql("UPDATE Artigo SET Alterado = 0");
+
+                //PriEngine.Platform.ExecSql.Executa(strSql);
+
+                PriEngine.Engine.Comercial.Artigos.ActualizaValorAtributo(CodArtigo, "Alterado", 0);
+
+            }
+        }
+
+        public static void SetStockAlterado(string CodArmazem, string CodArtigo)
+        {
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                PriEngine.Engine.Comercial.ArtigosArmazens.ActualizaValorAtributo(CodArtigo, CodArmazem, "<L01>", "Alterado", 0);
+            }
         }
 
         #endregion Artigo
@@ -964,7 +1251,7 @@ namespace FirstREST.Lib_Primavera
 
             Model.DocVenda doc = new Model.DocVenda();
 
-            objList = PriEngine.Engine.Consulta("SELECT Artigo, Armazem, StkActual From ArtigoArmazem where Alterado = 1");
+            objList = PriEngine.Engine.Consulta("SELECT Artigo, Armazem, StkActual From CabecDoc where Alterado = 1");
 
             List<Model.DocVenda> listDocs = new List<Model.DocVenda>();
 

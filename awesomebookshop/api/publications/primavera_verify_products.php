@@ -24,7 +24,7 @@
 			$titulo = $artigo['Nome'];
 			$descricao = $artigo['DescArtigo'];
 			$autorId = $getAutorIDByName($artigo['Autor']);
-			$editoraId = verifyEditoraIfExists($artigo['Editora']);
+			$editoraId = checkIfBrandExists($artigo['Editora']);
 			$categoriaid = getCategoryIdByName($artigo['Categoria']);
 			$subCategoriaId = getSubCategoryIdByName($artigo['SubCategoria'], $categoriaid);
 			$datapublicacao = '2017-01-01';
@@ -48,4 +48,6 @@
 			createPublication($titulo, $descricao, $autorId, $editoraId, $subCategoriaId, $datapublicacao, $stock, $peso, $paginas, $preco, $precopromocional, $codigobarras, $novidade, $isbn, $edicao, $periodicidade, $block3, $block4);
 		}
 	}
+	
+	echo 'ok';
 ?>

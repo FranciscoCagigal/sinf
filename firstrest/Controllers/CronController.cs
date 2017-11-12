@@ -19,37 +19,104 @@ namespace FirstREST.Controllers
 
         public void Get()
         {
+            //categorias
 
-            //artigos
+            IEnumerable<Lib_Primavera.Model.Familia> categoriasModificadas = Lib_Primavera.PriIntegration.CategoriasModificadas();
 
-            IEnumerable<Lib_Primavera.Model.Artigo> artigosModificados = Lib_Primavera.PriIntegration.ArtigosModificados();   
-
-            string url = "http://localhost:8081/sinf/awesomebookshop/api/users/primavera_verify_products.php";
+            string url = "http://localhost:8081/sinf/awesomebookshop/api/publications/primavera_verify_category.php";
 
             string result = "";
 
-            using (var client = new WebClient())
+            if (categoriasModificadas.Count()>0)
+                using (var client = new WebClient())
+                {
 
-            {
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    string json = JsonConvert.SerializeObject(categoriasModificadas);
+                    result = client.UploadString(url, "POST", json);
+                    if (result == "ok") {
+                        Lib_Primavera.PriIntegration.CategoriasReset();
+                    }
 
-                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                }
 
-                string json = JsonConvert.SerializeObject(artigosModificados);
-                System.Diagnostics.Debug.WriteLine(json);
-                result = client.UploadString(url, "POST", json);
+            //subcategorias
 
-            }
+            IEnumerable<Lib_Primavera.Model.SubFamilia> subCategoriasModificadas = Lib_Primavera.PriIntegration.SubCategoriasModificadas();
 
-            Console.WriteLine(result);
+            url = "http://localhost:8081/sinf/awesomebookshop/api/publications/primavera_verify_subcategory.php";
+
+            result = "";
+
+            if (subCategoriasModificadas.Count() > 0)
+                using (var client = new WebClient())
+                {
+
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                    string json = JsonConvert.SerializeObject(subCategoriasModificadas);
+                    result = client.UploadString(url, "POST", json);
+                    if (result == "ok")
+                    {
+                        //Lib_Primavera.PriIntegration.SubCategoriasReset();
+                    }
+                }
+
+            //editoras
+
+            IEnumerable<Lib_Primavera.Model.Marca> editorasModificadas = Lib_Primavera.PriIntegration.EditorasModificadas();
+
+            url = "http://localhost:8081/sinf/awesomebookshop/api/publications/primavera_verify_brand.php";
+
+            result = "";
+
+            if (editorasModificadas.Count() > 0)
+                using (var client = new WebClient())
+                {
+
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                    string json = JsonConvert.SerializeObject(editorasModificadas);
+                    result = client.UploadString(url, "POST", json);
+                    if (result == "ok")
+                    {
+                        Lib_Primavera.PriIntegration.EditorasReset();
+                    }
+                }
+
+            //artigos
+            
+            IEnumerable<Lib_Primavera.Model.Artigo> artigosModificados = Lib_Primavera.PriIntegration.ArtigosModificados();   
+
+            url = "http://localhost:8081/sinf/awesomebookshop/api/publications/primavera_verify_products.php";
+
+            result = "";
+
+            if (artigosModificados.Count() > 0)
+                using (var client = new WebClient())
+
+                {
+
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                    string json = JsonConvert.SerializeObject(artigosModificados);
+                    result = client.UploadString(url, "POST", json);
+                    if (result == "ok")
+                    {
+                        Lib_Primavera.PriIntegration.ArtigosReset();
+                    }
+                }
 
 
-            /*//armazem
+            //armazem
 
             IEnumerable<Lib_Primavera.Model.Artigo> stocksModificados = Lib_Primavera.PriIntegration.StocksModificados();
 
-            url = "http://localhost:8081/sinf/awesomebookshop/api/users/primavera_verify_stocks.php";
+            url = "http://localhost:8081/sinf/awesomebookshop/api/publications/primavera_verify_stocks.php";
 
             result = "";
+
+            
 
             using (var client = new WebClient())
             {
@@ -59,6 +126,10 @@ namespace FirstREST.Controllers
                 string json = JsonConvert.SerializeObject(stocksModificados);
                 System.Diagnostics.Debug.WriteLine(json);
                 result = client.UploadString(url, "POST", json);
+                if (result == "ok")
+                {
+                    Lib_Primavera.PriIntegration.StocksReset();
+                }
 
             }
 
@@ -81,7 +152,7 @@ namespace FirstREST.Controllers
 
             }
 
-            Console.WriteLine(result);*/
+            Console.WriteLine(result);
            
         }
     }

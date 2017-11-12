@@ -25,24 +25,13 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
-        public double StockCoimbra
+        public double Stock
         {
             get;
             set;
         }
 
-        public double StockLisboa
-        {
-            get;
-            set;
-        }
-
-        public double StockOnline
-        {
-            get;
-            set;
-        }
-        public double StockPorto
+        public string Armazem
         {
             get;
             set;
@@ -85,6 +74,12 @@ namespace FirstREST.Lib_Primavera.Model
         }
 
         public string Editora
+        {
+            get;
+            set;
+        }
+
+        public char Alterado
         {
             get;
             set;
