@@ -13,13 +13,18 @@
 }
 
 table#tabela-encomendas{
-	table-layout:auto;
+	table-layout:fixed;
 }
 
 table#tabela-encomendas td,th{
 	text-align: right;
-	padding:0px !important;
-	white-space: pre-line;
-	line-height: 1;
-	width:100px !important;
+	border-spacing: 1000px;
+	padding-right:15px;
+	max-width:100px;
+	word-wrap: break-word;
+	white-space: normal;
+}
+
+table#tabela-encomenda-publicacoes td,th{
+	text-align: right;
 }
