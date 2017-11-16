@@ -30,7 +30,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="table-responsive">    
-							<table class="table table-striped">
+							<table id="tabela-encomenda-publicacoes" class="table table-striped">
 								<thead>
 									<tr>
 										<th>ID</th>
@@ -38,7 +38,8 @@
 										<th >Título</th>
 										<th>Preço</th>
 										<th>Quantidade</th>
-										<th>Total</th>
+										<th>IVA</th>
+										<th>Total (IVA incluído)</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -63,10 +64,18 @@
 											{$publication.quantidade}
 										</td>
 										<td>
+											€{$publication.preco * $publication.quantidade * 23/100}
+										</td>
+										<td>
 											€{$publication.preco * $publication.quantidade}
 										</td>
 									</tr>
 									{/foreach}
+									<tr>
+										<td colspan="7">
+											€{$publication.total}
+										</td>
+									</tr>
 								</tbody>
 							</table><!-- end table -->
 						</div><!-- end table-responsive -->
