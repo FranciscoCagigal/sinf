@@ -280,7 +280,7 @@ function getOrderPublications($order_id){
 
 	global $conn;
     
-    $stmt = $conn->prepare("SELECT encomenda.*, informacaofaturacao.*, publicacaoencomenda.*, publicacao.titulo, publicacao.publicacaoid, imagem.url
+    $stmt = $conn->prepare("SELECT encomenda.*, informacaofaturacao.*, publicacaoencomenda.*, publicacao.titulo, publicacao.publicacaoid, imagem.url,informacaofaturacao.total
 							FROM encomenda
 							LEFT JOIN informacaofaturacao
 							ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
