@@ -8,6 +8,7 @@ using Interop.StdBE900;
 using Interop.GcpBE900;
 using ADODB;
 using System.Net;
+using System.IO;
 
 namespace FirstREST.Lib_Primavera
 {
@@ -784,22 +785,28 @@ namespace FirstREST.Lib_Primavera
         public static void SubCategoriasReset()
         {
 
-            StdBELista objList;
+            //StdBELista objList;
 
             Model.SubFamilia subFam = new Model.SubFamilia();
 
             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
             {
 
-                objList = PriEngine.Engine.Consulta("SELECT Familia, SubFamilia, Descricao From SubFamilias where Alterado = 1");
+                //objList = PriEngine.Engine.Consulta("SELECT Familia, SubFamilia, Descricao From SubFamilias where Alterado = 1");
 
-                System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+                //StdBEExecSql strSql = new StdBEExecSql("UPDATE Familias SET Alterado = 0");
+                //params object[] vntParams;
+                //string strsql = PriEngine.Platform.Sql.FormatSQL("EXEC Set_SubCategoria_Alterado @Alterado = 0");
+                StdBEExecSql strSql = new StdBEExecSql("EXEC Set_SubCategoria_Alterado @Alterado = 0");
+                PriEngine.Platform.ExecSql.Executa(strSql);
 
-                while (!objList.NoFim())
-                {
+                //System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
+
+                //while (!objList.NoFim())
+                //{
                     //todo
-                    objList.Seguinte();
-                }
+                  //  objList.Seguinte();
+                //}
 
             }
 
@@ -1110,6 +1117,7 @@ namespace FirstREST.Lib_Primavera
                     PriEngine.Engine.TerminaTransaccao();
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
+                    dv.id = myEnc.get_NumDoc();
                     return erro;
                 }
                 else
@@ -1250,17 +1258,90 @@ namespace FirstREST.Lib_Primavera
             StdBELista objList;
 
             Model.DocVenda doc = new Model.DocVenda();
-
-            objList = PriEngine.Engine.Consulta("SELECT Artigo, Armazem, StkActual From CabecDoc where Alterado = 1");
-
             List<Model.DocVenda> listDocs = new List<Model.DocVenda>();
 
-         
+            objList = PriEngine.Engine.Consulta("SELECT distinct cabecdoc1.TipoDoc as TipoDoc, cabecdoc2.TipoDoc as TipoDocOrigem, cabecdoc1.numdoc as NumDoc, cabecdoc2.numdoc as NumDocOrigem, cabecdoc1.Serie as Serie, cabecdoc2.Serie as SerieOrigem, cabecdoc1.Filial as Filial, cabecdoc2.Filial as FilialOrigem FROM LinhasDoc as linhasdoc1 JOIN CabecDoc as cabecdoc1 ON linhasdoc1.IdCabecDoc = cabecdoc1.Id JOIN LinhasDocTrans as LinhasDocTrans1 ON linhasdoc1.Id = LinhasDocTrans1.IdLinhasDoc, LinhasDoc as linhasdoc2 JOIN CabecDoc as cabecdoc2 ON cabecdoc2.id=linhasdoc2.IdCabecDoc WHERE cabecdoc1.Alterado = 1 and LinhasDocTrans1.IdLinhasDocOrigem=linhasdoc2.id");
+
+            string tipoDoc;
+            string serie;
+            int numDoc;
+            string destino = "";
+            string ficheiro = "";
+
+            while (!objList.NoFim())
+            {
+
+                tipoDoc = objList.Valor("TipoDoc");
+                serie = objList.Valor("Serie");
+                numDoc = objList.Valor("NumDoc");
+                byte[] byteArray;
+
+                if (tipoDoc == "FA")
+                {
+                    destino = "C:\\xampp\\htdocs\\sinf\\firstrest\\documentos\\faturas\\fa" + serie + "_" + numDoc + ".pdf";
+                    ficheiro = "C:\\xampp\\htdocs\\sinf\\firstrest\\documentos\\faturas\\fa" + serie + "_" + numDoc + "_1.pdf";
+                }
+                else if (tipoDoc == "NC")
+                {
+                    destino = "C:\\xampp\\htdocs\\sinf\\firstrest\\documentos\\notas_credito\\nc" + serie + "_" + numDoc + ".pdf";
+                    ficheiro = "C:\\xampp\\htdocs\\sinf\\firstrest\\documentos\\notas_credito\\nc" + serie + "_" + numDoc + "_1.pdf";
+                }
+
+                if (tipoDoc == "FA" || tipoDoc == "NC")
+                {
+                    if (!File.Exists(ficheiro))
+                    {
+                        Lib_Primavera.PriIntegration.ImprimeDocumento(tipoDoc, serie, numDoc, destino);                      
+                    }
+                    byteArray = File.ReadAllBytes(ficheiro);
+                    doc.Ficheiro = byteArray;
+                }
+
+                doc.TipoDoc = tipoDoc;
+                doc.NumDoc = numDoc;
+                doc.Serie = serie;                
+                doc.NumDocOrigem = objList.Valor("NumDocOrigem");
 
                 listDocs.Add(doc);
                 objList.Seguinte();
-            
+            }
 
+            /*RECIBOS
+            objList = PriEngine.Engine.Consulta("SELECT TipoDoc, NumDoc, NumDocOrig as NumDocOrigem, Serie FROM LinhasLiq WHERE alterado = 1 AND TipoDoc='RE'");
+
+            while (!objList.NoFim())
+            {
+
+                tipoDoc = objList.Valor("TipoDoc");
+                serie = objList.Valor("Serie");
+                numDoc = objList.Valor("NumDoc");
+                byte[] byteArray;
+
+                destino = "C:\\xampp\\htdocs\\sinf\\firstrest\\documentos\\recibos\\re" + serie + "_" + numDoc + ".pdf";
+                ficheiro = "C:\\xampp\\htdocs\\sinf\\firstrest\\documentos\\recibos\\re" + serie + "_" + numDoc + "_1.pdf";
+
+                System.Diagnostics.Debug.WriteLine(tipoDoc);
+                System.Diagnostics.Debug.WriteLine(serie);
+                System.Diagnostics.Debug.WriteLine(numDoc);
+                
+                if (!File.Exists(ficheiro))
+                {
+                    //Lib_Primavera.PriIntegration.ImprimeDocumento(tipoDoc, serie, numDoc, destino);
+                }
+                
+
+                //byteArray = File.ReadAllBytes(ficheiro);
+                //doc.Ficheiro = byteArray;
+
+                doc.TipoDoc = tipoDoc;
+                doc.NumDoc = numDoc;
+                doc.Serie = serie;
+                doc.NumDocOrigem = objList.Valor("NumDocOrigem");
+
+                listDocs.Add(doc);
+                objList.Seguinte();
+            }
+            */
             return listDocs;
         }
 
@@ -1270,7 +1351,10 @@ namespace FirstREST.Lib_Primavera
 
         public static void ImprimeDocumento(string tipoDoc, string serie, int numDoc, string destino)
         {
-            PriEngine.Engine.Comercial.Vendas.ImprimeDocumento(tipoDoc, serie, numDoc, "000", 2, null, false, destino, 1);
+            if (tipoDoc == "RE")
+                PriEngine.Engine.Comercial.Tesouraria.ImprimeDocumento(tipoDoc, serie, numDoc, "000", 2, null,  destino);
+            else
+                PriEngine.Engine.Comercial.Vendas.ImprimeDocumento(tipoDoc, serie, numDoc, "000", 2, null, false, destino, 1);
         }
 
         #endregion Ficheiros

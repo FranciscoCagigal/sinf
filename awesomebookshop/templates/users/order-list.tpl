@@ -31,9 +31,9 @@
 				
 				<div class="row">
 					<div class="col-sm-12">
-						<div class="table-responsive">
+						<div >
 							{if $orders}    
-							<table class="table table-striped">
+							<table class="table " id="tabela-encomendas">
 								<thead>
 									<tr>
 										<th>ID</th>
@@ -45,92 +45,43 @@
 										<th>Total</th>
 										<th>Método de Pagamento</th>
 										<th>Estado</th>
+										{if $exists_order}
 										<th>Fatura</th>
+										{/if}
+										{if $exists_receipt}
 										<th>Recibo</th>
+										{/if}
+										{if $exists_return}
+										<th>Nota de crédito</th>
+										{/if}
 									</tr>
 								</thead>
 								<tbody>
 									{assign var=val value=0}
 									{foreach $orders as $order}
 									<tr>
-										<td>
-											<a href="{$BASE_URL}pages/users/order-publications.php?id={$order.encomendaid}">
-												#{$order.encomendaid}
-											</a>
+										<td><a href="{$BASE_URL}pages/users/order-publications.php?id={$order.encomendaid}">#{$order.encomendaid}</a>
 										</td>
-										<td>
-											{$days.$val}
-											{if $months.$val eq '01'}
-											JAN
-											{elseif $months.$val eq '02'}
-											FEV
-											{elseif $months.$val eq '03'}
-											MAR
-											{elseif $months.$val eq '04'}
-											ABR
-											{elseif $months.$val eq '05'}
-											MAI
-											{elseif $months.$val eq '06'}
-											JUN
-											{elseif $months.$val eq '07'}
-											JUL
-											{elseif $months.$val eq '08'}
-											AGO
-											{elseif $months.$val eq '09'}
-											SET
-											{elseif $months.$val eq '10'}
-											OUT
-											{elseif $months.$val eq '11'}
-											NOV
-											{elseif $months.$val eq '12'}
-											DEZ
-											{/if}
-											{$years.$val}
+										<td>{$days.$val}{if $months.$val eq '01'}JAN{elseif $months.$val eq '02'}FEV{elseif $months.$val eq '03'}MAR{elseif $months.$val eq '04'}ABR{elseif $months.$val eq '05'}MAI{elseif $months.$val eq '06'}JUN{elseif $months.$val eq '07'}JUL{elseif $months.$val eq '08'}AGO{elseif $months.$val eq '09'}SET{elseif $months.$val eq '10'}OUT{elseif $months.$val eq '11'}NOV{elseif $months.$val eq '12'}DEZ{/if}{$years.$val}</td>
+										<td>{$order.rua}</td>
+										<td>{$order.cod1}-{$order.cod2}</td>
+										<td>{$order.nome}</td>
+										<td>{if $order.portes eq '0'}Grátis{else}€{$order.portes}{/if}</td>
+										<td>€{$order.total}</td>
+										<td>{$order.tipo}</td>
+										<td>{if isset($order.estado)}{if $order.estado eq 'Enviada'}<span class="label label-success">{elseif $order.estado eq 'Processada'}<span class="label label-info">{elseif $order.estado eq 'Devolvida'}<span class="label label-default">{elseif $order.estado eq 'Em processamento'}<span class="label label-warning">{elseif $order.estado eq 'Cancelada'}<span class="label label-danger">{/if}{$order.estado}</span>{/if}</td>
+										{if isset($order.primaverafaturaid)} 
+										<td><a href="{$BASE_URL}documentos/cliente_{$userid}/faturas/fa{$order.primaverafaturaserie}_{$order.primaverafaturaid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>						
 										</td>
-										<td>
-											{$order.rua}
+										{/if}
+										{if isset($order.primaverareciboid)} 
+										<td><a href="{$BASE_URL}actions/users/get_invoice.php?id={$order.primaveraencomendaid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>
 										</td>
-										<td>
-											{$order.cod1}-{$order.cod2}
+										{/if}
+										{if isset($order.primaveranotacreditoid)}
+										<td><a href="{$BASE_URL}documentos/cliente_{$userid}/notas_credito/nc{$order.primaveranotacreditoserie}_{$order.primaveranotacreditoid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>										
 										</td>
-										<td>
-											{$order.nome}
-										</td>
-										<td>
-											{if $order.portes eq '0'}
-											Grátis
-											{else}
-											€{$order.portes}
-											{/if}
-										</td>
-										<td>
-											€{$order.total}
-										</td>
-										<td>
-											{$order.tipo}
-										</td>
-										<td>
-											{if isset($order.estado)}
-												{if $order.estado eq 'Enviada'} 
-												<span class="label label-success">
-													{elseif $order.estado eq 'Processada'} 
-													<span class="label label-info">
-														{elseif $order.estado eq 'Devolvida'} 
-														<span class="label label-default">
-															{elseif $order.estado eq 'Em processamento'}
-															<span class="label label-warning">
-																{elseif $order.estado eq 'Cancelada'}
-																<span class="label label-danger">
-												{/if}
-												{$order.estado}</span>
-											{/if}
-										</td>
-										<td>
-											<a href="{$BASE_URL}actions/users/get_invoice.php?id={$order.primaveraencomendaid}" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>
-										</td>
-										<td>
-											<a href="{$BASE_URL}actions/users/get_invoice.php?id={$order.primaveraencomendaid}" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>
-										</td>
+										{/if}
 														</tr>
 														{assign var=val value=$val+1}
 														{/foreach}

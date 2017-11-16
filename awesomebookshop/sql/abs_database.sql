@@ -378,9 +378,13 @@ CREATE TABLE Encomenda
 (
 	EncomendaID SERIAL,
 	PrimaveraEncomendaID varchar(10) NULL,
+	PrimaveraFaturaSerie varchar(5) NULL,
 	PrimaveraFaturaID varchar(10) NULL,
+	PrimaveraReciboSerie varchar(5) NULL,
 	PrimaveraReciboID varchar(10) NULL,
 	PrimaveraGuiaRemessaID varchar(10) NULL,
+	PrimaveraNotaCreditoSerie varchar(5) NULL,
+	PrimaveraNotaCreditoID varchar(10) NULL,
 	ClienteID integer NOT NULL,
 	MoradaFaturacaoID integer NOT NULL,
 	MoradaEnvioID integer NOT NULL,

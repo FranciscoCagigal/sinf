@@ -8,7 +8,7 @@ namespace FirstREST.Lib_Primavera.Model
     public class DocVenda
     {
 
-        public string id
+        public int id
         {
             get;
             set;
@@ -20,7 +20,31 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
+        public string TipoDoc
+        {
+            get;
+            set;
+        }
+
         public int NumDoc
+        {
+            get;
+            set;
+        }
+
+        public int NumDocOrigem
+        {
+            get;
+            set;
+        }
+
+        public string Filial
+        {
+            get;
+            set;
+        }
+
+        public string FilialOrigem
         {
             get;
             set;
@@ -44,6 +68,12 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
+        public string SerieOrigem
+        {
+            get;
+            set;
+        }
+
         public string Estado
         {
             get;
@@ -56,7 +86,12 @@ namespace FirstREST.Lib_Primavera.Model
             get;
             set;
         }
- 
+
+        public byte[] Ficheiro
+        {
+            get;
+            set;
+        }
 
     }
 }

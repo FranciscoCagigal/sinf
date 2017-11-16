@@ -202,7 +202,7 @@ function getUserOrderList($clienteid) {
 
   global $conn;
 
-  $stmt = $conn->prepare("SELECT encomenda.encomendaid, encomenda.primaveraencomendaid, encomenda.clienteid, encomenda.moradafaturacaoid, encomenda.moradaenvioid, encomenda.informacaofaturacaoid, encomenda.data, informacaofaturacao.portes, informacaofaturacao.total, metodopagamento.tipo, morada.*, codigopostal.*, localidade.nome 
+  $stmt = $conn->prepare("SELECT encomenda.encomendaid, encomenda.primaveraencomendaid, encomenda.primaverafaturaserie, encomenda.primaverafaturaid, encomenda.primaverareciboserie, encomenda.primaverareciboid, encomenda.primaveranotacreditoserie, encomenda.primaveranotacreditoid, encomenda.clienteid, encomenda.moradafaturacaoid, encomenda.moradaenvioid, encomenda.informacaofaturacaoid, encomenda.data, encomenda.estado, informacaofaturacao.portes, informacaofaturacao.total, metodopagamento.tipo, morada.*, codigopostal.*, localidade.nome 
                           FROM informacaofaturacao
                           RIGHT JOIN encomenda
                           ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
@@ -1000,11 +1000,12 @@ function primavera_insert_order($clienteid, $publicationscart){
   
   $json_response = curl_exec($ch);
   $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-  error_log($json_response);
-  error_log($status);
   
   curl_close($ch);
+  
+  $encomendaid = $json_response;
+  
+  return $encomendaid;
 }
 
 function insertOrder($clienteid, $username, $orderinformationf, $orderinformatione, $publicationscart){
@@ -1215,7 +1216,9 @@ function insertOrder($clienteid, $username, $orderinformationf, $orderinformatio
 	  primavera_insert_user($clienteid,$username,$moradae);
   }
   
-  primavera_insert_order($clienteid, $publicationscart);
+  $primaveraencomendaid = primavera_insert_order($clienteid, $publicationscart);
+  
+  set_order_primaveraid($encomendaID, $primaveraencomendaid);
   
 }
 
@@ -1228,4 +1231,16 @@ function insertPublicacaoEncomenda($publicationid, $idencomenda){
   
   $stmt->execute(array($publicationid, $idencomenda));
 }
+
+function set_order_primaveraid($encomendaID, $primaveraencomendaid){
+
+  global $conn;
+  
+  $stmt = $conn->prepare("UPDATE encomenda
+                          SET primaveraencomendaid = ?
+						  WHERE encomendaid = ?");
+  
+  $stmt->execute(array($primaveraencomendaid, $encomendaID));
+}
+
 ?>

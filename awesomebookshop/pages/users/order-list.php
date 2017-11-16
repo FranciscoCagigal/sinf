@@ -22,28 +22,6 @@ $userdata = getUserData($username);
 
 $orders = getUserOrderList($userdata[0]['clienteid']);
 
-$primaveraclientorders = primaveraGetClientOrders();
-
-if(is_array($primaveraclientorders)){
-
-foreach($primaveraclientorders as $primaveraorder){
-	foreach($orders as $key => $order){
-		if($primaveraorder['NumDoc'] == $order['primaveraencomendaid']){
-			
-			switch($primaveraorder['Estado']){
-				case 'P' : $orders[$key]['estado'] = 'Em processamento';
-				break;
-				case 'T' : $orders[$key]['estado'] = 'Processada';
-				break;
-				case 'E' : $orders[$key]['estado'] = 'Enviada';
-				break;
-			}
-		}
-	}
-		
-}
-}
-
 $clientid = $_SESSION['userid'];
 
 $publicationsusercart = getUserPublicationsCart($clientid);
@@ -55,6 +33,10 @@ $months = array();
 $years = array();
 
 $orderspublications = array();
+
+$exists_order = false;
+$exists_receipt = false;
+$exists_return = false;
 
 foreach ($orders as $order) {
   $timestamp = $order['data'];
@@ -68,6 +50,18 @@ foreach ($orders as $order) {
   $orderid = $order['encomendaid'];
   $orderpublications = getOrderPublications($orderid);
   $orderspublications[] = count($orderpublications);
+  
+  if(!$exists_order && isset($order['primaverafaturaid'])){
+	  $exists_order = true;
+  }
+  
+  if(!$exists_receipt && isset($order['primaverareciboid'])){
+	  $exists_receipt = true;
+  }
+  
+  if(!$exists_return && isset($order['primaveranotacreditoid'])){
+	  $exists_return = true;
+  }
 }
 
 $eightnewpublications = getNewPublications(8);
@@ -87,6 +81,11 @@ $smarty->assign('subcategoriasRevistas', $subcategoriasRevistas);
 $smarty->assign('subcategoriasDicionarios', $subcategoriasDicionarios);
 $smarty->assign('subcategoriasGuiasEMapas', $subcategoriasGuiasEMapas);
 
+$smarty->assign('exists_order', $exists_order);
+$smarty->assign('exists_receipt', $exists_receipt);
+$smarty->assign('exists_return', $exists_return);
+
+$smarty->assign('userid', $clientid);
 $smarty->assign('orders', $orders);
 $smarty->assign('days', $days);
 $smarty->assign('months', $months);

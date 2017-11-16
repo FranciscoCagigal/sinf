@@ -326,4 +326,47 @@ function primaveraGetClientOrders(){
 	return json_decode($output,true);
 }
 
+function set_primaverafatura_id($docserie, $numdoc, $numdocorigem, $estado){
+	global $conn;
+	$stmt = $conn->prepare("UPDATE encomenda
+							SET primaverafaturaserie = ?, primaverafaturaid = ?, estado = ?
+							WHERE primaveraencomendaid = ?");
+	$stmt->execute(array($docserie, $numdoc, $estado, $numdocorigem));
+}
+
+function set_primaverarecibo_id($docserie, $numdoc, $numdocorigem, $estado){
+	global $conn;
+	$stmt = $conn->prepare("UPDATE encomenda
+							SET primaverareciboserie = ?, primaverareciboid = ?, estado = ?
+							WHERE primaverafaturaid = ?");
+	$stmt->execute(array($docserie, $numdoc, $estado, $numdocorigem));
+}
+
+function set_primaveranotacredito_id($docserie, $numdoc, $numdocorigem, $estado){
+	global $conn;
+	$stmt = $conn->prepare("UPDATE encomenda
+							SET primaveranotacreditoserie = ?, primaveranotacreditoid = ?, estado = ?
+							WHERE primaverafaturaid = ?");
+	$stmt->execute(array($docserie, $numdoc, $estado, $numdocorigem));
+}
+
+function get_clientid_by_orderid($orderid){
+	global $conn;
+	$stmt = $conn->prepare("SELECT clienteid
+							FROM encomenda
+							WHERE primaveraencomendaid = ?");
+	$stmt->execute(array($orderid));
+	
+	return $stmt->fetch()['clienteid'];
+}
+
+function get_client_by_invoiceid($orderid){
+	global $conn;
+	$stmt = $conn->prepare("SELECT clienteid
+							FROM encomenda
+							WHERE primaverafaturaid = ?");
+	$stmt->execute(array($orderid));
+	
+	return $stmt->fetch()['clienteid'];
+}
 ?>
