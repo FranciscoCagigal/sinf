@@ -20,7 +20,7 @@
 			
 			{include file='common/sidebar.tpl'}
 			
-			<div class="col-sm-10">
+			<div class="col-sm-8" style="margin-left:3%">
 				<div class="row">
 					<div class="col-sm-12 text-left">
 						<h2 class="title">Minhas encomendas</h2>
@@ -31,9 +31,9 @@
 				
 				<div class="row">
 					<div class="col-sm-12">
-						<div >
+						<div  >
 							{if $orders}    
-							<table class="table " id="tabela-encomendas">
+							<table id="tabela-encomendas">
 								<thead>
 									<tr>
 										<th>ID</th>
@@ -42,7 +42,8 @@
 										<th>Código-Postal</th>
 										<th>Localidade</th>
 										<th>Portes</th>
-										<th>Total</th>
+										<th>IVA</th>
+										<th>Total (IVA incluído)</th>
 										<th>Método de Pagamento</th>
 										<th>Estado</th>
 										{if $exists_order}
@@ -67,6 +68,7 @@
 										<td>{$order.cod1}-{$order.cod2}</td>
 										<td>{$order.nome}</td>
 										<td>{if $order.portes eq '0'}Grátis{else}€{$order.portes}{/if}</td>
+										<td>€{$order.total*23/100}</td>
 										<td>€{$order.total}</td>
 										<td>{$order.tipo}</td>
 										<td>{if isset($order.estado)}{if $order.estado eq 'Enviada'}<span class="label label-success">{elseif $order.estado eq 'Processada'}<span class="label label-info">{elseif $order.estado eq 'Devolvida'}<span class="label label-default">{elseif $order.estado eq 'Em processamento'}<span class="label label-warning">{elseif $order.estado eq 'Cancelada'}<span class="label label-danger">{/if}{$order.estado}</span>{/if}</td>
