@@ -29,6 +29,19 @@ if(!checkUserHasOrder($clientid, $orderid)){
 }
 
 $orderpublications = getOrderPublications($orderid);
+$ordertotalvalues = getOrderTotalValues($orderid);
+
+$fmt = new NumberFormatter( 'pt_PT', NumberFormatter::CURRENCY );
+
+foreach($orderpublications as $key => $orderpublication){
+	$orderpublications[$key]['precototal'] = $fmt->formatCurrency($orderpublications[$key]['preco'] * $orderpublications[$key]['quantidade'], "EUR");
+	$orderpublications[$key]['preco'] = $fmt->formatCurrency($orderpublications[$key]['preco'], "EUR");
+	$orderpublications[$key]['publicacaoiva'] = $fmt->formatCurrency($orderpublications[$key]['publicacaoiva'], "EUR");
+}
+
+$totalencomenda = $fmt->formatCurrency($ordertotalvalues['total'], "EUR");
+$totaliva = $fmt->formatCurrency($ordertotalvalues['iva'], "EUR");
+$totalportes = $fmt->formatCurrency($ordertotalvalues['portes'], "EUR");
 
 $eightnewpublications = getNewPublications(8);
 $smarty->assign('eightnewpublications', $eightnewpublications);
@@ -49,6 +62,12 @@ $smarty->assign('subcategoriasGuiasEMapas', $subcategoriasGuiasEMapas);
 
 $smarty->assign('PUBLICATIONSUSERCART', $publicationsusercart);
 $smarty->assign('orderpublications', $orderpublications);
+$smarty->assign('ordertotalvalues', $ordertotalvalues);
+
+$smarty->assign('totalencomenda', $totalencomenda);
+$smarty->assign('totaliva', $totaliva);
+$smarty->assign('totalportes', $totalportes);
+
 $smarty->assign('orderid', $orderid);
 $smarty->display('users/order-publications.tpl');
 ?>

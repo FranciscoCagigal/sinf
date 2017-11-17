@@ -38,7 +38,9 @@ $exists_order = false;
 $exists_receipt = false;
 $exists_return = false;
 
-foreach ($orders as $order) {
+$fmt = new NumberFormatter( 'pt_PT', NumberFormatter::CURRENCY );
+
+foreach ($orders as $key => $order) {
   $timestamp = $order['data'];
   $timestampparsed = explode(' ', $timestamp);
   $date = $timestampparsed[0];
@@ -46,6 +48,10 @@ foreach ($orders as $order) {
   $days[] = $dateparsed[2];
   $months[] = $dateparsed[1];
   $years[] = $dateparsed[0];
+  
+  $orders[$key]['total'] = $fmt->formatCurrency($orders[$key]['total'], "EUR");
+  $orders[$key]['iva'] = $fmt->formatCurrency($orders[$key]['iva'], "EUR");
+  $orders[$key]['valorportes'] = $fmt->formatCurrency($orders[$key]['portes'], "EUR");
   
   $orderid = $order['encomendaid'];
   $orderpublications = getOrderPublications($orderid);

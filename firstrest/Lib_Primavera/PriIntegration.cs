@@ -498,6 +498,27 @@ namespace FirstREST.Lib_Primavera
 
         #region Artigo
 
+        public static IEnumerable<Lib_Primavera.Model.Artigo> ListaArtigosPorId(string[] products)
+        {
+
+            StdBELista objList;
+            Model.Artigo myArt = new Model.Artigo();
+            List<Model.Artigo> listArts = new List<Model.Artigo>();
+
+            foreach(string product in products){
+                System.Diagnostics.Debug.WriteLine(product);
+                objList = PriEngine.Engine.Consulta("SELECT Artigo.Artigo From Artigo");
+                while (!objList.NoFim())
+                {
+                    myArt.CodArtigo = objList.Valor("Artigo");
+                    myArt.Preco = objList.Valor("PVP1");
+                    myArt.PrecoPromocional = objList.Valor("PVP2");
+                    listArts.Add(myArt);
+                }
+            }
+            return listArts;
+        }
+
         public static Lib_Primavera.Model.Artigo GetArtigo(string codArtigo)
         {
             
@@ -595,6 +616,24 @@ namespace FirstREST.Lib_Primavera
             
 
             return listArts;
+        }
+
+
+        public static void DocumentosReset()
+        {
+            StdBEExecSql strSql = new StdBEExecSql();
+
+            strSql.set_Tabela("LinhasLiq");
+            strSql.AddCampo("Alterado", 0);
+            strSql.tpQuery = EnumTpQuery.tpUPDATE;
+            strSql.AddQuery();
+            PriEngine.Platform.ExecSql.Executa(strSql);
+
+            strSql.set_Tabela("CabecDoc");
+            strSql.AddCampo("Alterado", 0);
+            strSql.tpQuery = EnumTpQuery.tpUPDATE;
+            strSql.AddQuery();
+            PriEngine.Platform.ExecSql.Executa(strSql);
         }
 
         public static void StocksReset()
@@ -794,10 +833,12 @@ namespace FirstREST.Lib_Primavera
 
                 //objList = PriEngine.Engine.Consulta("SELECT Familia, SubFamilia, Descricao From SubFamilias where Alterado = 1");
 
-                //StdBEExecSql strSql = new StdBEExecSql("UPDATE Familias SET Alterado = 0");
-                //params object[] vntParams;
-                //string strsql = PriEngine.Platform.Sql.FormatSQL("EXEC Set_SubCategoria_Alterado @Alterado = 0");
-                StdBEExecSql strSql = new StdBEExecSql("EXEC Set_SubCategoria_Alterado @Alterado = 0");
+                StdBEExecSql strSql = new StdBEExecSql();
+               
+                strSql.set_Tabela("SubFamilias");
+                strSql.AddCampo("Alterado", 0);
+                strSql.tpQuery = EnumTpQuery.tpUPDATE;
+                strSql.AddQuery();
                 PriEngine.Platform.ExecSql.Executa(strSql);
 
                 //System.Diagnostics.Debug.WriteLine(objList.NumLinhas());
@@ -898,9 +939,9 @@ namespace FirstREST.Lib_Primavera
             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
             {
 
-               /*StdBEExecSql strSql = new StdBEExecSql("UPDATE SubFamilias SET Alterado = 0");
+               //StdBEExecSql strSql = new StdBEExecSql("UPDATE SubFamilias SET Alterado = 0");
 
-               PriEngine.Platform.ExecSql.Executa(strSql);*/
+               //PriEngine.Platform.ExecSql.Executa(strSql);
 
                 //GcpBESubFamilia subfamilia = PriEngine.Engine.Comercial.Familias.EditaSubFamilia(CodSubFamilia, CodFamilia);
 
@@ -1106,7 +1147,7 @@ namespace FirstREST.Lib_Primavera
                     foreach (Model.LinhaDocVenda lin in lstlindv)
                     {
                         objArtigoMoeda = PriEngine.Engine.Comercial.ArtigosPrecos.Edita(lin.CodArtigo, "EUR", "UN");
-                        PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", objArtigoMoeda.get_PVP1(), 0);
+                        PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", objArtigoMoeda.get_PVP2(), 0);
                     }
 
 
@@ -1306,7 +1347,7 @@ namespace FirstREST.Lib_Primavera
                 objList.Seguinte();
             }
 
-            /*RECIBOS
+            /*RECIBOS*/
             objList = PriEngine.Engine.Consulta("SELECT TipoDoc, NumDoc, NumDocOrig as NumDocOrigem, Serie FROM LinhasLiq WHERE alterado = 1 AND TipoDoc='RE'");
 
             while (!objList.NoFim())
@@ -1326,22 +1367,22 @@ namespace FirstREST.Lib_Primavera
                 
                 if (!File.Exists(ficheiro))
                 {
-                    //Lib_Primavera.PriIntegration.ImprimeDocumento(tipoDoc, serie, numDoc, destino);
+                    Lib_Primavera.PriIntegration.ImprimeDocumento(tipoDoc, serie, numDoc, destino);
                 }
                 
 
-                //byteArray = File.ReadAllBytes(ficheiro);
-                //doc.Ficheiro = byteArray;
+                byteArray = File.ReadAllBytes(ficheiro);
+                doc.Ficheiro = byteArray;
 
                 doc.TipoDoc = tipoDoc;
                 doc.NumDoc = numDoc;
                 doc.Serie = serie;
-                doc.NumDocOrigem = objList.Valor("NumDocOrigem");
+                doc.NumDocOrigem = Int32.Parse(objList.Valor("NumDocOrigem"));
 
                 listDocs.Add(doc);
                 objList.Seguinte();
             }
-            */
+            
             return listDocs;
         }
 
@@ -1352,7 +1393,7 @@ namespace FirstREST.Lib_Primavera
         public static void ImprimeDocumento(string tipoDoc, string serie, int numDoc, string destino)
         {
             if (tipoDoc == "RE")
-                PriEngine.Engine.Comercial.Tesouraria.ImprimeDocumento(tipoDoc, serie, numDoc, "000", 2, null,  destino);
+                PriEngine.Engine.Comercial.FuncoesGlobais.ImprimeDocumento("M", tipoDoc, serie, numDoc, "000", 2, null, false, destino, 0);
             else
                 PriEngine.Engine.Comercial.Vendas.ImprimeDocumento(tipoDoc, serie, numDoc, "000", 2, null, false, destino, 1);
         }

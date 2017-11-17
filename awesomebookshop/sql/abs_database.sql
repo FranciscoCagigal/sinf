@@ -203,7 +203,8 @@ CREATE TYPE Estadoencomenda AS ENUM
 	'Enviada',
 	'Em processamento',
 	'Devolvida',
-	'Processada'
+	'Processada',
+	'Paga'
 )
 ;
 
@@ -438,7 +439,7 @@ CREATE TABLE Informacaofaturacao
 	InformacaofaturacaoID SERIAL,
 	MetodopagamentoID integer NULL,
 	Portes real NULL,
-	Iva real NULL,
+	Iva decimal(5,2) NULL,
 	Total real NULL,
 	CONSTRAINT PK_Informacaofaturacao PRIMARY KEY (InformacaofaturacaoID)
 )
@@ -549,7 +550,7 @@ CREATE TABLE Publicacao
 	Descricao text NULL,
 	Paginas integer NULL,
 	Peso real NULL,
-	Iva real NOT NULL,
+	Iva decimal(5,2) NOT NULL,
 	Preco real NOT NULL,
 	Precopromocional real NULL,
 	Novidade boolean NOT NULL DEFAULT TRUE,
@@ -758,14 +759,18 @@ END $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION update_informacaoFaturacao()
 RETURNS TRIGGER
 AS $$
+DECLARE newtotal INTEGER;
 BEGIN
-	UPDATE Informacaofaturacao
-	SET total=(SELECT SUM(preco*quantidade)
+
+	SELECT SUM(preco*quantidade) INTO newtotal
 						FROM Publicacaoencomenda
-						WHERE encomendaID = NEW.encomendaID),
+						WHERE encomendaID = NEW.encomendaID;
+
+	UPDATE Informacaofaturacao
+	SET total=newtotal,
 		portes=(CASE WHEN total <= 30 THEN 2.99
 						ELSE 0.00 END),
-		iva=total-(total/1.23)
+		iva=newtotal-(newtotal/1.23)
 	WHERE informacaoFaturacaoID = (SELECT InformacaofaturacaoID
 									FROM Encomenda
 									WHERE encomendaID = NEW.encomendaID);
@@ -778,7 +783,7 @@ RETURNS TRIGGER
 AS $$
 BEGIN
 	UPDATE Carrinho
-	SET Subtotal=(SELECT SUM(Publicacao.preco*Publicacaocarrinho.quantidade)
+	SET Subtotal=(SELECT SUM(Publicacao.precopromocional*Publicacaocarrinho.quantidade)
 						FROM Publicacaocarrinho, Publicacao
 						WHERE Publicacaocarrinho.CarrinhoID = NEW.CarrinhoID AND Publicacao.PublicacaoID=Publicacaocarrinho.PublicacaoID)
 	WHERE CarrinhoID = NEW.CarrinhoID;
@@ -791,7 +796,7 @@ RETURNS TRIGGER
 AS $$
 BEGIN
 	UPDATE Carrinho
-	SET Subtotal=(SELECT SUM(Publicacao.preco*Publicacaocarrinho.quantidade)
+	SET Subtotal=(SELECT SUM(Publicacao.precopromocional*Publicacaocarrinho.quantidade)
 						FROM Publicacaocarrinho, Publicacao
 						WHERE Publicacaocarrinho.CarrinhoID = OLD.CarrinhoID AND Publicacao.PublicacaoID=Publicacaocarrinho.PublicacaoID)
 	WHERE CarrinhoID = OLD.CarrinhoID;
@@ -1533,7 +1538,12 @@ INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,d
 INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,dataRegisto,telefone,email,nif) VALUES (193,'Helena Isabel Duarte Dias Ribeiro','Feminino','29/06/1973','helenaribeiro','NNS43YYQ8GT',TRUE,'01/03/2016 17:21:32','966229693','helenaisabelribeiro@hotmail.com','898351545');
 INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,dataRegisto,telefone,email,nif) VALUES (193,'Armando Dina Mieiro','Masculino','06/09/1998','armandomieiro','HLL49KIO9FU',TRUE,'12/11/2012 18:21:34','917865498','armandomieiro@gmail.com','259873398');
 INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,dataRegisto,telefone,email,nif) VALUES (193,'ClienteProto','Masculino','06/09/1998','cli_proto','219d87a2f4b50249b71bdea4184b662b7cea3c95',TRUE,'12/11/2012 18:21:34','917865498','cliproto@gmail.com','259873376');
-INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','agfac','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','andrecorreia@gmail.com','258684542');
+INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','a','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','a@gmail.com','258681542');
+INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','b','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','b@gmail.com','258682542');
+INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','c','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','c@gmail.com','258683542');
+INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','d','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','d@gmail.com','258687542');
+INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','e','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','e@gmail.com','228687542');
+
 
 /* ------------------------------------------------------ R3 PublicacaoCarrinho ------------------------------------------------------ */
 INSERT INTO PublicacaoCarrinho (publicacaoID,carrinhoID,quantidade) VALUES (11,4,3);

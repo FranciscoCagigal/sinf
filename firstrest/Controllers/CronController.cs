@@ -58,7 +58,7 @@ namespace FirstREST.Controllers
                     result = client.UploadString(url, "POST", json);
                     if (result == "ok")
                     {
-                        //Lib_Primavera.PriIntegration.SubCategoriasReset();
+                        Lib_Primavera.PriIntegration.SubCategoriasReset();
                     }
                 }
 
@@ -149,7 +149,10 @@ namespace FirstREST.Controllers
                 string json = JsonConvert.SerializeObject(documentosModificados);
                 System.Diagnostics.Debug.WriteLine(json);
                 result = client.UploadString(url, "POST", json);
-
+                if (result == "ok")
+                {
+                    Lib_Primavera.PriIntegration.DocumentosReset();
+                }
             }
 
             Console.WriteLine(result);

@@ -8,7 +8,7 @@ if (!$_SESSION['username']) {
 	exit;
 }
 
-if (!$_POST['nomef'] || !$_POST['nomee'] || !$_POST['moradaf'] || !$_POST['moradae'] || !$_POST['localidadef'] || !$_POST['localidadee'] || !$_POST['codigopostalf'] || !$_POST['codigopostale'] || !$_POST['email'] || !$_POST['metodopagamento'] || !$_POST['nomecartao'] || !$_POST['numerocartao'] || !$_POST['mm'] || !$_POST['yy'] || !$_POST['cvv']) {
+if (!$_POST['nomef'] || !$_POST['nomee'] || !$_POST['moradaf'] || !$_POST['moradae'] || !$_POST['localidadef'] || !$_POST['localidadee'] || !$_POST['codigopostalf'] || !$_POST['codigopostale'] || !$_POST['email'] || !$_POST['metodopagamento']) {
 
 	$_SESSION['error_messages'][] = 'Não preencheu todos os campos de preenchimento obrigatório';
 	$_SESSION['form_values']      = $_POST;
@@ -20,6 +20,16 @@ $clienteid = $_SESSION['userid'];
 $username = $_SESSION['username'];
 
 $publicationscart = getUserPublicationsCart($clienteid);
+
+/*$could_proceed = checkProductsPrice($publicationscart);
+
+if(!$could_proceed){
+	$_SESSION['error_messages'][] = 'Alguns preços foram atualizados. Reveja a encomenda';
+
+	header("Location: $BASE_URL" . 'pages/users/checkout.php');
+	exit;
+}*/
+
 
 $codpostalf = explode('-', strip_tags($_POST['codigopostalf']));
 

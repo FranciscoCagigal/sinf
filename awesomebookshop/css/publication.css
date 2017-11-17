@@ -12,19 +12,18 @@
 	
 }
 
-table#tabela-encomendas{
+#tabela-encomendas{
 	table-layout:fixed;
 }
 
-table#tabela-encomendas td,th{
+#tabela-encomendas td, #tabela-encomendas th{
 	text-align: right;
-	border-spacing: 1000px;
 	padding-right:15px;
 	max-width:100px;
 	word-wrap: break-word;
 	white-space: normal;
 }
 
-table#tabela-encomenda-publicacoes td,th{
+#tabela-encomenda-publicacoes td, #tabela-encomenda-publicacoes th{
 	text-align: right;
 }

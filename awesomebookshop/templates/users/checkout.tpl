@@ -72,7 +72,7 @@
                                             </thead>
                                             <tbody>
                                                 {foreach $publicationscart as $publication}
-                                                <tr data-id="{$publication.publicacaoid}" data-price="{$publication.preco}">
+                                                <tr data-id="{$publication.publicacaoid}" data-price="{$publication.precopromocional}">
                                                     <td>
                                                         <a href="{$BASE_URL}pages/publications/publication.php?id={$publication.publicacaoid}">
                                                             <img width="60px" src="{$BASE_URL}{$publication.url}" alt="product">
@@ -83,7 +83,7 @@
                                                         <p>{$publication.nome_categoria} | {$publication.nome_subcategoria}</p>
                                                     </td>
                                                     <td>
-                                                        <span>€{$publication.preco}</span>
+                                                        <span>€{$publication.precopromocional}</span>
                                                     </td>
                                                     <td>
                                                         <select class="form-control" name="select">
@@ -91,7 +91,7 @@
                                                         </select>
                                                     </td>
                                                     <td data-column="total">
-                                                        <span class="text-primary">€{$publication.preco * $publication.quantidade}</span>
+                                                        <span class="text-primary">€{$publication.precopromocional * $publication.quantidade}</span>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="close">×</button>
@@ -212,7 +212,7 @@
                                                         <div class="panel-body">
                                                             <div class="form-group">
                                                                 <div class="row">
-                                                                    <label class="col-sm-4">Nome do titular do cartão <span class="text-danger">*</span></label>
+                                                                    <label class="col-sm-4">Nome do titular do cartão <span class="text-danger"></span></label>
                                                                     <div class="col-sm-8">
                                                                         <input type="text" class="form-control required" name="nomecartao" placeholder="" value="{$USER_DATA.nome}">
                                                                     </div><!-- end col -->
@@ -220,7 +220,7 @@
                                                             </div><!-- end form-group -->
                                                             <div class="form-group">
                                                                 <div class="row">
-                                                                    <label class="col-sm-4">Número do cartão <span class="text-danger">*</span></label>
+                                                                    <label class="col-sm-4">Número do cartão <span class="text-danger"></span></label>
                                                                     <div class="col-sm-8">
                                                                         <input type="text" class="form-control required" name="numerocartao" placeholder="" value="{$USER_DATA.numerocartao}">
                                                                     </div><!-- end col -->
@@ -246,7 +246,7 @@
                                                             </div><!-- end form-group -->
                                                             <div class="form-group">
                                                                 <div class="row">
-                                                                    <label class="col-sm-4">Data de válidade <span class="text-danger">*</span></label>
+                                                                    <label class="col-sm-4">Data de válidade <span class="text-danger"></span></label>
                                                                     <div class="col-sm-8">
                                                                         <div class="row">
                                                                             <div class="col-sm-6">
@@ -261,7 +261,7 @@
                                                             </div><!-- end form-group -->
                                                             <div class="form-group">
                                                                 <div class="row">
-                                                                    <label class="col-sm-4">CVV <span class="text-danger">*</span></label>
+                                                                    <label class="col-sm-4">CVV <span class="text-danger"></span></label>
                                                                     <div class="col-sm-8">
                                                                     <input type="text" class="form-control required" name="cvv" placeholder="CVV" value="{$USER_DATA.cvv}">
                                                                     </div><!-- end col -->

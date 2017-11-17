@@ -23,6 +23,7 @@
 		switch($doctype){
 			case 'FA': 
 				$estado = "Processada";
+				error_log("vem fatura");
 				$file_path = 'C:/xampp/htdocs/sinf/awesomebookshop/documentos/cliente_' . $userid . '/faturas/';
 				
 				if(!file_exists($file_path)) 
@@ -33,7 +34,9 @@
 				set_primaverafatura_id($docserie, $numdoc, $numdocorigem, $estado);
 				break;
 				
-			case 'RE': 
+			case 'RE':
+
+				$userid = get_client_by_invoiceid($numdocorigem);
 				$estado = "Paga";
 				$file_path = 'C:/xampp/htdocs/sinf/awesomebookshop/documentos/cliente_' . $userid . '/recibos/';
 				
@@ -48,7 +51,7 @@
 			case 'NC': 
 			
 				$userid = get_client_by_invoiceid($numdocorigem);
-				$estado = "Cancelada";
+				$estado = "Devolvida";
 				
 				$file_path = 'C:/xampp/htdocs/sinf/awesomebookshop/documentos/cliente_' . $userid . '/notas_credito/';
 				
@@ -61,4 +64,6 @@
 				break;
 		}
 	}
+	
+	echo 'ok';
 ?>

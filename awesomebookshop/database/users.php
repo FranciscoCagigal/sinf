@@ -202,7 +202,7 @@ function getUserOrderList($clienteid) {
 
   global $conn;
 
-  $stmt = $conn->prepare("SELECT encomenda.encomendaid, encomenda.primaveraencomendaid, encomenda.primaverafaturaserie, encomenda.primaverafaturaid, encomenda.primaverareciboserie, encomenda.primaverareciboid, encomenda.primaveranotacreditoserie, encomenda.primaveranotacreditoid, encomenda.clienteid, encomenda.moradafaturacaoid, encomenda.moradaenvioid, encomenda.informacaofaturacaoid, encomenda.data, encomenda.estado, informacaofaturacao.portes, informacaofaturacao.total, metodopagamento.tipo, morada.*, codigopostal.*, localidade.nome 
+  $stmt = $conn->prepare("SELECT encomenda.encomendaid, encomenda.primaveraencomendaid, encomenda.primaverafaturaserie, encomenda.primaverafaturaid, encomenda.primaverareciboserie, encomenda.primaverareciboid, encomenda.primaveranotacreditoserie, encomenda.primaveranotacreditoid, encomenda.clienteid, encomenda.moradafaturacaoid, encomenda.moradaenvioid, encomenda.informacaofaturacaoid, encomenda.data, encomenda.estado, informacaofaturacao.iva, informacaofaturacao.portes, informacaofaturacao.total, metodopagamento.tipo, morada.*, codigopostal.*, localidade.nome 
                           FROM informacaofaturacao
                           RIGHT JOIN encomenda
                           ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
@@ -240,7 +240,7 @@ function getUserPublicationsCart($clienteid) {
 
   global $conn;
   
-  $stmt = $conn->prepare("SELECT publicacao.publicacaoid, publicacao.primaveraid, publicacao.titulo, publicacaocarrinho.quantidade, publicacao.preco, imagem.url, subcategoria.nome AS nome_subcategoria, categoria.nome AS nome_categoria
+  $stmt = $conn->prepare("SELECT publicacao.publicacaoid, publicacao.primaveraid, publicacao.titulo, publicacaocarrinho.quantidade, publicacao.precopromocional, imagem.url, subcategoria.nome AS nome_subcategoria, categoria.nome AS nome_categoria
                           FROM cliente
                           JOIN carrinho
                           ON cliente.carrinhoid = carrinho.carrinhoid 
@@ -935,7 +935,7 @@ function primavera_user_exists($id){
   return json_decode($json_response, true);
 }
 
-function primavera_insert_user($id,$username,$morada){
+function primavera_insert_user($id,$username){
   
   global $PRIMAVERA_API;
   $user_data=getUserAllData($username);
@@ -1197,7 +1197,7 @@ function insertOrder($clienteid, $username, $orderinformationf, $orderinformatio
 
     foreach ($publicationscart as $publication) {
 
-      insertPublicacaoEncomenda($publication['publicacaoid'], $encomendaID);
+      insertPublicacaoEncomenda($publication['publicacaoid'], $encomendaID, $publication['quantidade']);
       removeCartItem($clienteid ,$publication['publicacaoid']);
     }
 
@@ -1213,7 +1213,7 @@ function insertOrder($clienteid, $username, $orderinformationf, $orderinformatio
   }
   
   if(primavera_user_exists($clienteid)==''){
-	  primavera_insert_user($clienteid,$username,$moradae);
+	  primavera_insert_user($clienteid,$username);
   }
   
   $primaveraencomendaid = primavera_insert_order($clienteid, $publicationscart);
@@ -1222,14 +1222,14 @@ function insertOrder($clienteid, $username, $orderinformationf, $orderinformatio
   
 }
 
-function insertPublicacaoEncomenda($publicationid, $idencomenda){
+function insertPublicacaoEncomenda($publicationid, $idencomenda, $quantidade){
   
   global $conn;
   
-  $stmt = $conn->prepare("INSERT INTO publicacaoencomenda (publicacaoID,encomendaID)
-                          VALUES (?, ?)");
+  $stmt = $conn->prepare("INSERT INTO publicacaoencomenda (publicacaoID,encomendaID,quantidade)
+                          VALUES (?, ?, ?)");
   
-  $stmt->execute(array($publicationid, $idencomenda));
+  $stmt->execute(array($publicationid, $idencomenda, $quantidade));
 }
 
 function set_order_primaveraid($encomendaID, $primaveraencomendaid){
@@ -1241,6 +1241,53 @@ function set_order_primaveraid($encomendaID, $primaveraencomendaid){
 						  WHERE encomendaid = ?");
   
   $stmt->execute(array($primaveraencomendaid, $encomendaID));
+}
+
+function checkProductsPrice($publicationscart){
+  global $PRIMAVERA_API;
+  global $conn;
+  $i=0;
+  
+  foreach($publicationscart as $publication){
+	$data[$i] = $publication['primaveraid'];
+	$i++;
+  }
+		
+  $content = json_encode($data);
+  $url = $PRIMAVERA_API . 'artigos';
+  
+  $ch = curl_init($url);
+  curl_setopt($ch, CURLOPT_HEADER, false);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+  
+  $json_response = curl_exec($ch);
+  $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  
+  curl_close($ch);
+  
+  $primavera_products = $json_response;
+  
+  $different_price = true;
+  
+  foreach($primavera_products as $product){
+	  
+	  $product_data = getPublicationData($product['CodArtigo']);
+	 
+	  if($product['Preco'] != $product_data['preco'] || $product['PrecoPromocional'] != $product_data['precopromocional']){
+		$different_price = false;
+		
+		$stmt = $conn->prepare("UPDATE publicacao
+                          SET preco = ?, precopromocional = ?
+						  WHERE primaveraid = ?");
+  
+		$stmt->execute(array($product['Preco'], $product['PrecoPromocional'], $product['CodArtigo']));
+	  }
+  }
+  
+  return $different_price;
 }
 
 ?>

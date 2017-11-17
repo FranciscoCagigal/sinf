@@ -37,9 +37,9 @@
 										<th >Imagem</th>
 										<th >Título</th>
 										<th>Preço</th>
-										<th>Quantidade</th>
+										<th style="min-width:120px">Quantidade</th>
 										<th>IVA</th>
-										<th>Total (IVA incluído)</th>
+										<th style="min-width:150px">Total (IVA incluído)</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -58,33 +58,58 @@
 											<p>Sed aliquam tincidunt tempus</p>
 										</td>
 										<td>
-											<span>€{$publication.preco}</span>
+											<span>{$publication.preco}</span>
 										</td>
 										<td>
 											{$publication.quantidade}
 										</td>
 										<td>
-											€{$publication.preco * $publication.quantidade * 23/100}
+											{$publication.publicacaoiva}
 										</td>
 										<td>
-											€{$publication.preco * $publication.quantidade}
+											{$publication.precototal}
 										</td>
 									</tr>
 									{/foreach}
 									<tr>
-										<td colspan="7">
-											€{$publication.total}
-										</td>
-									</tr>
 								</tbody>
 							</table><!-- end table -->
 						</div><!-- end table-responsive -->
+						
 						
 						<hr class="spacer-10 no-border">
 						
 						<a href="{$BASE_URL}" class="btn btn-light semi-circle btn-sm">
 							<i class="fa fa-arrow-left mr-5"></i> Continuar a comprar
 						</a>
+
+									
+									<div class="row">
+                                        <div class="col-sm-7 text-right">
+
+                                        </div><!-- end col -->
+						<div class="col-sm-5">
+                                            <div class="table-responsive"> 
+                                                <table class="table no-border" style="text-align:right">
+                                                    <tr>
+                                                        <th data-type="carrinhosubtotal">Total do IVA</th>
+                                                        <td>{$totaliva}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Taxa de envio</th>
+														{if $ordertotalvalues.total > 3.5}
+                                                        <td style="width:145px">Envio grátis</td>
+														{else}
+														<td style="width:145px">{$totalportes}</td>
+														{/if}
+                                                    </tr>
+                                                    <tr>
+                                                        <th data-type="carrinhosubtotal">Total da encomenda</th>
+                                                        <td>{$totalencomenda}</td>
+                                                    </tr>
+                                                </table><!-- end table -->
+                                            </div><!-- end table-responsive -->
+                                        </div><!-- end col -->
 					</div><!-- end col -->
 				</div><!-- end row -->
 			</div><!-- end col -->

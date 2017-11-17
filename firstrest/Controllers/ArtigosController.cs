@@ -37,6 +37,11 @@ namespace FirstREST.Controllers
             }
         }
 
+        public IEnumerable<Lib_Primavera.Model.Artigo> Post(string[] products)
+        {
+            return Lib_Primavera.PriIntegration.ListaArtigosPorId(products);
+        }
+
     }
 }
 

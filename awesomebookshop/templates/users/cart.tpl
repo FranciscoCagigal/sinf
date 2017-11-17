@@ -32,8 +32,8 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="table-responsive">  
-							{if $publicationscart}  
-							<table class="table table-striped">
+							{if $publicationscart}
+							<table class="table table-striped" >
 								<thead>
 									<tr>
 										<th colspan="2">Produtos</th>
@@ -45,7 +45,7 @@
 								<tbody>
 									{foreach $publicationscart as $publication}
 
-									<tr data-id="{$publication.publicacaoid}" data-price="{$publication.preco}">
+									<tr data-id="{$publication.publicacaoid}" data-price="{$publication.precopromocional}">
 										<td>
 											<a href="{$BASE_URL}pages/publications/publication.php?id={$publication.publicacaoid}">
 												<img width="60px" src="{$BASE_URL}{$publication.url}" alt="product">
@@ -56,7 +56,7 @@
 											<p>{$publication.nome_categoria} | {$publication.nome_subcategoria}</p>
 										</td>
 										<td>
-											<span>€{$publication.preco}</span>
+											<span>€{$publication.precopromocional}</span>
 										</td>
 										<td>
 											<select class="form-control" name="select">
@@ -64,7 +64,7 @@
 											</select>
 										</td>
 										<td data-column="total">
-											<span class="text-primary">€{$publication.preco * $publication.quantidade}</span>
+											<span class="text-primary">€{$publication.precopromocional * $publication.quantidade}</span>
 										</td>
 										<td>
 											<button type="button" class="close">×</button>

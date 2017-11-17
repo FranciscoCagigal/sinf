@@ -280,7 +280,7 @@ function getOrderPublications($order_id){
 
 	global $conn;
     
-    $stmt = $conn->prepare("SELECT encomenda.*, informacaofaturacao.*, publicacaoencomenda.*, publicacao.titulo, publicacao.publicacaoid, imagem.url,informacaofaturacao.total
+    $stmt = $conn->prepare("SELECT encomenda.*, informacaofaturacao.*, publicacaoencomenda.*, publicacao.titulo, publicacao.iva as publicacaoiva, publicacao.publicacaoid, imagem.url,informacaofaturacao.total
 							FROM encomenda
 							LEFT JOIN informacaofaturacao
 							ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
@@ -368,5 +368,20 @@ function get_client_by_invoiceid($orderid){
 	$stmt->execute(array($orderid));
 	
 	return $stmt->fetch()['clienteid'];
+}
+
+function getOrderTotalValues($order_id){
+
+	global $conn;
+    
+    $stmt = $conn->prepare("SELECT encomenda.*, informacaofaturacao.*
+							FROM encomenda
+							LEFT JOIN informacaofaturacao
+							ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
+							WHERE encomenda.encomendaid = ?");
+    
+    $stmt->execute(array($order_id));
+    
+    return $stmt->fetch();
 }
 ?>
