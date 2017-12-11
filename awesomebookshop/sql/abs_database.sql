@@ -696,7 +696,7 @@ CREATE OR REPLACE FUNCTION insert_publicacaoencomenda()
 RETURNS TRIGGER
 AS $$
 BEGIN
-	NEW.preco = (SELECT preco
+	NEW.preco = (SELECT precopromocional
 				FROM Publicacao
 				WHERE publicacaoID = NEW.publicacaoID);
 
@@ -759,7 +759,7 @@ END $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION update_informacaoFaturacao()
 RETURNS TRIGGER
 AS $$
-DECLARE newtotal INTEGER;
+DECLARE newtotal REAL;
 BEGIN
 
 	SELECT SUM(preco*quantidade) INTO newtotal
