@@ -933,4 +933,12 @@ function update_stocks_artigo($primaveraartigoid, $primaveraarmazemid, $stock){
 	                    	WHERE armazemid = ? AND publicacaoid = ?");
 	$stmt->execute(array($stock, $armazemid, $publicacaoid));
 }
+
+function updatePublicationVisits($publicationid){
+	global $conn;
+	$stmt = $conn->prepare("UPDATE publicacao
+	                     	SET visitas = visitas + 1
+	                    	WHERE publicacaoid = ?");
+	$stmt->execute(array($publicationid));
+}
 ?>

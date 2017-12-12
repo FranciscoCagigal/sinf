@@ -16,6 +16,8 @@ $publicationdata = getPublicationData($publicationid);
 
 $smarty->assign('publication', $publicationdata[0]);
 
+updatePublicationVisits($publicationid);
+
 $numcomments = getCommentsByPublicationId($publicationid);
 
 if($numcomments){
