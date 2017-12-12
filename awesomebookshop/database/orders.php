@@ -384,4 +384,30 @@ function getOrderTotalValues($order_id){
     
     return $stmt->fetch();
 }
+
+function getOrderIDbyPrimaveraEncomendaID($primaveraorder_id){
+
+	global $conn;
+    
+    $stmt = $conn->prepare("SELECT encomendaid
+							FROM encomenda
+							WHERE primaveraencomendaid = ?");
+    
+    $stmt->execute(array($primaveraorder_id));
+    
+    return $stmt->fetch();
+}
+
+function getOrderIDbyPrimaveraFaturaID($primaverainvoice_id){
+
+	global $conn;
+    
+    $stmt = $conn->prepare("SELECT encomendaid
+							FROM encomenda
+							WHERE primaverafaturaid = ?");
+    
+    $stmt->execute(array($primaverainvoice_id));
+    
+    return $stmt->fetch();
+}
 ?>

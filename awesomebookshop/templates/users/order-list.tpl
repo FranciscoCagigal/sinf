@@ -73,15 +73,15 @@
 										<td>{$order.tipo}</td>
 										<td>{if isset($order.estado)}{if $order.estado eq 'Paga'}<span class="label label-success">{elseif $order.estado eq 'Processada'}<span class="label label-info">{elseif $order.estado eq 'Cancelada'}<span class="label label-default">{elseif $order.estado eq 'Em processamento'}<span class="label label-warning">{elseif $order.estado eq 'Devolvida'}<span class="label label-danger">{/if}{$order.estado}</span>{/if}</td>
 										{if isset($order.primaverafaturaid)} 
-										<td style="text-align:center"><a href="{$BASE_URL}documentos/cliente_{$userid}/faturas/fa{$order.primaverafaturaserie}_{$order.primaverafaturaid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>						
+										<td style="text-align:center"><a href="{$BASE_URL}documentos/cliente_{$userid}/faturas/fa{$order.primaverafaturaserie}_{$order.encomendaid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>						
 										</td>
 										{/if}
 										{if isset($order.primaverareciboid)} 
-										<td style="text-align:center"><a href="{$BASE_URL}documentos/cliente_{$userid}/recibos/re{$order.primaverareciboserie}_{$order.primaverareciboid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>
+										<td style="text-align:center"><a href="{$BASE_URL}documentos/cliente_{$userid}/recibos/re{$order.primaverareciboserie}_{$order.encomendaid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>
 										</td>
 										{/if}
 										{if isset($order.primaveranotacreditoid)}
-										<td style="text-align:center"><a href="{$BASE_URL}documentos/cliente_{$userid}/notas_credito/nc{$order.primaveranotacreditoserie}_{$order.primaveranotacreditoid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>										
+										<td style="text-align:center"><a href="{$BASE_URL}documentos/cliente_{$userid}/notas_credito/nc{$order.primaveranotacreditoserie}_{$order.encomendaid}.pdf" class="fatura_button" download><span class="fa fa-file-pdf-o"></span></a>										
 										</td>
 										{/if}
 														</tr>

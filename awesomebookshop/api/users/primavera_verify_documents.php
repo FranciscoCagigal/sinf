@@ -29,7 +29,9 @@
 				if(!file_exists($file_path)) 
 					mkdir($file_path, 0777, true);
 				
-				file_put_contents($file_path . 'fa' . $docserie . '_'. $numdoc . '.pdf', base64_decode($file));
+				$numorder = getOrderIDbyPrimaveraEncomendaID($numdocorigem);
+				
+				file_put_contents($file_path . 'fa' . $docserie . '_'. $numorder . '.pdf', base64_decode($file));
 				
 				set_primaverafatura_id($docserie, $numdoc, $numdocorigem, $estado);
 				break;
@@ -43,7 +45,9 @@
 				if(!file_exists($file_path)) 
 					mkdir($file_path, 0777, true);
 				
-				file_put_contents($file_path . 're' . $docserie . '_'. $numdoc . '.pdf', base64_decode($file));
+				$numorder = getOrderIDbyPrimaveraFaturaID($numdocorigem);
+				
+				file_put_contents($file_path . 're' . $docserie . '_'. $numorder . '.pdf', base64_decode($file));
 				
 				set_primaverarecibo_id($docserie, $numdoc, $numdocorigem, $estado);	
 				break;
@@ -58,7 +62,9 @@
 				if(!file_exists($file_path)) 
 					mkdir($file_path, 0777, true);
 				
-				file_put_contents($file_path . 'nc' . $docserie . '_'. $numdoc . '.pdf', base64_decode($file));
+				$numorder = getOrderIDbyPrimaveraFaturaID($numdocorigem);
+				
+				file_put_contents($file_path . 'nc' . $docserie . '_'. $numorder . '.pdf', base64_decode($file));
 				
 				set_primaveranotacredito_id($docserie, $numdoc, $numdocorigem, $estado);	
 				break;
