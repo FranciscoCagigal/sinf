@@ -816,6 +816,20 @@ function getUserByStatus($estadoCliente){
   return $stmt->fetchAll();
 }
 
+//GET USER POINTS
+function getClientPoints($id){
+
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT pontos
+                          FROM cliente
+                          WHERE clienteid = ?");
+  
+  $stmt->execute(array($id));
+  
+  return $stmt->fetch();
+}
+
 //CLIENT EXISTS VERIFICATION
 function checkIfUserExists($username){
   global $conn;

@@ -333,6 +333,7 @@ CREATE TABLE Cliente
 	Email varchar(50) NOT NULL,
 	Nif varchar(50) NOT NULL,
 	Idade integer NOT NULL,
+	Pontos integer NULL DEFAULT 0,
 	CONSTRAINT PK_Cliente PRIMARY KEY (ClienteID),
 	CONSTRAINT cliente_email_key UNIQUE (Email),
 	CONSTRAINT cliente_nif_key UNIQUE (Nif),
@@ -558,6 +559,7 @@ CREATE TABLE Publicacao
 	Edicao varchar(50) NULL,
 	Periodicidade Periodicidade NULL,
 	Isbn varchar(100) NULL,
+	Pontos integer NULL DEFAULT 0,
 	Visitas integer NULL DEFAULT 0,
 	CONSTRAINT PK_Publicacao PRIMARY KEY (PublicacaoID),
 	CONSTRAINT publicacao_codigobarras_key UNIQUE (Codigobarras),
@@ -653,8 +655,9 @@ CREATE OR REPLACE FUNCTION insert_publicacao()
 RETURNS TRIGGER
 AS $$
 BEGIN
-	NEW.iva := NEW.preco-(NEW.preco/1.23);
-
+	NEW.iva := NEW.precopromocional-(NEW.precopromocional/1.23);
+	NEW.pontos := FLOOR(NEW.precopromocional/10);
+	
 	RETURN NEW;
 END $$ LANGUAGE plpgsql;
 
@@ -696,10 +699,25 @@ END $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION insert_publicacaoencomenda()
 RETURNS TRIGGER
 AS $$
+DECLARE cliente_id integer;
+DECLARE pontos_publicacao integer;
 BEGIN
+
+	SELECT clienteid INTO cliente_id
+	FROM encomenda
+	WHERE encomendaid = NEW.encomendaid;
+	
+	SELECT pontos INTO pontos_publicacao
+	FROM publicacao
+	WHERE publicacaoid = NEW.publicacaoid;
+	
 	NEW.preco = (SELECT precopromocional
 				FROM Publicacao
 				WHERE publicacaoID = NEW.publicacaoID);
+				
+	UPDATE cliente
+	SET pontos = pontos + (pontos_publicacao * NEW.quantidade)
+	WHERE clienteid = cliente_id;
 
 	RETURN NEW;
 END $$ LANGUAGE plpgsql;

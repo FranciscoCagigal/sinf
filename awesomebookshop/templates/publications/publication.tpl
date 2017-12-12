@@ -71,6 +71,15 @@
 						</div><!-- end col -->
 					</div><!-- end row -->
 
+					<div class="row">
+						<div class="col-sm-12">
+							{if $publication.pontos > 0}
+							<p><h5 class="text-xs">Acumule {$publication.pontos} {if $publication.pontos == 1}ponto {else} pontos {/if}na compra deste artigo</h5></p>
+							<p><h5 class="text-xs">{if isset($pontos_cliente)}(Atualmente tem {$pontos_cliente} {if $pontos_cliente == 1}ponto {else} pontos {/if}na sua conta){/if}</h5></p>
+							{/if}
+						</div>
+					</div>
+					
 					<hr class="spacer-5"><hr class="spacer-10 no-border">
 
 					<div class="row">

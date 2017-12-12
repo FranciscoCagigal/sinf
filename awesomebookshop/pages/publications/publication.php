@@ -18,6 +18,11 @@ $smarty->assign('publication', $publicationdata[0]);
 
 updatePublicationVisits($publicationid);
 
+if(isset($_SESSION['userid'])){
+	$pontos_cliente = getClientPoints($_SESSION['userid']);
+	$smarty->assign('pontos_cliente', $pontos_cliente['pontos']);
+}
+
 $numcomments = getCommentsByPublicationId($publicationid);
 
 if($numcomments){

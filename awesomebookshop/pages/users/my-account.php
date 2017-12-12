@@ -17,6 +17,9 @@ if ($_SESSION['usertype'] != 'client') {
 
 $clientid = $_SESSION['userid'];
 
+$pontos_cliente = getClientPoints($clientid);
+$smarty->assign('pontos_cliente', $pontos_cliente['pontos']);
+	
 $publicationsusercart = getUserPublicationsCart($clientid);
 
 $eightnewpublications = getNewPublications(8);
