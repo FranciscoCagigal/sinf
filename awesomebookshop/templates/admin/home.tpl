@@ -58,7 +58,7 @@
 			<div class="clearfix"></div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="x_panel top_comentarios">
 				<div class="x_title">
 					<h2>Últimos 5 Comentários </h2>
@@ -92,7 +92,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="x_panel top_usuarios">
 				<div class="x_title">
 					<h2>Top Usuários <small>Últimos 7 dias</small></h2>
@@ -126,7 +126,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="x_panel top_livros">
 				<div class="x_title">
 					<h2>Top Publicações <small>Últimos 7 dias</small></h2>
@@ -159,6 +159,41 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="col-md-3">
+			<div class="x_panel top_visitas">
+				<div class="x_title">
+					<h2>Top Visitas <small>Desde Sempre</small></h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					{if $infoHome.getViews5Publications}
+					{foreach $infoHome.getViews5Publications as $publication_views}
+					<article class="media event">
+						<a class="pull-left border-aero profile_thumb">
+							<i class="fa fa-book aero"></i>
+						</a>
+						<div class="media-body">
+							<a class="title">{$publication_views.titulo}</a>
+							<p>Foram visitadas <strong>{$publication_views.visitas}</strong> veze(s).</p>
+						</div>
+					</article>
+					{/foreach}
+					{else}
+					<article class="media event">
+						<div class="media-body">
+												<a class="title">Sem Publicações entre as datas selecionadas</a>
+											</div>
+					</article>
+					{/if}
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>
 <!-- /page content -->

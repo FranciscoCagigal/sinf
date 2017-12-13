@@ -56,6 +56,16 @@ function getBest5PublicationsOrdersByDate($firstDate,$lastDate){
 	return $stmt->fetchAll();
 }
 
+function getBestViews5Publications(){
+	global $conn;
+	$stmt = $conn->prepare("SELECT titulo, visitas
+                          FROM publicacao
+                          ORDER BY visitas DESC, titulo
+                          LIMIT 5");
+	$stmt->execute();
+	return $stmt->fetchAll();
+}
+
 function getCartsByDate($firstDate,$lastDate){
 	global $conn;
 	$stmt = $conn->prepare("SELECT *
@@ -73,7 +83,7 @@ function getTodayOrders($lastDate){
 		                    ON cliente.clienteid = encomenda.clienteid
 		                    JOIN informacaofaturacao
 		                    ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
-							WHERE encomenda.data::date = ? 
+							WHERE encomenda.data::date = ?
 		                    ORDER BY encomenda.encomendaid");
 	$stmt->execute(array($lastDate));
 	return $stmt->fetchAll();
@@ -279,7 +289,7 @@ function getOrdersByClientEmailAndStatus($email_cliente, $estadoencomenda){
 function getOrderPublications($order_id){
 
 	global $conn;
-    
+
     $stmt = $conn->prepare("SELECT encomenda.*, informacaofaturacao.*, publicacaoencomenda.*, publicacao.titulo, publicacao.iva as publicacaoiva, publicacao.publicacaoid, imagem.url,informacaofaturacao.total
 							FROM encomenda
 							LEFT JOIN informacaofaturacao
@@ -291,9 +301,9 @@ function getOrderPublications($order_id){
 							LEFT JOIN imagem
 							ON imagem.publicacaoid = publicacao.publicacaoid
 							WHERE encomenda.encomendaid = ?");
-    
+
     $stmt->execute(array($order_id));
-    
+
     return $stmt->fetchAll();
 }
 
@@ -309,20 +319,20 @@ function checkIfOrderExists($order_id){
 
 function primaveraGetClientOrders(){
 	global $PRIMAVERA_API;
-		
+
 	$user_id = $_SESSION['userid'];
-		
+
 	$url = $PRIMAVERA_API . 'DocVenda/' . $user_id;
-		
+
 	$ch = curl_init();
-		
+
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		
+
 	$output = curl_exec($ch);
-		
+
 	curl_close($ch);
-		
+
 	return json_decode($output,true);
 }
 
@@ -356,7 +366,7 @@ function get_clientid_by_orderid($orderid){
 							FROM encomenda
 							WHERE primaveraencomendaid = ?");
 	$stmt->execute(array($orderid));
-	
+
 	return $stmt->fetch()['clienteid'];
 }
 
@@ -366,48 +376,48 @@ function get_client_by_invoiceid($orderid){
 							FROM encomenda
 							WHERE primaverafaturaid = ?");
 	$stmt->execute(array($orderid));
-	
+
 	return $stmt->fetch()['clienteid'];
 }
 
 function getOrderTotalValues($order_id){
 
 	global $conn;
-    
+
     $stmt = $conn->prepare("SELECT encomenda.*, informacaofaturacao.*
 							FROM encomenda
 							LEFT JOIN informacaofaturacao
 							ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
 							WHERE encomenda.encomendaid = ?");
-    
+
     $stmt->execute(array($order_id));
-    
+
     return $stmt->fetch();
 }
 
 function getOrderIDbyPrimaveraEncomendaID($primaveraorder_id){
 
 	global $conn;
-    
+
     $stmt = $conn->prepare("SELECT encomendaid
 							FROM encomenda
 							WHERE primaveraencomendaid = ?");
-    
+
     $stmt->execute(array($primaveraorder_id));
-    
+
     return $stmt->fetch();
 }
 
 function getOrderIDbyPrimaveraFaturaID($primaverainvoice_id){
 
 	global $conn;
-    
+
     $stmt = $conn->prepare("SELECT encomendaid
 							FROM encomenda
 							WHERE primaverafaturaid = ?");
-    
+
     $stmt->execute(array($primaverainvoice_id));
-    
+
     return $stmt->fetch();
 }
 ?>
