@@ -1149,13 +1149,18 @@ namespace FirstREST.Lib_Primavera
                         objArtigoMoeda = PriEngine.Engine.Comercial.ArtigosPrecos.Edita(lin.CodArtigo, "EUR", "UN");
                         PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", objArtigoMoeda.get_PVP2(), 0);
                     }
-
+                    System.Diagnostics.Debug.WriteLine(myEnc.get_TotalDesc() + " " + myEnc.get_DescFinanceiro());
 
                    // PriEngine.Engine.Comercial.Compras.TransformaDocumento(
                     PriEngine.Engine.IniciaTransaccao();
+                    myEnc.set_DescFinanceiro(10);
+                    System.Diagnostics.Debug.WriteLine(myEnc.get_TotalDesc() + " " + myEnc.get_DescFinanceiro());
                     //PriEngine.Engine.Comercial.Vendas.Edita Actualiza(myEnc, "Teste");
                     PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc);
+                    System.Diagnostics.Debug.WriteLine(myEnc.get_TotalDesc() + " " + myEnc.get_DescFinanceiro());
+                    System.Diagnostics.Debug.WriteLine(myEnc.get_TotalDesc() + " " + myEnc.get_DescFinanceiro());
                     PriEngine.Engine.TerminaTransaccao();
+                    System.Diagnostics.Debug.WriteLine(myEnc.get_TotalDesc() + " " + myEnc.get_DescFinanceiro());
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     dv.id = myEnc.get_NumDoc();
