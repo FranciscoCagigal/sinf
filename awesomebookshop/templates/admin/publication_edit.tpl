@@ -75,7 +75,7 @@
                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Data da Publicação *
                 </label>
                 <div class="col-md-4 col-sm-6 col-xs-12 has-feedback">
-                  <input type="text" class="form-control has-feedback-left" name="datapublicacao" readonly="readonly" value="{$publicationData.datapublicacao}" aria-describedby="inputSuccess2Status4" placeholder="YYYY-MM-DD">
+                  <input type="text" class="form-control has-feedback-left" name="datapublicacao" value="{$publicationData.datapublicacao}" aria-describedby="inputSuccess2Status4" placeholder="YYYY-MM-DD">
                   <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                   <span id="inputSuccess2Status4" class="sr-only">(success)</span>
                 </div>
@@ -89,12 +89,12 @@
               <div class="form-group">
                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Peso (gr) *</label>
                 <div class="col-md-4 col-sm-3 col-xs-12">
-                  <input type="number" step="0.001" min="0.001" class="form-control" name="peso" readonly="readonly" value="{$publicationData.peso}" placeholder="Peso da Publicação (gr)">
+                  <input type="number" step="0.001" min="0.001" class="form-control" name="peso" value="{$publicationData.peso}" placeholder="Peso da Publicação (gr)">
                 </div>
 
                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Páginas </label>
                 <div class="col-md-4 col-sm-3 col-xs-12">
-                  <input type="number" min="0" class="form-control" name="nrpaginas" readonly="readonly" value="{$publicationData.paginas}" placeholder="Número de páginas da Publicação">
+                  <input type="number" min="0" class="form-control" name="nrpaginas" value="{$publicationData.paginas}" placeholder="Número de páginas da Publicação">
                 </div>
               </div>
 
@@ -127,30 +127,30 @@
               <div class="form-group">
                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Edição </label>
                 <div class="col-md-4 col-sm-3 col-xs-12">
-                  <input type="text" class="form-control" name="edicao" value="{$publicationData.edicao}" readonly="readonly" placeholder="Edição da Publicação">
+                  <input type="text" class="form-control" name="edicao" value="{$publicationData.edicao}" placeholder="Edição da Publicação">
                 </div>
 
                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Periodicidade </label>
-                <div class="col-md-4 col-sm-3 col-xs-12" readonly="readonly">
-                  <select class="form-control" name="periodicidade" readonly="readonly">
+                <div class="col-md-4 col-sm-3 col-xs-12">
+                  <select class="form-control" name="periodicidade">
                     <option>Escolha uma opção</option>
                     {if $publicationData.periodicidade == "Diario"}
-                    <option value="Diario" readonly="readonly" selected>Diário</option>
+                    <option value="Diario" selected>Diário</option>
                     {else}
                     <option value="Diario">Diário</option>
                     {/if}
                     {if $publicationData.periodicidade == "Semanal"}
-                    <option value="Semanal" readonly="readonly" selected>Semanal</option>
+                    <option value="Semanal" selected>Semanal</option>
                     {else}
                     <option value="Semanal">Semanal</option>
                     {/if}
                     {if $publicationData.periodicidade == "Mensal"}
-                    <option value="Mensal" readonly="readonly" selected>Mensal</option>
+                    <option value="Mensal" selected>Mensal</option>
                     {else}
                     <option value="Mensal">Mensal</option>
                     {/if}
                     {if $publicationData.periodicidade == "Anual"}
-                    <option value="Mensal" readonly="readonly" selected>Anual</option>
+                    <option value="Mensal" selected>Anual</option>
                     {else}
                     <option value="Mensal">Anual</option>
                     {/if}

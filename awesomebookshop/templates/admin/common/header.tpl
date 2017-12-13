@@ -27,6 +27,7 @@
 
   <!-- Custom Theme Style -->
   <link href="{$BASE_URL}css/admin/custom.min.css" rel="stylesheet">
+  <link href="{$BASE_URL}css/admin/css.css" rel="stylesheet">
 
 </head>
 
