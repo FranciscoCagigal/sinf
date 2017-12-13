@@ -120,7 +120,7 @@
 
                 <label class="control-label col-md-2 col-sm-3 col-xs-12">ISBN </label>
                 <div class="col-md-4 col-sm-3 col-xs-12">
-                  <input type="text" class="form-control" name="isbn" value="{$publicationData.isbn}" readonly="readonly" placeholder="ISBN da Publicação">
+                  <input type="text" class="form-control" name="isbn" value="{$publicationData.isbn}" placeholder="ISBN da Publicação">
                 </div>
               </div>
 
