@@ -48,7 +48,7 @@
       <strong>{$success}</strong>
     </div><!-- end alert -->
     {/foreach}
-    
+
   <div class="container body">
     <div class="main_container">
       <div class="col-md-3 left_col">
@@ -82,6 +82,7 @@
                   <ul class="nav child_menu">
                     <li><a href="{$BASE_URL}pages/admin/home.php">Página inicial</a></li>
                     <li><a href="{$BASE_URL}pages/admin/clients.php">Clientes</a></li>
+                    <li><a href="{$BASE_URL}pages/admin/publications.php">Publicações</a></li>
                     <li><a href="{$BASE_URL}pages/admin/workers.php">Funcionários</a></li>
                     <li><a href="{$BASE_URL}pages/admin/admins.php">Administradores</a></li>
                     <li><a href="{$BASE_URL}pages/admin/comments.php">Comentários</a></li>
