@@ -405,7 +405,7 @@ function getOrderIDbyPrimaveraEncomendaID($primaveraorder_id){
 
     $stmt->execute(array($primaveraorder_id));
 
-    return $stmt->fetch();
+    return $stmt->fetch()['encomendaid'];
 }
 
 function getOrderIDbyPrimaveraFaturaID($primaverainvoice_id){
@@ -418,6 +418,6 @@ function getOrderIDbyPrimaveraFaturaID($primaverainvoice_id){
 
     $stmt->execute(array($primaverainvoice_id));
 
-    return $stmt->fetch();
+    return $stmt->fetch()['encomendaid'];
 }
 ?>
