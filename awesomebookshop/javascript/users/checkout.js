@@ -84,6 +84,11 @@ function updateCartNumberItems() {
 
 function checkDiscountCoupon() {
 	$('#discount-cupon').on('change',function (){
-		console.log('oi');
+		var buttonclicked = $(this);
+		if(buttonclicked.prop("checked"))
+			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').parent().after('<tr><th data-type="desconto">Desconto</th><td>€ 32</td></tr>');
+		else 
+			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').parent().next().remove();
+		
 	});
 }
