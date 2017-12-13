@@ -94,7 +94,7 @@
                         <p class="product-name"> 
                           <a href="{$BASE_URL}pages/publications/publication.php?id={$publicationusercart.publicacaoid}">{$publicationusercart.titulo}</a> 
                         </p>
-                        <strong data-type="quantidade">{$publicationusercart.quantidade}</strong> x <span class="price text-primary">€{$publicationusercart.preco}</span>
+                        <strong data-type="quantidade">{$publicationusercart.quantidade}</strong> x <span class="price text-primary">€{$publicationusercart.precopromocional}</span>
                       </div><!-- end product-details -->
                     </li><!-- end item -->
                     {/foreach}
