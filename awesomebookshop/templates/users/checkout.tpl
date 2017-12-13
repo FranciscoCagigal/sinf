@@ -267,18 +267,20 @@
                                                                     </div><!-- end col -->
                                                                 </div><!-- end row -->
                                                             </div><!-- end form-group -->
+															{if $pontos_cliente > 0}
                                                             <div class="form-group">
                                                                 <div class="row">
                                                                     <div class="col-sm-offset-4 col-sm-8">
                                                                         <div class="checkbox-input checkbox-primary mb-10">
-                                                                            <input id="save-my-card" class="styled" type="checkbox">
-                                                                            <label for="save-my-card">
-                                                                                Salvar informações do cartão?
+                                                                            <input id="discount-cupon" class="styled" type="checkbox">
+                                                                            <label for="discount-cupon">
+																				Utilizar os seus <strong>{$pontos_cliente} pontos</strong>?
                                                                             </label>
                                                                         </div><!-- end checkbox-input -->
                                                                     </div><!-- end col -->
                                                                 </div><!-- end row -->
                                                             </div><!-- end form-group -->
+															{/if}
                                                             <div class="form-group">
                                                                 <div class="row">
                                                                     <div class="col-sm-offset-4 col-sm-8 text-right">
@@ -302,13 +304,13 @@
                                                             <div class="panel-heading" role="tab" id="questionOne">
                                                                 <h4 class="panel-title">
                                                                     <a class="" data-toggle="collapse" data-parent="#question" href="#collapseQuestionOne" aria-expanded="true" aria-controls="collapseOne">
-                                                                        Que pagamentos posso usar?
+                                                                        Que tipos de pagamento posso usar?
                                                                     </a>
                                                                 </h4>
                                                             </div><!-- end panel-heading -->
                                                             <div id="collapseQuestionOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="questionOne">
                                                                 <div class="panel-body">
-                                                                    <p>Lorem ipsum dolor sit amet, link adipisicing elit. Dicta voluptatem, tenetur eum tempore minus libero voluptates eos doloremque. Dolore minima rem consequuntur exercitationem quaerat deleniti repellendus enim necessitatibus mollitia tenetur?</p>
+                                                                    <p>Pode efetuar o pagamento da sua encomenda através dos seguintes métodos de pagamento: Visa, PayPal, multibanco, transferência bancária e envio à cobrança</p>
                                                                 </div><!-- end panel-body -->
                                                             </div><!-- end collapse -->
                                                         </div><!-- end panel -->
@@ -317,13 +319,13 @@
                                                             <div class="panel-heading" role="tab" id="questionTwo">
                                                                 <h4 class="panel-title">
                                                                     <a class="collapsed" data-toggle="collapse" data-parent="#question" href="#collapseQuestionTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                        Posso usar um cartão de presente para o pagamento?
+                                                                        Posso usar um vale de desconto para o pagamento?
                                                                     </a>
                                                                 </h4>
                                                             </div><!-- end panel-heading -->
                                                             <div id="collapseQuestionTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="questionTwo">
                                                                 <div class="panel-body">
-                                                                    <p>Lorem ipsum dolor sit amet, link adipisicing elit. Dicta voluptatem, tenetur eum tempore minus libero voluptates eos doloremque. Dolore minima rem consequuntur exercitationem quaerat deleniti repellendus enim necessitatibus mollitia tenetur?</p>
+                                                                    <p>Sim. Em compras superiores a 10€, ao efetuar o checkout, pode trocar os pontos da sua conta cartão AwesomeBookShop por descontos. Por cada ponto utilizado recebe um desconto de 1€.</p>
                                                                 </div><!-- end panel-body -->
                                                             </div><!-- end collapse -->
                                                         </div><!-- end panel -->
@@ -338,7 +340,7 @@
                                                             </div><!-- end panel-heading -->
                                                             <div id="collapseQuestionThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="questionThree">
                                                                 <div class="panel-body">
-                                                                    <p>Lorem ipsum dolor sit amet, link adipisicing elit. Dicta voluptatem, tenetur eum tempore minus libero voluptates eos doloremque. Dolore minima rem consequuntur exercitationem quaerat deleniti repellendus enim necessitatibus mollitia tenetur?</p>
+                                                                    <p>O tempo previsto para a entrega da sua encomenda depende da disponibilidade de entrega dos produtos. Na generalidade dos casos as entregas demoram 24h a ser processadas. Em caso de indisponibilidade dos artigos, a encomenda pode demorar 2 a 3 dias úteis a ser processada.</p>
                                                                 </div><!-- end panel-body -->
                                                             </div><!-- end collapse -->
                                                         </div><!-- end panel -->
@@ -359,8 +361,8 @@
                                             <div class="table-responsive"> 
                                                 <table class="table no-border">
                                                     <tr>
-                                                        <th data-type="carrinhosubtotal">Total do carrinho</th>
-                                                        <td>€ {$cartsubtotal}</td>
+                                                        <th data-type="carrinhoiva">Total do IVA</th>
+                                                        <td>€ {$cartsubtotal - ($cartsubtotal/1.23)|string_format:"%.2f"}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Taxa de envio</th>

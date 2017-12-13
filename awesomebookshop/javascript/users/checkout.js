@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	updateCartNumberItems();
+	checkDiscountCoupon();
 });
 
 function updateCartNumberItems() {
@@ -24,6 +25,7 @@ function updateCartNumberItems() {
 
 					if(data){
 						buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhosubtotal"]').siblings('td').text("€" + data[0].subtotal);
+						buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').siblings('td').text("€" + (data[0].subtotal - (data[0].subtotal/1.23)).toFixed(2));
 					}
 				});
 			}
@@ -77,5 +79,11 @@ function updateCartNumberItems() {
 				});
 			}
 		});
+	});
+}
+
+function checkDiscountCoupon() {
+	$('#discount-cupon').on('change',function (){
+		console.log('oi');
 	});
 }

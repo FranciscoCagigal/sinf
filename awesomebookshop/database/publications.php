@@ -934,11 +934,10 @@ function update_stocks_artigo($primaveraartigoid, $primaveraarmazemid, $stock){
 	$stmt->execute(array($stock, $armazemid, $publicacaoid));
 }
 
-function updatePublicationVisits($publicationid){
+function insertPublicationVisit($publicationid){
 	global $conn;
-	$stmt = $conn->prepare("UPDATE publicacao
-	                     	SET visitas = visitas + 1
-	                    	WHERE publicacaoid = ?");
+	$stmt = $conn->prepare("INSERT INTO publicacaovisita (publicacaoid)
+	                     	VALUES (?)");
 	$stmt->execute(array($publicationid));
 }
 ?>

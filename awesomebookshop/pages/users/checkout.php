@@ -22,6 +22,9 @@ $username = $_SESSION['username'];
 $userdata = getUserAllData($username);
 $smarty->assign('USER_DATA', $userdata[0]);
 
+$pontos_cliente = getClientPoints($clientid);
+$smarty->assign('pontos_cliente', $pontos_cliente['pontos']);
+
 $publicationscart = getUserPublicationsCart($clientid);
 
 if(!$publicationscart){

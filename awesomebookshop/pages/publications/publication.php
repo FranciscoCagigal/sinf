@@ -16,7 +16,7 @@ $publicationdata = getPublicationData($publicationid);
 
 $smarty->assign('publication', $publicationdata[0]);
 
-updatePublicationVisits($publicationid);
+insertPublicationVisit($publicationid);
 
 if(isset($_SESSION['userid'])){
 	$pontos_cliente = getClientPoints($_SESSION['userid']);

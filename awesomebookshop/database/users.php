@@ -221,6 +221,31 @@ function getUserOrderList($clienteid) {
   return $stmt->fetchAll();
 }
 
+//GET USER LAST 5 ORDER LIST
+function getUserLast5OrderList($clienteid) {
+
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT encomenda.encomendaid, encomenda.primaveraencomendaid, encomenda.primaverafaturaserie, encomenda.primaverafaturaid, encomenda.primaverareciboserie, encomenda.primaverareciboid, encomenda.primaveranotacreditoserie, encomenda.primaveranotacreditoid, encomenda.clienteid, encomenda.moradafaturacaoid, encomenda.moradaenvioid, encomenda.informacaofaturacaoid, encomenda.data, encomenda.estado, informacaofaturacao.iva, informacaofaturacao.portes, informacaofaturacao.total, metodopagamento.tipo, morada.*, codigopostal.*, localidade.nome 
+                          FROM informacaofaturacao
+                          RIGHT JOIN encomenda
+                          ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
+                          LEFT JOIN metodopagamento
+                          ON informacaofaturacao.metodopagamentoid = metodopagamento.metodopagamentoid
+                          LEFT JOIN morada
+                          ON morada.moradaid = encomenda.moradafaturacaoid
+                          LEFT JOIN codigopostal
+                          ON morada.codigopostalid = codigopostal.codigopostalid
+                          LEFT JOIN localidade
+                          ON localidade.localidadeid = codigopostal.localidadeid
+                          WHERE encomenda.clienteid = ?
+						  LIMIT 5");
+
+  $stmt->execute(array($clienteid));
+
+  return $stmt->fetchAll();
+}
+
 //GET USER ORDER LIST
 function checkUserHasOrder($clienteid, $encomendaid) {
 
