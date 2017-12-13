@@ -17,25 +17,28 @@ $nrOfLastComments = count(getCommentsByDate($firstDate,$todayDate));
 
 $nrOfLastLogs = count(getlogsByDate($firstDate,$todayDate));
 
-$nrOfLastCarts = count(getCartsByDate($firstDate,$todayDate));
+$nrOfLastOrders = count(getOrdersByDate($firstDate,$todayDate));
 
 $getLast5CommentsByDate = getLast5CommentsByDate($firstDate,$todayDate);
 
 $getBest5UsersOrdersByDate = getBest5UsersOrdersByDate($firstDate,$todayDate);
 
+$getBest5UsersOrdersCountByDate = getBest5UsersOrdersCountByDate($firstDate,$todayDate);
+
 $getBest5PublicationsOrdersByDate = getBest5PublicationsOrdersByDate($firstDate,$todayDate);
 
-$getViews5Publications = getBestViews5Publications();
+$getViews5Publications = getBestViews5Publications($firstDate,$todayDate);
 
 $infoHome = array(
 	'nrOfLastClients' 					=> $nrOfLastClients,
 	'nrOfLastComments' 					=> $nrOfLastComments,
 	'nrOfLastLogs' 						=> $nrOfLastLogs,
-	'nrOfLastCarts' 					=> $nrOfLastCarts,
+	'nrOfLastOrders' 					=> $nrOfLastOrders,
 	'getLast5CommentsByDate' 			=> $getLast5CommentsByDate,
 	'getBest5UsersOrdersByDate' 		=> $getBest5UsersOrdersByDate,
 	'getBest5PublicationsOrdersByDate' 	=> $getBest5PublicationsOrdersByDate,
-	'getViews5Publications' => $getViews5Publications
+	'getViews5Publications' => $getViews5Publications,
+	'getBest5UsersOrdersCountByDate' => $getBest5UsersOrdersCountByDate
 	);
 
 $smarty->assign('infoHome',$infoHome);

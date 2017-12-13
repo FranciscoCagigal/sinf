@@ -1,6 +1,6 @@
 $(document).ready(function() {
     init_flot_chart();
-    
+
     $("#reportrange").on("apply.daterangepicker",function(a,b){
 
     	var firstDate = b.startDate.format("YYYY-MM-DD");
@@ -9,6 +9,8 @@ $(document).ready(function() {
         $('.top_comentarios').empty();
     	$('.top_usuarios').empty();
         $('.top_livros').empty();
+        $('.top_visitas').empty();
+        $('.top_encomendas').empty();
 
         var flag = "top_comentarios";
         $.getJSON("../../api/admin/home.php", {firstDate: firstDate, lastDate: lastDate, flag: flag}, function(data){
@@ -36,6 +38,19 @@ $(document).ready(function() {
             $('.top_usuarios').append('</div>');
         });
 
+        flag = "top_encomendas";
+    	$.getJSON("../../api/admin/home.php", {firstDate: firstDate, lastDate: lastDate, flag: flag}, function(data){
+            $('.top_encomendas').append('<div class="x_title"><h2>Top Encomendas <small>'+firstDate+' e '+lastDate+'</small></h2><div class="clearfix"></div></div><div class="x_content">');
+            if(data.length === 0 || data == "NULL"){
+                $('.top_encomendas').append('<article class="media event"><div class="media-body"><a class="title">Sem encomendas entre as datas selecionadas</a></div></article>');
+            }else{
+                for (var i in data){
+                    $('.top_encomendas').append('<article class="media event"><a class="pull-left border-aero profile_thumb"><i class="fa fa-user aero"></i></a><div class="media-body"><a class="title">'+data[i].nomecliente+'</a><p>Efetuaram <strong>'+data[i].total+'</strong> encomendas(s).</p></div></article>');
+                }
+            }
+            $('.top_encomendas').append('</div>');
+        });
+
         flag = 'top_livros';
         $.getJSON("../../api/admin/home.php", {firstDate: firstDate, lastDate: lastDate, flag: flag}, function(data){
             $('.top_livros').append('<div class="x_title"><h2>Top Publicações <small>'+firstDate+' e '+lastDate+'</small></h2><div class="clearfix"></div></div><div class="x_content">');
@@ -49,20 +64,33 @@ $(document).ready(function() {
             $('.top_livros').append('</div>');
         });
 
+        flag = 'top_visitas';
+        $.getJSON("../../api/admin/home.php", {firstDate: firstDate, lastDate: lastDate, flag: flag}, function(data){
+            $('.top_visitas').append('<div class="x_title"><h2>Top Visitas <small>'+firstDate+' e '+lastDate+'</small></h2><div class="clearfix"></div></div><div class="x_content">');
+            if(data.length === 0 || data == "NULL"){
+                $('.top_visitas').append('<article class="media event"><div class="media-body"><a class="title">Sem Publicações entre as datas selecionadas</a></div></article>');
+            }else{
+                for (var i in data){
+                    $('.top_visitas').append('<article class="media event"><a class="pull-left border-aero profile_thumb"><i class="fa fa-user aero"></i></a><div class="media-body"><a class="title">'+data[i].titulo+'</a><p>Foram visitadas <strong>'+data[i].conta+'</strong> vezes.</p></div></article>');
+                }
+            }
+            $('.top_visitas').append('</div>');
+        });
+
     })
 
     function init_flot_chart(){
-    
+
         if( typeof ($.plot) === 'undefined'){ return; }
-    
+
         console.log('init_flot_chart');
-    
+
         var chart_plot_02_data = [];
 
         for (var i = 0; i < 7; i++) {
           chart_plot_02_data.push([new Date(Date.today().add(i).days()).getTime(), randNum() + i + i + 10]);
         }
-    
+
         var chart_plot_02_settings = {
             grid: {
                 show: true,
@@ -125,22 +153,22 @@ $(document).ready(function() {
                 min: chart_plot_02_data[0][0],
                 max: chart_plot_02_data[6][0]
             }
-        };  
-        
+        };
+
         if ($("#chart_plot_02").length){
             console.log('Plot2');
-            
-            $.plot( $("#chart_plot_02"), 
-            [{ 
-                label: "Número de ncomendas diárias", 
-                data: chart_plot_02_data, 
-                lines: { 
-                    fillColor: "rgba(150, 202, 89, 0.12)" 
-                }, 
-                points: { 
-                    fillColor: "#fff" } 
+
+            $.plot( $("#chart_plot_02"),
+            [{
+                label: "Número de ncomendas diárias",
+                data: chart_plot_02_data,
+                lines: {
+                    fillColor: "rgba(150, 202, 89, 0.12)"
+                },
+                points: {
+                    fillColor: "#fff" }
             }], chart_plot_02_settings);
-            
+
         }
     }
 

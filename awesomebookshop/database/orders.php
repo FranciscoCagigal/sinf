@@ -42,6 +42,20 @@ function getBest5UsersOrdersByDate($firstDate,$lastDate){
 	return $stmt->fetchAll();
 }
 
+function getBest5UsersOrdersCountByDate($firstDate,$lastDate){
+	global $conn;
+	$stmt = $conn->prepare("SELECT encomenda.clienteid, COUNT(informacaofaturacao.total) AS total, cliente.nome AS nomeCliente
+							FROM encomenda
+							JOIN informacaofaturacao ON informacaofaturacao.informacaofaturacaoid = encomenda.informacaofaturacaoid
+							JOIN cliente ON encomenda.clienteid = cliente.clienteid
+							WHERE encomenda.data::date >= ? AND encomenda.data::date <= ?
+							GROUP BY encomenda.clienteid, cliente.nome
+							ORDER BY total desc
+							LIMIT 5");
+	$stmt->execute(array($firstDate,$lastDate));
+	return $stmt->fetchAll();
+}
+
 function getBest5PublicationsOrdersByDate($firstDate,$lastDate){
 	global $conn;
 	$stmt = $conn->prepare("SELECT SUM(publicacaoencomenda.quantidade) AS quantidade, publicacao.titulo
@@ -56,13 +70,16 @@ function getBest5PublicationsOrdersByDate($firstDate,$lastDate){
 	return $stmt->fetchAll();
 }
 
-function getBestViews5Publications(){
+function getBestViews5Publications($firstDate,$lastDate){
 	global $conn;
-	$stmt = $conn->prepare("SELECT titulo, visitas
-                          FROM publicacao
-                          ORDER BY visitas DESC, titulo
+	$stmt = $conn->prepare("SELECT publicacaovisita.publicacaoid, publicacao.titulo, count(publicacaovisita.publicacaoid) AS conta
+                          FROM publicacaovisita
+                          JOIN publicacao ON publicacao.publicacaoid = publicacaovisita.publicacaoid
+                          WHERE publicacaovisita.data::date >= ? AND publicacaovisita.data::date <= ?
+                          GROUP BY publicacao.titulo, publicacaovisita.publicacaoid
+                          ORDER BY conta DESC
                           LIMIT 5");
-	$stmt->execute();
+	$stmt->execute(array($firstDate,$lastDate));
 	return $stmt->fetchAll();
 }
 
@@ -71,6 +88,15 @@ function getCartsByDate($firstDate,$lastDate){
 	$stmt = $conn->prepare("SELECT *
 							FROM carrinho
 							WHERE datacriacao::date >= ? AND datacriacao::date <= ? ");
+	$stmt->execute(array($firstDate,$lastDate));
+	return $stmt->fetchAll();
+}
+
+function getOrdersByDate($firstDate,$lastDate){
+	global $conn;
+	$stmt = $conn->prepare("SELECT *
+							FROM encomenda
+							WHERE data::date >= ? AND data::date <= ? ");
 	$stmt->execute(array($firstDate,$lastDate));
 	return $stmt->fetchAll();
 }

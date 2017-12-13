@@ -30,9 +30,9 @@
 		<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
 			<div class="tile-stats">
 				<div class="icon"><i class="fa fa-cart-plus"></i></div>
-				<div class="count">{$infoHome.nrOfLastCarts}</div>
-				<h3>Novos carrinhos</h3>
-				<p>Número de novos carrinhos nos últimos 7 dias.</p>
+				<div class="count">{$infoHome.nrOfLastOrders}</div>
+				<h3>Novas encomendas</h3>
+				<p>Número de novas encomendas nos últimos 7 dias.</p>
 			</div>
 		</div>
 	</div>
@@ -58,10 +58,10 @@
 			<div class="clearfix"></div>
 		</div>
 
-		<div class="col-md-3">
-			<div class="x_panel top_comentarios">
+		<div class="col-md-4">
+			<div class="x_panel top_encomendas">
 				<div class="x_title">
-					<h2>Últimos 5 Comentários </h2>
+					<h2>Top Encomendas <small>Últimos 7 dias</small></h2>
 					<ul class="nav navbar-right panel_toolbox">
 						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 						</li>
@@ -69,22 +69,22 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="x_content">
-					{if $infoHome.getLast5CommentsByDate}
-					{foreach $infoHome.getLast5CommentsByDate as $comment}
+					{if $infoHome.getBest5UsersOrdersCountByDate}
+					{foreach $infoHome.getBest5UsersOrdersCountByDate as $order}
 					<article class="media event">
 						<a class="pull-left border-aero profile_thumb">
-							<i class="fa fa-comments-o aero"></i>
+							<i class="fa fa-user aero"></i>
 						</a>
 						<div class="media-body">
-							<a class="title">{$comment.nome}</a>
-							<p>{$comment.texto}</p>
+							<a class="title">{$order.nomecliente}</a>
+							<p>Efetuou <strong>{$order.total}</strong> encomendas(s).</p>
 						</div>
 					</article>
 					{/foreach}
 					{else}
 					<article class="media event">
 						<div class="media-body">
-                    		<a class="title">Sem comentários na data selecionada</a>
+                    		<a class="title">Sem encomendas na data selecionada</a>
                   		</div>
 					</article>
 					{/if}
@@ -92,10 +92,10 @@
 			</div>
 		</div>
 
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="x_panel top_usuarios">
 				<div class="x_title">
-					<h2>Top Usuários <small>Últimos 7 dias</small></h2>
+					<h2>Top Encomendas <small>Últimos 7 dias</small></h2>
 					<ul class="nav navbar-right panel_toolbox">
 						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 						</li>
@@ -126,7 +126,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="x_panel top_livros">
 				<div class="x_title">
 					<h2>Top Publicações <small>Últimos 7 dias</small></h2>
@@ -160,10 +160,14 @@
 			</div>
 		</div>
 
-		<div class="col-md-3">
+	</div>
+
+	<div class="row">
+
+		<div class="col-md-4">
 			<div class="x_panel top_visitas">
 				<div class="x_title">
-					<h2>Top Visitas <small>Desde Sempre</small></h2>
+					<h2>Top Visitas <small>Últimos 7 dias</small></h2>
 					<ul class="nav navbar-right panel_toolbox">
 						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 						</li>
@@ -179,7 +183,7 @@
 						</a>
 						<div class="media-body">
 							<a class="title">{$publication_views.titulo}</a>
-							<p>Foram visitadas <strong>{$publication_views.visitas}</strong> veze(s).</p>
+							<p>Foram visitadas <strong>{$publication_views.conta}</strong> veze(s).</p>
 						</div>
 					</article>
 					{/foreach}
@@ -194,6 +198,40 @@
 			</div>
 		</div>
 
+
+		<div class="col-md-4">
+			<div class="x_panel top_comentarios">
+				<div class="x_title">
+					<h2>Últimos 5 Comentários </h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					{if $infoHome.getLast5CommentsByDate}
+					{foreach $infoHome.getLast5CommentsByDate as $comment}
+					<article class="media event">
+						<a class="pull-left border-aero profile_thumb">
+							<i class="fa fa-comments-o aero"></i>
+						</a>
+						<div class="media-body">
+							<a class="title">{$comment.nome}</a>
+							<p>{$comment.texto}</p>
+						</div>
+					</article>
+					{/foreach}
+					{else}
+					<article class="media event">
+						<div class="media-body">
+                    		<a class="title">Sem comentários na data selecionada</a>
+                  		</div>
+					</article>
+					{/if}
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <!-- /page content -->
