@@ -84,7 +84,6 @@
                     <li><a href="{$BASE_URL}pages/admin/home.php">Página inicial</a></li>
                     <li><a href="{$BASE_URL}pages/admin/clients.php">Clientes</a></li>
                     <li><a href="{$BASE_URL}pages/admin/publications.php">Publicações</a></li>
-                    <li><a href="{$BASE_URL}pages/admin/workers.php">Funcionários</a></li>
                     <li><a href="{$BASE_URL}pages/admin/admins.php">Administradores</a></li>
                     <li><a href="{$BASE_URL}pages/admin/comments.php">Comentários</a></li>
                     <li><a href="{$BASE_URL}pages/admin/logs_clients.php">Logs Clientes</a></li>
