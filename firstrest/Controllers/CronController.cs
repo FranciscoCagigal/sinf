@@ -91,7 +91,7 @@ namespace FirstREST.Controllers
             url = "http://localhost:8081/sinf/awesomebookshop/api/publications/primavera_verify_products.php";
 
             result = "";
-
+            System.Diagnostics.Debug.WriteLine("Modificados: " + artigosModificados.Count());
             if (artigosModificados.Count() > 0)
                 using (var client = new WebClient())
 
@@ -101,6 +101,7 @@ namespace FirstREST.Controllers
 
                     string json = JsonConvert.SerializeObject(artigosModificados);
                     result = client.UploadString(url, "POST", json);
+                    System.Diagnostics.Debug.WriteLine("result: " + result);
                     if (result == "ok")
                     {
                         Lib_Primavera.PriIntegration.ArtigosReset();

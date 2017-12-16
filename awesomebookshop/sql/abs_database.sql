@@ -1577,6 +1577,9 @@ INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,t
 INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','c','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','c@gmail.com','258683542');
 INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','d','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','d@gmail.com','258687542');
 INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','e','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','e@gmail.com','228687542');
+INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','f','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','f@gmail.com','208683542');
+INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','g','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','g@gmail.com','288687542');
+INSERT INTO Cliente (paisID,nome,genero,dataNascimento,userName,passWord,ativo,telefone,email,nif) VALUES (193,'Andre Correia','Masculino','15/03/1989','h','883768b6dd2c42aea0031b24be8a2da40fef4b64',TRUE,'916735524','h@gmail.com','218687542');
 
 
 /* ------------------------------------------------------ R3 PublicacaoCarrinho ------------------------------------------------------ */

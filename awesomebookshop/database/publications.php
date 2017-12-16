@@ -445,7 +445,7 @@ function getSubCategoryIdByName($subcategoryname, $categoriaid){
     return $result['subcategoriaid'];
 }
 
-function createPublication($titulo, $descricao, $autorId, $editoraId, $subCategoriaId, $datapublicacao, $stock, $peso, $paginas, $preco, $precopromocional, $codigobarras, $novidade, $isbn, $edicao, $periodicidade, $block3, $block4){
+function createPublication($titulo, $descricao, $autorId, $editoraId, $subCategoriaId, $datapublicacao, $stock, $peso, $paginas, $preco, $precopromocional, $codigobarras, $novidade, $isbn, $edicao, $periodicidade, $block3, $block4, $primaveraid){
 	global $conn, $urlImagem;
 	$conn->beginTransaction();
 
@@ -461,10 +461,10 @@ function createPublication($titulo, $descricao, $autorId, $editoraId, $subCatego
 			die('Publicação já existe!');
 		}
 		else{
-			$stmt = $conn->prepare("INSERT INTO publicacao (editoraid, subcategoriaid, titulo, datapublicacao, codigobarras, descricao, paginas, peso, preco, precopromocional, novidade, stock, edicao, periodicidade, isbn) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			$stmt = $conn->prepare("INSERT INTO publicacao (primaveraid, editoraid, subcategoriaid, titulo, datapublicacao, codigobarras, descricao, paginas, peso, preco, precopromocional, novidade, stock, edicao, periodicidade, isbn) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 
-			$stmt->execute(array($editoraId, $subCategoriaId, $titulo, $datapublicacao, $codigobarras, $descricao, $paginas, $peso, $preco, $precopromocional, $novidade, $stock, $edicao, $periodicidade, $isbn));
+			$stmt->execute(array($primaveraid, $editoraId, $subCategoriaId, $titulo, $datapublicacao, $codigobarras, $descricao, $paginas, $peso, $preco, $precopromocional, $novidade, $stock, $edicao, $periodicidade, $isbn));
 
 			$publicacaoID = $conn->lastInsertId('publicacao_publicacaoid_seq');
 
@@ -817,7 +817,7 @@ function getAutorIDByName($autorname){
 							WHERE nome = ?");
 	$stmt->execute(array($autorname));
 	
-	return $stmt->fetch();
+	return $stmt->fetch()['autorid'];
 }
 
 function createAutorOnlyWithName($autorname){
@@ -885,13 +885,13 @@ function create_subcategoria($primaveracategoriaid, $categoriaid, $primaverasubc
 	$stmt->execute(array($primaverasubcategoriaid, $categoriaid, $primaveracategoriaid, $subcategorianome));
 }
 
-function checkIfBrandExists($primaveraeditoraid){
+function checkIfBrandExists($nomeeditora){
 	global $conn;
 	
 	$stmt = $conn->prepare("SELECT editoraid
 							FROM editora
-							WHERE primaveraeditoraid = ?");
-	$stmt->execute(array($primaveraeditoraid));
+							WHERE nome = ?");
+	$stmt->execute(array($nomeeditora));
 	
 	return $stmt->fetch()['editoraid'];
 }

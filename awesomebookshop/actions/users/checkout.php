@@ -21,6 +21,21 @@ $username = $_SESSION['username'];
 
 $publicationscart = getUserPublicationsCart($clienteid);
 
+$pontos_cliente = getClientPoints($clienteid)['pontos'];
+
+$cartsubtotal = getUserCartSubtotal($clienteid)[0]['subtotal'];
+
+if(isset($_POST['discount-cupon'])){
+	$points_used = floor(min($pontos_cliente,$cartsubtotal));
+	error_log('subtotal: ' . $cartsubtotal . ' points: ' . $points_used);
+	$percentage_discount = ($points_used/$cartsubtotal)*100;
+	error_log('percentage: ' . $percentage_discount);
+}
+else{
+	$points_used = 0;
+	$percentage_discount = 0;
+}
+
 /*$could_proceed = checkProductsPrice($publicationscart);
 
 if(!$could_proceed){
@@ -79,7 +94,7 @@ if((strip_tags($_POST['nomef']) == strip_tags($_POST['nomee'])) && (strip_tags($
 
 try {
 
-	insertOrder($clienteid, $username, $orderinformationf, $orderinformatione, $publicationscart);
+	insertOrder($clienteid, $username, $orderinformationf, $orderinformatione, $publicationscart, $points_used, $percentage_discount);
 
 } catch (PDOException $e) {
 

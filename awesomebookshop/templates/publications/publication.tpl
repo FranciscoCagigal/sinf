@@ -104,17 +104,25 @@
 								<div class="col-md-4 col-sm-12">
 									<ul>
 										<!-- StockOnline -->
+										{if isset($stockOnline)}
 										{if $stockOnline > 0} 
 										<li class="emstock"><i class="fa fa-check"></i> Online: Em stock</li>
 										{elseif $stockOnline == 0}
 										<li class="semstock"><i class="fa fa-times"></i> Online: 2 a 3 dias</li>
 										{/if}
+										{else}
+										<li class="semstock"><i class="fa fa-times"></i> Online: 2 a 3 dias</li>
+										{/if}
 										
 										<!-- StockLisboa -->
+										{if isset($stockLisboa)}
 										{if $stockLisboa > 0} 
 										<li class="emstock"><i class="fa fa-check emstock"></i> Loja Lisboa: Em stock</li>
 										{elseif $stockLisboa == 0}
 										<li class="semstock"><i class="fa fa-times semstock"></i> Loja Lisboa: 2 a 3 dias</li>
+										{/if}
+										{else}
+										<li class="semstock"><i class="fa fa-times"></i> Online: 2 a 3 dias</li>
 										{/if}
 									</ul>
 								</div><!-- end col -->
@@ -122,17 +130,25 @@
 								<div class="col-md-4 col-sm-12 stockarmazem">
 									<ul>
 										<!-- StockPorto -->
+										{if isset($stockPorto)}
 										{if $stockPorto > 0} 
 										<li class="emstock"><i class="fa fa-check emstock"></i> Loja Porto: Em stock</li>
 										{elseif $stockPorto == 0}
 										<li class="semstock"><i class="fa fa-times semstock"></i> Loja Porto: 2 a 3 dias</li>
 										{/if}
+										{else}
+										<li class="semstock"><i class="fa fa-times"></i> Online: 2 a 3 dias</li>
+										{/if}
 										
 										<!-- StockCoimbra -->
+										{if isset($stockCoimbra)}
 										{if $stockCoimbra > 0} 
 										<li class="emstock"><i class="fa fa-check"></i> Loja Coimbra: Em stock</li>
 										{elseif $stockCoimbra == 0}
 										<li class="semstock"><i class="fa fa-times semstock"></i> Loja Coimbra: 2 a 3 dias</li>
+										{/if}
+										{else}
+										<li class="semstock"><i class="fa fa-times"></i> Online: 2 a 3 dias</li>
 										{/if}
 									</ul>
 								</div><!-- end col -->

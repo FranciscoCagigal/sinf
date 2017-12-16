@@ -1,3 +1,6 @@
+var subtotal;
+var iva;
+
 $(document).ready(function() {
 	updateCartNumberItems();
 	checkDiscountCoupon();
@@ -85,10 +88,34 @@ function updateCartNumberItems() {
 function checkDiscountCoupon() {
 	$('#discount-cupon').on('change',function (){
 		var buttonclicked = $(this);
-		if(buttonclicked.prop("checked"))
-			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').parent().after('<tr><th data-type="desconto">Desconto</th><td>€ 32</td></tr>');
-		else 
+		
+		if(buttonclicked.prop("checked")){
+			
+			subtotal = parseFloat(buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhosubtotal"]').siblings('td').text().replace('€', ''));
+		
+			iva = parseFloat(buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').siblings('td').text().replace('€', ''));
+			
+			var points = buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhosubtotal"]').data('points');
+			
+			var discount = Math.floor(Math.min(subtotal,points));
+		
+			var newtotal = (subtotal - discount).toFixed(2);
+			
+			var newiva = (newtotal - (newtotal/1.23)).toFixed(2);
+			
+			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').parent().after('<tr><th data-type="desconto">Desconto</th><td>€ ' + discount + '</td></tr>');
+			
+			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').siblings('td').text('€ '+ newiva);
+			
+			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhosubtotal"]').siblings('td').text('€ '+ newtotal);
+		}
+		else {
 			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').parent().next().remove();
+		
+			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhoiva"]').siblings('td').text('€ '+ iva);
+			
+			buttonclicked.closest('.pills').siblings('.row').find('.col-sm-5 .no-border tbody tr th[data-type="carrinhosubtotal"]').siblings('td').text('€ '+ subtotal);
+		}
 		
 	});
 }

@@ -1014,7 +1014,7 @@ function primavera_insert_user($id,$username){
   curl_close($ch);
 }
 
-function primavera_insert_order($clienteid, $publicationscart){
+function primavera_insert_order($clienteid, $publicationscart, $percentage_discount){
   global $PRIMAVERA_API;
   
   $data['Entidade'] = $clienteid;
@@ -1023,7 +1023,7 @@ function primavera_insert_order($clienteid, $publicationscart){
   $i = 0;
   
   foreach($publicationscart as $publication){
-	$data['LinhasDoc'][$i] = array('CodArtigo' => $publication['primaveraid'], 'Quantidade' => $publication['quantidade'], 'PrecoUnitario' => $publication['preco']);
+	$data['LinhasDoc'][$i] = array('CodArtigo' => $publication['primaveraid'], 'Quantidade' => $publication['quantidade'], 'PrecoUnitario' => $publication['precopromocional'], 'Desconto' => $percentage_discount);
 	$i++;
   }
 		
@@ -1047,7 +1047,7 @@ function primavera_insert_order($clienteid, $publicationscart){
   return $encomendaid;
 }
 
-function insertOrder($clienteid, $username, $orderinformationf, $orderinformatione, $publicationscart){
+function insertOrder($clienteid, $username, $orderinformationf, $orderinformatione, $publicationscart, $points_used, $percentage_discount){
   
   global $conn;
 
@@ -1255,9 +1255,19 @@ function insertOrder($clienteid, $username, $orderinformationf, $orderinformatio
 	  primavera_insert_user($clienteid,$username);
   }
   
-  $primaveraencomendaid = primavera_insert_order($clienteid, $publicationscart);
+  $primaveraencomendaid = primavera_insert_order($clienteid, $publicationscart, $percentage_discount);
   
   set_order_primaveraid($encomendaID, $primaveraencomendaid);
+  
+  if($points_used > 0){
+	
+	update_client_points($clienteid, $points_used);
+  
+	update_total_informacao_faturacao($encomendaID, $points_used);
+  
+	update_iva_informacao_faturacao($encomendaID);
+	
+  }
   
 }
 
@@ -1327,6 +1337,39 @@ function checkProductsPrice($publicationscart){
   }
   
   return $different_price;
+}
+
+function update_client_points($clienteid, $points_used){
+
+  global $conn;
+  
+  $stmt = $conn->prepare("UPDATE cliente
+                          SET pontos = pontos - ?
+						  WHERE clienteid = ?");
+  
+  $stmt->execute(array($points_used, $clienteid));
+}
+
+function update_total_informacao_faturacao($encomendaid, $points_used){
+
+  global $conn;
+  
+  $stmt = $conn->prepare("UPDATE informacaofaturacao
+                          SET total = total - ?
+						  WHERE informacaofaturacaoid = ?");
+  
+  $stmt->execute(array($points_used, $encomendaid));
+}
+
+function update_iva_informacao_faturacao($encomendaid){
+
+  global $conn;
+  
+  $stmt = $conn->prepare("UPDATE informacaofaturacao
+                          SET iva = (total - (total/1.23))
+						  WHERE informacaofaturacaoid = ?");
+  
+  $stmt->execute(array($encomendaid));
 }
 
 ?>

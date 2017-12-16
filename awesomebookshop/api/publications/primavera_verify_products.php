@@ -10,7 +10,7 @@
 	//$input = mb_convert_encoding($input, "UTF-16", "Windows-1252");
 	
 	$object = json_decode($input);
-
+error_log(print_r("lol",true));
 	$array = json_decode(json_encode($object), True);
 	 
 	foreach($array as $artigo){
@@ -23,7 +23,7 @@
 			
 			$titulo = $artigo['Nome'];
 			$descricao = $artigo['DescArtigo'];
-			$autorId = $getAutorIDByName($artigo['Autor']);
+			$autorId = getAutorIDByName($artigo['Autor']);
 			$editoraId = checkIfBrandExists($artigo['Editora']);
 			$categoriaid = getCategoryIdByName($artigo['Categoria']);
 			$subCategoriaId = getSubCategoryIdByName($artigo['SubCategoria'], $categoriaid);
@@ -45,7 +45,7 @@
 				$autorId = createAutorOnlyWithName($artigo['Autor']);
 			}
 			
-			createPublication($titulo, $descricao, $autorId, $editoraId, $subCategoriaId, $datapublicacao, $stock, $peso, $paginas, $preco, $precopromocional, $codigobarras, $novidade, $isbn, $edicao, $periodicidade, $block3, $block4);
+			createPublication($titulo, $descricao, $autorId, $editoraId, $subCategoriaId, $datapublicacao, $stock, $peso, $paginas, $preco, $precopromocional, $codigobarras, $novidade, $isbn, $edicao, $periodicidade, $block3, $block4, $artigo['CodArtigo']);
 		}
 	}
 	

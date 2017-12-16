@@ -246,7 +246,7 @@
                                                             </div><!-- end form-group -->
                                                             <div class="form-group">
                                                                 <div class="row">
-                                                                    <label class="col-sm-4">Data de válidade <span class="text-danger"></span></label>
+                                                                    <label class="col-sm-4">Data de validade <span class="text-danger"></span></label>
                                                                     <div class="col-sm-8">
                                                                         <div class="row">
                                                                             <div class="col-sm-6">
@@ -267,14 +267,14 @@
                                                                     </div><!-- end col -->
                                                                 </div><!-- end row -->
                                                             </div><!-- end form-group -->
-															{if $pontos_cliente > 0}
+															{if $pontos_cliente > 0 && $cartsubtotal > 10}
                                                             <div class="form-group">
                                                                 <div class="row">
                                                                     <div class="col-sm-offset-4 col-sm-8">
                                                                         <div class="checkbox-input checkbox-primary mb-10">
-                                                                            <input id="discount-cupon" class="styled" type="checkbox">
-                                                                            <label for="discount-cupon">
-																				Utilizar os seus <strong>{$pontos_cliente} pontos</strong>?
+                                                                            <input name="discount-cupon" id="discount-cupon" class="styled" type="checkbox">
+                                                                            <label for="discount-cupon" data-points="{$pontos_cliente}">
+																				Utilizar os seus <strong>{if ($pontos_cliente > $cartsubtotal)} {FLOOR($cartsubtotal)} {else} {$pontos_cliente} {/if} pontos</strong>?
                                                                             </label>
                                                                         </div><!-- end checkbox-input -->
                                                                     </div><!-- end col -->
@@ -364,12 +364,13 @@
                                                         <th data-type="carrinhoiva">Total do IVA</th>
                                                         <td>€ {$cartsubtotal - ($cartsubtotal/1.23)|string_format:"%.2f"}</td>
                                                     </tr>
+													
                                                     <tr>
                                                         <th>Taxa de envio</th>
                                                         <td>Envio grátis</td>
                                                     </tr>
                                                     <tr>
-                                                        <th data-type="carrinhosubtotal">Total da encomenda</th>
+                                                        <th data-type="carrinhosubtotal" data-points="{$pontos_cliente}">Total da encomenda</th>
                                                         <td>€ {$cartsubtotal}</td>
                                                     </tr>
                                                 </table><!-- end table -->
